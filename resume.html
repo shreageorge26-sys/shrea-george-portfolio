@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shrea George, Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f5f3;
+      --surface: #e8e8e5;
+      --border: #c8c8c4;
+      --text: #1a1a1a;
+      --muted: #777;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+      filter: brightness(0);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    /* ── RESUME WRAPPER ── */
+    .resume {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 40px 100px;
+    }
+
+    /* ── HEADER ── */
+    .resume-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+      gap: 24px;
+    }
+
+    .resume-name {
+      font-family: var(--serif);
+      font-size: 42px;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .resume-title {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .resume-contact {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-top: 6px;
+    }
+
+    .resume-contact a,
+    .resume-contact span {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    /* ── SECTION ── */
+    .resume-section {
+      margin-bottom: 48px;
+    }
+
+    .resume-section-title {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 24px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── EXPERIENCE ENTRY ── */
+    .exp-entry {
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .exp-entry:last-child { margin-bottom: 0; }
+
+    .exp-meta {
+      padding-top: 2px;
+    }
+
+    .exp-date {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .exp-company {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .exp-location {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .exp-body {}
+
+    .exp-role {
+      font-family: var(--serif);
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .exp-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 12px;
+      line-height: 1.65;
+    }
+
+    .exp-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .exp-bullets li {
+      font-size: 13px;
+      color: var(--text);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.55;
+    }
+
+    .exp-bullets li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--border);
+    }
+
+    /* ── CLIENTS / SKILLS ── */
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    /* ── PRINT ── */
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 10px 20px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 10mm 12mm;
+      }
+      nav, .btn-print { display: none !important; }
+      body { background: white; font-size: 10px; line-height: 1.45; }
+      .resume { margin: 0; padding: 0; max-width: 100%; }
+      .resume-name { font-size: 24px; margin-bottom: 4px; }
+      .resume-header { padding-bottom: 10px; margin-bottom: 16px; }
+      .resume-section { margin-bottom: 14px; }
+      .resume-section-title { margin-bottom: 6px; font-size: 9px; }
+      .exp-entry { margin-bottom: 10px; gap: 16px; }
+      .exp-role { font-size: 13px; margin-bottom: 4px; }
+      .exp-desc { font-size: 10px; margin-bottom: 4px; line-height: 1.4; }
+      .exp-bullets { gap: 4px; }
+      .exp-bullets li { font-size: 10px; line-height: 1.4; }
+      .tag { font-size: 9px; padding: 1px 8px; }
+      .tag-list { gap: 5px; }
+      .exp-meta { min-width: 120px; }
+      .exp-date { font-size: 9px; }
+      .exp-company { font-size: 10px; }
+      .exp-location { font-size: 9px; }
+      a { color: inherit; text-decoration: none; }
+      hr { margin: 8px 0; }
+      .resume-section p[style] { font-size: 10px !important; line-height: 1.5 !important; }
+    }
+
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .resume { padding: 0 20px 80px; margin: 32px auto; }
+      .resume-header { flex-direction: column; }
+      .resume-contact { text-align: left; }
+      .exp-entry { grid-template-columns: 1fr; gap: 4px; }
+      .exp-meta { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+      .exp-date::after { content: '·'; margin-left: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo"><img src="logo-sg.png" alt="Shrea George"></a>
+  </nav>
+
+  <main class="resume">
+
+    <!-- HEADER -->
+    <header class="resume-header">
+      <div>
+        <h1 class="resume-name">Shrea George</h1>
+        <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:8px;">
+          <a href="mailto:shreageorge@gmail.com" style="font-size:12px; color:var(--muted); text-decoration:none;">shreageorge@gmail.com</a>
+          <span style="font-size:12px; color:var(--muted);">Mumbai, India</span>
+          <a href="https://www.linkedin.com/in/shrea" target="_blank" style="font-size:12px; color:var(--muted); text-decoration:none;">linkedin.com/in/shrea ↗</a>
+        </div>
+      </div>
+      <div style="display:flex; align-items:flex-start; padding-top:6px;">
+        <button class="btn-print" onclick="window.print()">Download Resume</button>
+      </div>
+    </header>
+
+    <!-- SUMMARY -->
+    <section class="resume-section">
+      <p class="resume-section-title">Summary</p>
+      <p style="font-size:14px; line-height:1.75; max-width:100%;">
+        Product Designer with 4+ years of experience across fintech, banking, e-commerce, and media. Currently consulting at FYNDNA through Lollypop Design, where I design complex products for legacy banks using scalable design systems, structured Figma workflows, and tools like Claude Code.
+      </p>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="resume-section">
+      <p class="resume-section-title">Experience</p>
+
+      <!-- Lollypop Design -->
+      <div class="exp-entry">
+        <div class="exp-meta">
+          <p class="exp-date">Aug 2024 to Present</p>
+          <p class="exp-company">Lollypop Design</p>
+          <p class="exp-location">Design Agency</p>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Product Designer</h3>
+          <p class="exp-desc">Worked across client projects spanning fintech, e-commerce, and media. Handpicked to be deployed as a full-time consultant at FYNDNA.</p>
+          <ul class="exp-bullets">
+            <li><strong>FYNDNA (deployed consultant):</strong> Owned high-stakes flows that involved approval from multiple teams, product, developers, and co-founders, to ensure all goals were being met within a required timeline. Work involves owning flows with constraints, complexity, and for users with high attrition.</li>
+            <li><strong>Royal Enfield (NDA):</strong> Brought a brand vision to life for an apparel store, redesigned navigation using storytelling, reframed competitor benchmarking across casual and riding apparel, and applied rider psychology to the online purchase decision.</li>
+            <li><strong>Kotak Bank:</strong> TBD</li>
+            <li><strong>Money Control:</strong> TBD</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ZEUX Innovation -->
+      <div class="exp-entry">
+        <div class="exp-meta">
+          <p class="exp-date">May 2022 to Mar 2024</p>
+          <p class="exp-company">ZEUX Innovation</p>
+          <p class="exp-location">Design Agency</p>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Product Designer</h3>
+          <p class="exp-desc">Worked across research-heavy and product design engagements in fintech and banking.</p>
+          <ul class="exp-bullets">
+            <li><strong>TerraPay:</strong> Designed a two-phase beta testing platform for international payments, backend tooling (Phase 1) and research-led frontend (Phase 2). Ran cross-cultural user research with beta-testers from South America and Africa; shipped after 6 months.</li>
+            <li><strong>ICICI Bank:</strong> Conducted 30 primary user interviews across 4 cities to understand UPI behaviour. Delivered a strategic research handbook to help ICICI differentiate as a UPI provider.</li>
+            <li><strong>Informist Media:</strong> Designed and refined a real-time financial intelligence platform for active investors, balancing speed, clarity, and information density to better serve a niche user base.</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SKILLS -->
+    <section class="resume-section">
+      <p class="resume-section-title">Skills</p>
+      <div class="tag-list">
+        <span class="tag">Product Design</span>
+        <span class="tag">UX Research</span>
+        <span class="tag">Interaction Design</span>
+        <span class="tag">Responsive Design</span>
+        <span class="tag">AI and Design Systems</span>
+        <span class="tag">Figma</span>
+        <span class="tag">Figma MCP</span>
+        <span class="tag">Lovable</span>
+        <span class="tag">VS Code</span>
+        <span class="tag">Stakeholder Management</span>
+        <span class="tag">Research Analysis</span>
+        <span class="tag">Storytelling</span>
+        <span class="tag">Competitor Benchmarking</span>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section class="resume-section">
+      <p class="resume-section-title">Education</p>
+
+      <div class="exp-entry">
+        <div class="exp-meta">
+          <p class="exp-date">Sep 2021 to Aug 2022</p>
+          <p class="exp-company">ISDI Parson's</p>
+          <p class="exp-location">Mumbai</p>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Post Graduate Program, UX Design</h3>
+          <ul class="exp-bullets">
+            <li>Participated in 2 hackathons</li>
+            <li>Studied innovation design from multiple perspectives</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="exp-entry">
+        <div class="exp-meta">
+          <p class="exp-date">2016 to 2020</p>
+          <p class="exp-company">Fr. Conceicao Rodrigues College of Engineering</p>
+          <p class="exp-location">Mumbai</p>
+        </div>
+        <div class="exp-body">
+          <h3 class="exp-role">Bachelor of Engineering, Electronics Engineering</h3>
+          <ul class="exp-bullets">
+            <li>Joint Secretary, Rotaract Club of Fr. CRCE (2018–19)</li>
+            <li>Club Service Director, Rotaract Club of Fr. CRCE (2017–18)</li>
+            <li>Domain Head, Annual Cultural Festival</li>
+            <li>Athletics: 2nd in 200m heats, 3rd in 100m; played throwball, football, tug of war</li>
+            <li>2nd place, cultural dance event</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+</body>
+</html>

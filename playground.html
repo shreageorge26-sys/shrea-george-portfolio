@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shrea George — Playground</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --bg: #162916;
+      --card: #ffffff;
+      --border: rgba(14,15,12,0.12);
+      --text: #0E0F0C;
+      --muted: #6A6C6A;
+      --accent: #cbe870;
+      --accent-dark: #163300;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      font-family: var(--sans);
+      cursor: grab;
+      user-select: none;
+    }
+
+    body.dragging { cursor: grabbing; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover { color: #ffffff; }
+
+    /* ── DRAG HINT ── */
+    .drag-hint {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: var(--accent);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      letter-spacing: -0.01em;
+    }
+
+    .drag-hint.hidden { opacity: 0; }
+
+    /* ── CANVAS ── */
+    #canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 3600px;
+      height: 2400px;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* ── CENTRE HERO TEXT ── */
+    .hero-center {
+      position: absolute;
+      top: 910px;
+      left: 1440px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: max-content;
+      pointer-events: none;
+    }
+
+    .hero-headline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 88px;
+      font-weight: 600;
+      font-style: normal;
+      line-height: 1.05;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-tagline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.6);
+      margin-top: 24px;
+      max-width: 620px;
+      text-wrap: balance;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+      pointer-events: all;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.6);
+      color: var(--muted);
+      padding: 12px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    /* ── BOARD CARD ── */
+    .card {
+      position: absolute;
+      background-color: var(--card);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      background-blend-mode: multiply;
+      border-radius: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      padding: 20px;
+      pointer-events: all;
+      cursor: grab;
+    }
+
+    .card:active { cursor: grabbing; }
+
+    .card-pin {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+
+    .card-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-thumb {
+      background: rgba(14,15,12,0.05);
+      border-radius: 8px;
+      width: 100%;
+    }
+
+    .card-line {
+      background: rgba(14,15,12,0.08);
+      border-radius: 100px;
+      height: 6px;
+      margin-top: 8px;
+    }
+
+    .card-line.short { width: 55%; }
+    .card-line.med   { width: 80%; }
+    .card-line.full  { width: 100%; }
+
+    /* ── NDA STAMP ── */
+    .stamp {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #A8200D;
+      border: 1.5px solid #A8200D;
+      border-radius: 4px;
+      padding: 2px 7px;
+      opacity: 0.75;
+      transform: rotate(4deg);
+    }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-strip {
+      position: absolute;
+      top: 1100px;
+      left: 0;
+      width: 3600px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .marquee-dot { color: var(--border); font-size: 20px; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── CASE FILE CARD (special) ── */
+    .case-card {
+      background: #c8935a;
+      background-image: linear-gradient(135deg, #d4a06a 0%, #bf8a4e 40%, #c8935a 100%);
+      border-radius: 0 6px 6px 6px;
+      position: absolute;
+      padding: 24px 22px 22px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      pointer-events: all;
+      cursor: grab;
+    }
+
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: -16px; left: 0;
+      width: 110px; height: 18px;
+      background: #bf8a4e;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .case-number {
+      position: absolute;
+      top: -13px; left: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7a4f1e;
+    }
+
+    .case-logo {
+      background: rgba(255,255,255,0.25);
+      border: 1.5px dashed rgba(255,255,255,0.4);
+      border-radius: 5px;
+      padding: 4px 12px;
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .case-title {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: #1a0e04;
+      margin-bottom: 10px;
+    }
+
+    .case-bullet {
+      font-size: 11px;
+      color: #2e1800;
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .case-bullet::before { content: '—'; position: absolute; left: 0; color: rgba(0,0,0,0.25); }
+
+    .case-cta {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    /* ── LOGO CLUSTER ── */
+    .logo-cluster {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .logo-pill {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* ── CURRENTLY TAG ── */
+    .currently-tag {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+      letter-spacing: -0.01em;
+    }
+
+    .currently-tag strong { font-weight: 700; }
+
+    /* ── STATEMENT CARDS ── */
+    .sc {
+      position: absolute;
+      border-radius: 16px;
+      padding: 24px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .sc-light {
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+    }
+
+    .sc-dark {
+      background: var(--accent-dark);
+    }
+
+    .sc-accent {
+      background: var(--accent);
+    }
+
+    .sc-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .sc-dark .sc-tag { color: rgba(255,255,255,0.45); }
+    .sc-accent .sc-tag { color: var(--accent-dark); opacity: 0.6; }
+
+    .sc-num {
+      font-family: var(--sans);
+      font-size: 72px;
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .sc-dark .sc-num { color: #ffffff; }
+    .sc-accent .sc-num { color: var(--accent-dark); }
+
+    .sc-num-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .sc-dark .sc-num-label { color: rgba(255,255,255,0.6); }
+    .sc-accent .sc-num-label { color: var(--accent-dark); }
+
+    .sc-quote {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .sc-dark .sc-quote { color: rgba(255,255,255,0.88); }
+
+    .sc-star {
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 10px;
+      display: block;
+      color: var(--accent);
+    }
+
+    .sc-dark .sc-star { color: var(--accent); }
+    .sc-accent .sc-star { color: var(--accent-dark); }
+
+    .sc-bar-wrap {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .sc-bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .sc-bar-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+
+    .sc-dark .sc-bar-label { color: rgba(255,255,255,0.5); }
+
+    .sc-bar-track {
+      height: 6px;
+      background: rgba(14,15,12,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .sc-dark .sc-bar-track { background: rgba(255,255,255,0.12); }
+
+    .sc-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 100px;
+    }
+
+    .sc-dark .sc-bar-fill { background: var(--accent); }
+
+    /* ── SKILL PILLS ── */
+    .skill-pill {
+      display: inline-block;
+      background: #ADDD8D;
+      border: 1.5px solid #ADDD8D;
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f3a1c;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .skills-card .skill-pill {
+      opacity: 0.7;
+    }
+    .skill-pill:hover {
+      background: #1F2C1D;
+      border-color: #1F2C1D;
+      color: #ADDD8D;
+    }
+
+
+    .skill-pill-filled {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    /* ── BOARD PIN ── */
+    .pin {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: #ADDD8D;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .pin::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,0.45);
+      border-radius: 50%;
+    }
+
+    /* ── STICKER PLACEHOLDERS ── */
+    /* ── AWARD POLAROID CLUSTER ── */
+    .polaroid {
+      position: absolute;
+      background: #1F2C1D;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 24px 56px rgba(0,0,0,0.4);
+    }
+    .polaroid img {
+      width: 100%;
+      display: block;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+    .polaroid-cap {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #fff;
+      text-align: center;
+      padding: 16px 6px 6px;
+    }
+    .scatter-photo {
+      position: absolute;
+      border-radius: 10px;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.45);
+      object-fit: cover;
+      display: block;
+    }
+
+    .sticker {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #c8bfb4;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.45);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sticker::after {
+      content: 'sticker';
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #c8bfb4;
+    }
+
+    .sticker.sticker-sm {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+    }
+
+    /* ── TOOL DOCK ── */
+    .tool-dock {
+      position: fixed;
+      top: 50%;
+      left: 32px;
+      transform: translateY(-50%);
+      z-index: 900;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 2px 4px 20px rgba(0,0,0,0.12);
+      pointer-events: all;
+      cursor: default;
+    }
+
+    .tool-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .tool-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .tool-item:hover .tool-icon {
+      transform: scale(1.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+
+    .tool-item.active .tool-icon {
+      box-shadow: 0 0 0 3px var(--accent);
+      transform: scale(1.04);
+    }
+
+    .tool-icon-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #e8e4dc;
+      border: 1.5px dashed #c8c2b6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 600;
+      color: #9a948a;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .tool-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 1px;
+      background: #e8e4dc;
+    }
+
+    .tool-tip {
+      position: absolute;
+      left: calc(100% + 14px);
+      background: #1a1208;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 8px 16px;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+
+    .tool-item:hover .tool-tip { opacity: 1; }
+
+    /* ── CASE STUDY CARD (hover reveal) ── */
+    .cs-card {
+      position: absolute;
+      width: 240px;
+      min-height: 265px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      overflow: visible;
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    .cs-card .cs-card-hover,
+    .cs-card .cs-card-front {
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .cs-card-front {
+      padding: 24px 22px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 16px;
+      min-height: 265px;
+      box-sizing: border-box;
+      transition: opacity 0.22s;
+    }
+
+    .case-chip {
+      background: #ADDD8D;
+      color: #1f3a1c;
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: inline-block;
+    }
+
+    .cs-card:hover .cs-card-front {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cs-card-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .cs-card-logo-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+
+    .cs-card-logo-box img {
+      max-height: 80px;
+      max-width: 88%;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0);
+    }
+
+    .cs-card-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .cs-card-mobile-cta {
+      display: none;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      margin-top: auto;
+    }
+    @media (max-width: 768px) {
+      .cs-card-mobile-cta { display: inline-block; }
+    }
+
+    .cs-card-hover {
+      position: absolute;
+      inset: 0;
+      padding: 16px;
+      background: #1F2C1D;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+
+    .cs-card:hover .cs-card-hover { opacity: 1; }
+
+    /* Rebond across all board cards */
+    .cs-card-num, .cs-card-name, .cs-card-hover-text,
+    .sc-num, .sc-num-label, .sc-quote, .sc-tag, .stamp {
+      font-family: 'Rebond Grotesque', var(--sans);
+    }
+
+    .cs-card-hover-text {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 17px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: -0.01em;
+    }
+
+    .cs-card:hover .case-cta {
+      color: var(--accent);
+      border-color: rgba(203,232,112,0.35);
+    }
+
+    /* ── CASE STUDY LABEL ── */
+    .cs-label {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .cs-num {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .cs-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-style: italic;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo"><img src="logo-sg.png" alt="Shrea George"></a>
+  </nav>
+
+  <div class="drag-hint" id="dragHint">→ Drag to explore</div>
+
+  <!-- TOOL DOCK -->
+  <div class="tool-dock">
+    <a class="tool-item" href="/">
+      <div class="tool-icon">
+        <img src="dock-mywork.png" alt="My Work" style="transform:scale(1.35);">
+      </div>
+      <span class="tool-tip">My Work</span>
+    </a>
+    <a class="tool-item active" href="/playground.html">
+      <div class="tool-icon">
+        <img src="dock-playground.png" alt="Playground">
+      </div>
+      <span class="tool-tip">Playground</span>
+    </a>
+    <a class="tool-item" href="/resume.pdf" target="_blank">
+      <div class="tool-icon">
+        <img src="dock-resume.png" alt="Resume">
+      </div>
+      <span class="tool-tip">Resume</span>
+    </a>
+    <div class="tool-item" aria-disabled="true">
+      <div class="tool-icon">
+        <img src="dock-sg.png" alt="About Me">
+      </div>
+      <span class="tool-tip">About Me (coming soon)</span>
+    </div>
+    <a class="tool-item" href="mailto:shreageorge@gmail.com">
+      <div class="tool-icon">
+        <img src="dock-contact.png" alt="Contact">
+      </div>
+      <span class="tool-tip">Contact</span>
+    </a>
+    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">
+      <div class="tool-icon">
+        <img src="dock-linkedin.png" alt="LinkedIn">
+      </div>
+      <span class="tool-tip">LinkedIn</span>
+    </a>
+  </div>
+
+  <!-- INFINITE CANVAS -->
+  <div id="canvas">
+
+    <!-- ══ STRING LAYER (no strings yet) ══ -->
+    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:1;" overflow="visible">
+    </svg>
+
+    <!-- ══ CENTRE HERO ══ -->
+    <div class="hero-center">
+      <h1 class="hero-headline">Loose ends &<br>side quests</h1>
+      <p class="hero-tagline">Half-finished experiments, hand-tracking demos, and things I built just to see if I could.</p>
+      <div class="currently-tag" style="position:static; width:fit-content; margin:16px auto 0;">
+        Pinned here for now · more coming soon
+      </div>
+    </div>
+
+    <!-- ══ AWARD POLAROID CLUSTER (close to hero) ══ -->
+    <img class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:540px; left:850px; width:169px; transform:rotate(4deg);">
+    <img class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:780px; left:850px; width:159px; transform:rotate(-7deg);">
+    <div style="position:absolute; top:520px; left:600px; width:286px; transform:rotate(-3deg);">
+      <div class="pin"></div>
+      <img src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" style="width:100%; display:block; border-radius:14px; box-shadow:0 24px 56px rgba(0,0,0,0.4);">
+    </div>
+
+    <!-- ══ GIF / HAND TRACKER CARD ══ -->
+    <div class="card" style="top:660px; left:2016px; width:320px; transform:rotate(1.5deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
+      <div class="pin"></div>
+      <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
+        <video src="hand-tracker.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
+      </div>
+      <p style="font-family:'Rebond Grotesque', var(--sans); font-weight:900; font-size:18px; color:#1f3a1c; padding:8px; margin:0; letter-spacing:-0.02em;">draw in the air - made with Claude code</p>
+    </div>
+
+    <!-- ══ DESIGN CERTIFICATION ══ -->
+    <div class="card" style="top:1100px; left:2040px; width:500px; transform:rotate(-2deg); overflow:visible;">
+      <div class="pin"></div>
+      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:14px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:8px;">Design Certification</p>
+      <div style="width:100%; aspect-ratio:3/4; overflow:hidden; border-radius:6px;">
+        <img src="dmba-certificate.jpeg" alt="Shrea George, d.MBA, 2026" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+      </div>
+    </div>
+
+    <!-- ══ ARTICLE 01 — Humour in UX ══ -->
+    <div class="card" style="top:1100px; left:700px; width:280px; transform:rotate(-1.5deg); overflow:visible;">
+      <div class="pin"></div>
+      <div style="width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:10px; margin-bottom:14px;">
+        <img src="article-humour-ux.png" alt="Humour in UX, the Elaichi in your Chai" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+      </div>
+      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:6px;">Article</p>
+      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:18px; font-weight:600; line-height:1.3; color:var(--text); letter-spacing:-0.01em;">Humour in UX, the Elaichi in your Chai</p>
+      <a href="#" style="display:inline-block; margin-top:12px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#7a6a55; text-decoration:none; border-bottom:1px solid #d0c8bc;">Read →</a>
+    </div>
+
+    <!-- ══ ARTICLE 02 — Maggi meets GPay ══ -->
+    <div class="card" style="top:480px; left:1820px; width:240px; transform:rotate(2deg); overflow:visible;">
+      <div class="pin"></div>
+      <div style="width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:10px; margin-bottom:14px;">
+        <img src="article-maggi-gpay.jpg" alt="Maggi meets GPay" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+      </div>
+      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:6px;">Article</p>
+      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:18px; font-weight:600; line-height:1.3; color:var(--text); letter-spacing:-0.01em;">Maggi meets GPay</p>
+      <a href="#" style="display:inline-block; margin-top:12px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#7a6a55; text-decoration:none; border-bottom:1px solid #d0c8bc;">Read →</a>
+    </div>
+
+    <!-- ══ STATEMENT CARDS (placeholder) ══ -->
+    <div class="sc sc-light" style="top:1080px; left:1656px; width:264px; transform:rotate(-2deg);">
+      <div class="pin"></div>
+      <span class="sc-star">✦</span>
+      <p class="sc-quote" style="font-family:'Rebond Grotesque', var(--sans); font-style:normal;">"Good design is an opportunity to make the world a better place."</p>
+    </div>
+
+    <div class="sc sc-accent" style="top:1320px; left:1392px; width:192px; transform:rotate(2deg);">
+      <div class="pin"></div>
+      <span class="sc-tag">Tinkering</span>
+      <p class="sc-num">5+</p>
+      <p class="sc-num-label">side experiments, more on the way</p>
+    </div>
+
+  </div><!-- /canvas -->
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const hint = document.getElementById('dragHint');
+
+    // Start at centre
+    const startX = window.innerWidth  / 2 - 1440;
+    const startY = window.innerHeight / 2 - 960;
+    let tx = startX, ty = startY;
+
+    function applyTransform() {
+      canvas.style.transform = `translate(${tx}px, ${ty}px)`;
+    }
+    applyTransform();
+
+    // Drag to pan
+    let dragging = false, startMouseX, startMouseY, startTx, startTy;
+
+    document.addEventListener('mousedown', e => {
+      if (e.target.closest('a, button')) return;
+      dragging = true;
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+      startTx = tx; startTy = ty;
+      document.body.classList.add('dragging');
+    });
+
+    let rafId = null;
+    let pendingTx = tx, pendingTy = ty;
+
+    function scheduleRender() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        tx = pendingTx;
+        ty = pendingTy;
+        applyTransform();
+      });
+    }
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      pendingTx = startTx + (e.clientX - startMouseX);
+      pendingTy = startTy + (e.clientY - startMouseY);
+      scheduleRender();
+      hint.classList.add('hidden');
+    });
+
+    document.addEventListener('mouseup', () => {
+      dragging = false;
+      document.body.classList.remove('dragging');
+    });
+
+    // Two-finger trackpad pan (wheel events with no zoom)
+    document.addEventListener('wheel', e => {
+      e.preventDefault();
+      pendingTx -= e.deltaX;
+      pendingTy -= e.deltaY;
+      scheduleRender();
+      hint.classList.add('hidden');
+    }, { passive: false });
+
+    // Touch support
+    let lastTouch = null;
+    document.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) {
+        lastTouch = e.touches[0];
+        startTx = tx; startTy = ty;
+      }
+    });
+    document.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (e.touches.length === 1 && lastTouch) {
+        pendingTx = startTx + (e.touches[0].clientX - lastTouch.clientX);
+        pendingTy = startTy + (e.touches[0].clientY - lastTouch.clientY);
+        scheduleRender();
+        hint.classList.add('hidden');
+      }
+    }, { passive: false });
+
+    // Hide hint after 4s
+    setTimeout(() => hint.classList.add('hidden'), 4000);
+  </script>
+
+</body>
+</html>

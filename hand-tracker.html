@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Hand Draw</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    /* ── full-screen camera ── */
+    #vid {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transform: scaleX(-1);
+    }
+
+    /* ── drawing canvas ── */
+    #ink {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* ── hud canvas (cursor only, no skeleton) ── */
+    #hud {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ── mode badge ── */
+    #modeBadge {
+      position: fixed;
+      bottom: 28px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 6px 22px;
+      border-radius: 20px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      pointer-events: none;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    #modeBadge.show { opacity: 1; }
+
+    /* ── side panel ── */
+    #panel {
+      position: fixed;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(15, 15, 20, 0.72);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 18px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 62px;
+      transition: opacity 0.2s;
+    }
+
+    .panel-label {
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* color swatches */
+    .swatches {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .swatch {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2.5px solid transparent;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+    .swatch:hover { transform: scale(1.12); }
+    .swatch.on { border-color: #fff; }
+
+    /* divider */
+    .divider {
+      width: 36px;
+      height: 1px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* vertical slider */
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    input[type=range].vert {
+      -webkit-appearance: slider-vertical;
+      writing-mode: vertical-lr;
+      direction: rtl;
+      width: 28px;
+      height: 80px;
+      cursor: pointer;
+      accent-color: #60a5fa;
+    }
+
+    /* icon buttons */
+    .icon-btn {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 2px;
+      font-size: 16px;
+      transition: background 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+    .icon-btn span.lbl {
+      font-size: 8px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    .icon-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.25); }
+    .icon-btn.on { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); color: #fff; }
+
+    /* start button — shown when camera off */
+    #startOverlay {
+      position: fixed; inset: 0;
+      z-index: 20;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 16px;
+      background: rgba(0,0,0,0.85);
+    }
+    #startOverlay h1 {
+      font-size: clamp(20px, 5vw, 36px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+    #startOverlay p { font-size: 14px; color: #666; }
+    #startBtn {
+      margin-top: 8px;
+      padding: 14px 40px;
+      border-radius: 50px;
+      border: none;
+      background: #fff;
+      color: #000;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    #startBtn:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<video id="vid" playsinline muted></video>
+<canvas id="ink"></canvas>
+<canvas id="hud"></canvas>
+<div id="modeBadge"></div>
+
+<!-- ── Side panel ── -->
+<div id="panel">
+
+  <div class="panel-label">Color</div>
+  <div class="swatches" id="swatches">
+    <div class="swatch on"  style="background:#22d3ee" data-c="#22d3ee" data-g="#22d3ee"></div>
+    <div class="swatch"     style="background:#a855f7" data-c="#a855f7" data-g="#a855f7"></div>
+    <div class="swatch"     style="background:#facc15" data-c="#facc15" data-g="#facc15"></div>
+    <div class="swatch"     style="background:#fb923c" data-c="#fb923c" data-g="#fb923c"></div>
+    <div class="swatch"     style="background:#ef4444" data-c="#ef4444" data-g="#ef4444"></div>
+    <div class="swatch"     style="background:#ffffff" data-c="#ffffff" data-g="#aaaaaa"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="slider-wrap">
+    <div class="panel-label">Size</div>
+    <input type="range" class="vert" id="sz" min="2" max="32" value="6">
+  </div>
+
+  <div class="divider"></div>
+
+  <button class="icon-btn" id="undoBtn" title="Undo">
+    ↩︎<span class="lbl">Undo</span>
+  </button>
+  <button class="icon-btn" id="erBtn" title="Eraser">
+    ◻︎<span class="lbl">Erase</span>
+  </button>
+  <button class="icon-btn" id="clrBtn" title="Clear">
+    ✕<span class="lbl">Clear</span>
+  </button>
+  <button class="icon-btn" id="stopBtn" title="Stop camera">
+    ⏹<span class="lbl">Stop</span>
+  </button>
+
+</div>
+
+<!-- ── Start overlay ── -->
+<div id="startOverlay">
+  <h1>Hand Draw</h1>
+  <p>Point your index finger to draw</p>
+  <button id="startBtn">Start camera</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+<script>
+// ── state ──────────────────────────────────────
+const S = {
+  live: false,
+  color: '#22d3ee',
+  glow:  '#22d3ee',
+  size:  6,
+  eraser: false,
+
+  drawing: false,
+  stroke: [],
+  strokes: [],
+
+  tipSmooth: null,
+
+  dragging: false,
+  dragIdx: -1,
+  dragLast: null,
+
+  palmPrev: null,
+  palmSpeed: 0,
+
+  gesture: '',
+  badgeTimer: null,
+};
+
+// ── DOM ────────────────────────────────────────
+const vid    = document.getElementById('vid');
+const ink    = document.getElementById('ink');
+const hud    = document.getElementById('hud');
+const ic     = ink.getContext('2d');
+const hc     = hud.getContext('2d');
+const badge  = document.getElementById('modeBadge');
+const overlay= document.getElementById('startOverlay');
+
+// ── canvas fill screen ─────────────────────────
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  [ink, hud].forEach(c => { c.width = w; c.height = h; });
+  redraw();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── toolbar ────────────────────────────────────
+document.getElementById('swatches').addEventListener('click', e => {
+  const s = e.target.closest('.swatch');
+  if (!s) return;
+  document.querySelectorAll('.swatch').forEach(x => x.classList.remove('on'));
+  s.classList.add('on');
+  S.color  = s.dataset.c;
+  S.glow   = s.dataset.g;
+  S.eraser = false;
+  document.getElementById('erBtn').classList.remove('on');
+});
+
+document.getElementById('sz').addEventListener('input', e => S.size = +e.target.value);
+
+document.getElementById('erBtn').addEventListener('click', () => {
+  S.eraser = !S.eraser;
+  document.getElementById('erBtn').classList.toggle('on', S.eraser);
+});
+
+document.getElementById('clrBtn').addEventListener('click', () => {
+  S.strokes = []; S.stroke = [];
+  ic.clearRect(0, 0, ink.width, ink.height);
+});
+
+document.getElementById('undoBtn').addEventListener('click', () => {
+  S.strokes.pop(); redraw();
+});
+
+document.getElementById('stopBtn').addEventListener('click', stopCamera);
+
+document.getElementById('startBtn').addEventListener('click', startCamera);
+
+document.addEventListener('keydown', e => {
+  if (e.key.toLowerCase() === 'c') document.getElementById('clrBtn').click();
+  if (e.key.toLowerCase() === 'e') document.getElementById('erBtn').click();
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') { e.preventDefault(); S.strokes.pop(); redraw(); }
+});
+
+// ── draw ───────────────────────────────────────
+function redraw() {
+  ic.clearRect(0, 0, ink.width, ink.height);
+  S.strokes.forEach(st => paintFull(st));
+}
+
+function paintFull(st) {
+  const p = st.pts;
+  if (!p || p.length < 2) return;
+  ic.save();
+  applyStyle(st);
+  ic.beginPath();
+  ic.moveTo(p[0].x, p[0].y);
+  for (let i = 1; i < p.length; i++) {
+    if (i < p.length - 1) {
+      ic.quadraticCurveTo(p[i].x, p[i].y, (p[i].x + p[i+1].x)/2, (p[i].y + p[i+1].y)/2);
+    } else {
+      ic.lineTo(p[i].x, p[i].y);
+    }
+  }
+  ic.stroke();
+  ic.restore();
+}
+
+function applyStyle(st) {
+  if (st.eraser) {
+    ic.globalCompositeOperation = 'destination-out';
+    ic.strokeStyle = 'rgba(0,0,0,1)';
+    ic.shadowBlur  = 0;
+  } else {
+    ic.globalCompositeOperation = 'source-over';
+    ic.strokeStyle = st.color;
+    ic.shadowColor = st.glow;
+    ic.shadowBlur  = 18;
+  }
+  ic.lineWidth = st.size;
+  ic.lineCap   = 'round';
+  ic.lineJoin  = 'round';
+}
+
+// incremental: paint only the newest segment
+function paintSegment() {
+  const p = S.stroke, n = p.length;
+  if (n < 2) return;
+  ic.save();
+  if (S.eraser) {
+    ic.globalCompositeOperation = 'destination-out';
+    ic.strokeStyle = 'rgba(0,0,0,1)';
+    ic.shadowBlur  = 0;
+  } else {
+    ic.globalCompositeOperation = 'source-over';
+    ic.strokeStyle = S.color;
+    ic.shadowColor = S.glow;
+    ic.shadowBlur  = 18;
+  }
+  ic.lineWidth = S.size;
+  ic.lineCap   = 'round';
+  ic.lineJoin  = 'round';
+  ic.beginPath();
+  if (n >= 3) {
+    const mx1 = (p[n-3].x + p[n-2].x)/2, my1 = (p[n-3].y + p[n-2].y)/2;
+    const mx2 = (p[n-2].x + p[n-1].x)/2, my2 = (p[n-2].y + p[n-1].y)/2;
+    ic.moveTo(mx1, my1);
+    ic.quadraticCurveTo(p[n-2].x, p[n-2].y, mx2, my2);
+  } else {
+    ic.moveTo(p[n-2].x, p[n-2].y);
+    ic.lineTo(p[n-1].x, p[n-1].y);
+  }
+  ic.stroke();
+  ic.restore();
+}
+
+function eraseAt(x, y, r) {
+  ic.save();
+  ic.globalCompositeOperation = 'destination-out';
+  ic.beginPath(); ic.arc(x, y, r, 0, Math.PI*2);
+  ic.fillStyle = 'rgba(0,0,0,1)'; ic.fill();
+  ic.restore();
+}
+
+function finalizeStroke() {
+  if (!S.drawing) return;
+  if (S.stroke.length > 1) {
+    S.strokes.push({ pts: [...S.stroke], color: S.color, glow: S.glow, size: S.size, eraser: S.eraser });
+  }
+  S.drawing = false; S.stroke = [];
+}
+
+// ── gesture ────────────────────────────────────
+function extended(lm, tip, mcp) {
+  const w = lm[0];
+  return Math.hypot(lm[tip].x - w.x, lm[tip].y - w.y) >
+         Math.hypot(lm[mcp].x - w.x, lm[mcp].y - w.y) * 1.2;
+}
+
+function getGesture(lm) {
+  const i = extended(lm, 8,  5);
+  const m = extended(lm, 12, 9);
+  const r = extended(lm, 16, 13);
+  const p = extended(lm, 20, 17);
+  if ( i && !m && !r && !p) return 'DRAW';
+  if ( i &&  m && !r && !p) return 'DRAG';
+  if (!i && !m && !r && !p) return 'PAUSE';
+  if ( i &&  m &&  r &&  p) return 'ERASE';
+  return 'IDLE';
+}
+
+function lerp(a, b, t) { return { x: a.x + t*(b.x-a.x), y: a.y + t*(b.y-a.y) }; }
+
+function nearestStroke(pos, max=70) {
+  let best=-1, bd=max;
+  for (let i=S.strokes.length-1; i>=0; i--) {
+    for (const p of S.strokes[i].pts) {
+      const d = Math.hypot(p.x-pos.x, p.y-pos.y);
+      if (d < bd) { bd=d; best=i; }
+    }
+  }
+  return best;
+}
+
+// ── badge ──────────────────────────────────────
+const LABELS = { DRAW:'DRAW MODE', DRAG:'DRAG MODE', PAUSE:'PAUSE', ERASE:'ERASE MODE' };
+function showBadge(g) {
+  if (g === S.gesture) return;
+  S.gesture = g;
+  const t = LABELS[g] || '';
+  badge.textContent = t;
+  badge.classList.toggle('show', !!t);
+  clearTimeout(S.badgeTimer);
+  if (t) S.badgeTimer = setTimeout(() => badge.classList.remove('show'), 1500);
+}
+
+// ── mediapipe results ──────────────────────────
+function onResults(res) {
+  const W = hud.width, H = hud.height;
+  hc.clearRect(0, 0, W, H);
+
+  if (!res.multiHandLandmarks?.length) {
+    finalizeStroke();
+    S.dragging=false; S.dragIdx=-1; S.palmPrev=null;
+    showBadge('');
+    return;
+  }
+
+  const lm = res.multiHandLandmarks[0].map(p => ({ x: 1-p.x, y: p.y }));
+  const g  = getGesture(lm);
+  showBadge(g);
+
+  // smoothed index tip in screen coords
+  const rawTip = { x: lm[8].x*W, y: lm[8].y*H };
+  S.tipSmooth  = S.tipSmooth ? lerp(S.tipSmooth, rawTip, 0.45) : rawTip;
+  const tip    = S.tipSmooth;
+
+  const palm   = { x: lm[9].x*W, y: lm[9].y*H };
+  S.palmSpeed  = S.palmPrev ? Math.hypot(palm.x-S.palmPrev.x, palm.y-S.palmPrev.y) : 0;
+  S.palmPrev   = palm;
+
+  // DRAW
+  if (g === 'DRAW') {
+    S.dragging=false; S.dragIdx=-1;
+    if (!S.drawing) { S.drawing=true; S.stroke=[{...tip}]; }
+    else { S.stroke.push({...tip}); paintSegment(); }
+  } else {
+    finalizeStroke();
+  }
+
+  // DRAG
+  if (g === 'DRAG') {
+    if (!S.dragging) {
+      const idx = nearestStroke(tip);
+      if (idx !== -1) { S.dragging=true; S.dragIdx=idx; S.dragLast={...tip}; }
+    } else {
+      const dx=tip.x-S.dragLast.x, dy=tip.y-S.dragLast.y;
+      const st=S.strokes[S.dragIdx];
+      if (st) { st.pts=st.pts.map(p=>({x:p.x+dx,y:p.y+dy})); redraw(); }
+      S.dragLast={...tip};
+    }
+  } else { S.dragging=false; S.dragIdx=-1; S.dragLast=null; }
+
+  // ERASE (palm rub)
+  const er = Math.max(45, S.size*4);
+  if (g === 'ERASE' && S.palmSpeed > 5) eraseAt(palm.x, palm.y, er);
+
+  // ── HUD: just a glowing cursor dot, no skeleton ──
+  if (g === 'DRAW') {
+    const col = S.eraser ? '#fb923c' : S.color;
+    const glw = S.eraser ? '#fb923c' : S.glow;
+    // outer glow ring
+    hc.save();
+    hc.beginPath();
+    hc.arc(tip.x, tip.y, S.size/2 + 10, 0, Math.PI*2);
+    hc.strokeStyle = col;
+    hc.globalAlpha = 0.35;
+    hc.lineWidth = 6;
+    hc.shadowColor = glw;
+    hc.shadowBlur = 12;
+    hc.stroke();
+    hc.restore();
+    // inner dot
+    hc.save();
+    hc.beginPath();
+    hc.arc(tip.x, tip.y, 4, 0, Math.PI*2);
+    hc.fillStyle = col;
+    hc.shadowColor = glw;
+    hc.shadowBlur = 14;
+    hc.fill();
+    hc.restore();
+  }
+
+  if (g === 'DRAG') {
+    hc.save();
+    hc.beginPath();
+    hc.arc(tip.x, tip.y, 18, 0, Math.PI*2);
+    hc.strokeStyle = '#facc15';
+    hc.shadowColor = '#facc15';
+    hc.shadowBlur  = 12;
+    hc.lineWidth   = 2;
+    hc.stroke();
+    hc.restore();
+  }
+
+  if (g === 'ERASE') {
+    hc.save();
+    hc.beginPath();
+    hc.arc(palm.x, palm.y, er, 0, Math.PI*2);
+    hc.strokeStyle = S.palmSpeed > 5 ? '#ff4444' : 'rgba(255,100,100,0.35)';
+    hc.shadowColor = '#ff4444';
+    hc.shadowBlur  = S.palmSpeed > 5 ? 14 : 0;
+    hc.lineWidth   = 2;
+    hc.setLineDash([5,5]);
+    hc.stroke();
+    hc.restore();
+  }
+}
+
+// ── mediapipe init ─────────────────────────────
+let hands;
+function initHands() {
+  hands = new Hands({ locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}` });
+  hands.setOptions({ maxNumHands:1, modelComplexity:1, minDetectionConfidence:0.75, minTrackingConfidence:0.6 });
+  hands.onResults(onResults);
+}
+
+// ── camera ─────────────────────────────────────
+let rafId;
+async function loop() {
+  if (!S.live) return;
+  await hands.send({ image: vid });
+  rafId = requestAnimationFrame(loop);
+}
+
+async function startCamera() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    alert('Camera requires HTTPS. Deploy to Netlify or use ngrok.');
+    return;
+  }
+  if (!hands) initHands();
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { width:1280, height:720, facingMode:'user' } });
+    vid.srcObject = stream;
+    await vid.play();
+    S.live = true;
+    overlay.style.display = 'none';
+    loop();
+  } catch(err) {
+    alert('Camera error: ' + err.message);
+  }
+}
+
+function stopCamera() {
+  S.live = false;
+  cancelAnimationFrame(rafId);
+  vid.srcObject?.getTracks().forEach(t => t.stop());
+  vid.srcObject = null;
+  overlay.style.display = 'flex';
+  hc.clearRect(0, 0, hud.width, hud.height);
+}
+</script>
+</body>
+</html>

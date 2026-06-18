@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shrea George — Product Designer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Caveat:wght@600;700&family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --bg: #162916;
+      --card: #ffffff;
+      --border: rgba(14,15,12,0.12);
+      --text: #0E0F0C;
+      --muted: #6A6C6A;
+      --accent: #cbe870;
+      --accent-dark: #163300;
+      --serif: 'Instrument Serif', serif;
+      --sans: 'Inter', sans-serif;
+    }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      font-family: var(--sans);
+      cursor: grab;
+      user-select: none;
+    }
+
+    body.dragging { cursor: grabbing; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+    }
+
+    .nav-logo {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-link {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      transition: color 0.15s;
+    }
+
+    .nav-link:hover { color: #ffffff; }
+
+    /* ── DRAG HINT ── */
+    .drag-hint {
+      position: fixed;
+      top: 72px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background: var(--accent);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      letter-spacing: -0.01em;
+    }
+
+    .drag-hint.hidden { opacity: 0; }
+
+    /* ── CANVAS ── */
+    #canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 3600px;
+      height: 2400px;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* ── CENTRE HERO TEXT ── */
+    .hero-center {
+      position: absolute;
+      top: 910px;
+      left: 1440px;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: max-content;
+      pointer-events: none;
+    }
+
+    .hero-headline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 88px;
+      font-weight: 600;
+      font-style: normal;
+      line-height: 1.05;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-tagline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.6);
+      margin-top: 24px;
+      max-width: 620px;
+      text-wrap: balance;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 28px;
+      pointer-events: all;
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: var(--bg);
+      padding: 12px 28px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.6);
+      color: var(--muted);
+      padding: 12px 22px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 400;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    /* ── BOARD CARD ── */
+    .card {
+      position: absolute;
+      background-color: var(--card);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+      background-blend-mode: multiply;
+      border-radius: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      padding: 20px;
+      pointer-events: all;
+      cursor: grab;
+    }
+
+    .card:active { cursor: grabbing; }
+
+    .card-pin {
+      width: 8px; height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+
+    .card-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .card-thumb {
+      background: rgba(14,15,12,0.05);
+      border-radius: 8px;
+      width: 100%;
+    }
+
+    .card-line {
+      background: rgba(14,15,12,0.08);
+      border-radius: 100px;
+      height: 6px;
+      margin-top: 8px;
+    }
+
+    .card-line.short { width: 55%; }
+    .card-line.med   { width: 80%; }
+    .card-line.full  { width: 100%; }
+
+    /* ── NDA STAMP ── */
+    .stamp {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #A8200D;
+      border: 1.5px solid #A8200D;
+      border-radius: 4px;
+      padding: 2px 7px;
+      opacity: 0.75;
+      transform: rotate(4deg);
+    }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-strip {
+      position: absolute;
+      top: 1100px;
+      left: 0;
+      width: 3600px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 32px;
+      width: max-content;
+      animation: marquee 28s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--serif);
+      font-size: 20px;
+      font-style: italic;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .marquee-dot { color: var(--border); font-size: 20px; }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── CASE FILE CARD (special) ── */
+    .case-card {
+      background: #c8935a;
+      background-image: linear-gradient(135deg, #d4a06a 0%, #bf8a4e 40%, #c8935a 100%);
+      border-radius: 0 6px 6px 6px;
+      position: absolute;
+      padding: 24px 22px 22px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      pointer-events: all;
+      cursor: grab;
+    }
+
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: -16px; left: 0;
+      width: 110px; height: 18px;
+      background: #bf8a4e;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .case-number {
+      position: absolute;
+      top: -13px; left: 10px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7a4f1e;
+    }
+
+    .case-logo {
+      background: rgba(255,255,255,0.25);
+      border: 1.5px dashed rgba(255,255,255,0.4);
+      border-radius: 5px;
+      padding: 4px 12px;
+      font-size: 9px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .case-title {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.3;
+      color: #1a0e04;
+      margin-bottom: 10px;
+    }
+
+    .case-bullet {
+      font-size: 11px;
+      color: #2e1800;
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 5px;
+    }
+
+    .case-bullet::before { content: '—'; position: absolute; left: 0; color: rgba(0,0,0,0.25); }
+
+    .case-cta {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+    }
+
+    /* ── LOGO CLUSTER ── */
+    .logo-cluster {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .logo-pill {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 6px 18px;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+      text-align: center;
+    }
+
+    /* ── CURRENTLY TAG ── */
+    .currently-tag {
+      position: absolute;
+      background: var(--accent);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-dark);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+      letter-spacing: -0.01em;
+    }
+
+    .currently-tag strong { font-weight: 700; }
+
+    /* ── STATEMENT CARDS ── */
+    .sc {
+      position: absolute;
+      border-radius: 16px;
+      padding: 24px;
+      pointer-events: none;
+      overflow: visible;
+    }
+
+    .sc-light {
+      background: #ffffff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+    }
+
+    .sc-dark {
+      background: var(--accent-dark);
+    }
+
+    .sc-accent {
+      background: var(--accent);
+    }
+
+    .sc-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .sc-dark .sc-tag { color: rgba(255,255,255,0.45); }
+    .sc-accent .sc-tag { color: var(--accent-dark); opacity: 0.6; }
+
+    .sc-num {
+      font-family: var(--sans);
+      font-size: 72px;
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.04em;
+      color: var(--text);
+    }
+
+    .sc-dark .sc-num { color: #ffffff; }
+    .sc-accent .sc-num { color: var(--accent-dark); }
+
+    .sc-num-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .sc-dark .sc-num-label { color: rgba(255,255,255,0.6); }
+    .sc-accent .sc-num-label { color: var(--accent-dark); }
+
+    .sc-quote {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-style: italic;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .sc-dark .sc-quote { color: rgba(255,255,255,0.88); }
+
+    .sc-star {
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 10px;
+      display: block;
+      color: var(--accent);
+    }
+
+    .sc-dark .sc-star { color: var(--accent); }
+    .sc-accent .sc-star { color: var(--accent-dark); }
+
+    .sc-bar-wrap {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .sc-bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .sc-bar-label {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+
+    .sc-dark .sc-bar-label { color: rgba(255,255,255,0.5); }
+
+    .sc-bar-track {
+      height: 6px;
+      background: rgba(14,15,12,0.08);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .sc-dark .sc-bar-track { background: rgba(255,255,255,0.12); }
+
+    .sc-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 100px;
+    }
+
+    .sc-dark .sc-bar-fill { background: var(--accent); }
+
+    /* ── SKILL PILLS ── */
+    .skill-pill {
+      display: inline-block;
+      background: #ADDD8D;
+      border: 1.5px solid #ADDD8D;
+      border-radius: 100px;
+      padding: 10px 20px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: #1f3a1c;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+    .skills-card .skill-pill {
+      opacity: 0.7;
+    }
+    .skill-pill:hover {
+      background: #1F2C1D;
+      border-color: #1F2C1D;
+      color: #ADDD8D;
+    }
+
+
+    .skill-pill-filled {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-dark);
+      font-weight: 600;
+    }
+
+    /* ── BOARD PIN ── */
+    .pin {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: #ADDD8D;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .pin::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 4px; height: 4px;
+      background: rgba(255,255,255,0.45);
+      border-radius: 50%;
+    }
+
+    /* ── STICKER PLACEHOLDERS ── */
+    /* ── AWARD POLAROID CLUSTER ── */
+    .polaroid {
+      position: absolute;
+      background: #1F2C1D;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 24px 56px rgba(0,0,0,0.4);
+    }
+    .polaroid img {
+      width: 100%;
+      display: block;
+      border-radius: 5px;
+      object-fit: cover;
+    }
+    .polaroid-cap {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.35;
+      color: #fff;
+      text-align: center;
+      padding: 16px 6px 6px;
+    }
+    .scatter-photo {
+      position: absolute;
+      border-radius: 10px;
+      box-shadow: 0 18px 44px rgba(0,0,0,0.45);
+      object-fit: cover;
+      display: block;
+    }
+
+    .sticker {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #c8bfb4;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.45);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sticker::after {
+      content: 'sticker';
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #c8bfb4;
+    }
+
+    .sticker.sticker-sm {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+    }
+
+    /* ── TOOL DOCK ── */
+    .tool-dock {
+      position: fixed;
+      top: 50%;
+      left: 32px;
+      transform: translateY(-50%);
+      z-index: 900;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 2px 4px 20px rgba(0,0,0,0.12);
+      pointer-events: all;
+      cursor: default;
+    }
+
+    .tool-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .tool-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .tool-item:hover .tool-icon {
+      transform: scale(1.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    }
+
+    .tool-item.active .tool-icon {
+      box-shadow: 0 0 0 3px var(--accent);
+      transform: scale(1.04);
+    }
+
+    .tool-icon-placeholder {
+      width: 100%;
+      height: 100%;
+      background: #e8e4dc;
+      border: 1.5px dashed #c8c2b6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 600;
+      color: #9a948a;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .tool-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 32px;
+      height: 1px;
+      background: #e8e4dc;
+    }
+
+    .tool-tip {
+      position: absolute;
+      left: calc(100% + 14px);
+      background: #1a1208;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      padding: 8px 16px;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s;
+    }
+
+    .tool-item:hover .tool-tip { opacity: 1; }
+
+    /* ── CASE STUDY CARD (hover reveal) ── */
+    .cs-card {
+      position: absolute;
+      width: 240px;
+      min-height: 265px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      overflow: visible;
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    .cs-card-soon { cursor: none; }
+
+    .coming-soon-badge {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      pointer-events: none;
+      background: #ffffff;
+      color: var(--accent-dark);
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+      border-radius: 100px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+    }
+
+    .cs-card .cs-card-hover,
+    .cs-card .cs-card-front {
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .cs-card-front {
+      padding: 24px 22px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 16px;
+      min-height: 265px;
+      box-sizing: border-box;
+      transition: opacity 0.22s;
+    }
+
+    .case-chip {
+      background: #ADDD8D;
+      color: #1f3a1c;
+      border-radius: 100px;
+      padding: 7px 16px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 12px;
+      line-height: 16px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      display: inline-block;
+    }
+
+    .cs-card:hover .cs-card-front {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .cs-card-num {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .cs-card-logo-box {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+
+    .cs-card-logo-box img {
+      max-height: 80px;
+      max-width: 88%;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0);
+    }
+
+    .cs-card-name {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-style: italic;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .cs-card-mobile-cta {
+      display: none;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+      margin-top: auto;
+    }
+    @media (max-width: 768px) {
+      .cs-card-mobile-cta { display: inline-block; }
+    }
+
+    .cs-card-hover {
+      position: absolute;
+      inset: 0;
+      padding: 16px;
+      background: #1F2C1D;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.22s;
+    }
+
+    .cs-card:hover .cs-card-hover { opacity: 1; }
+
+    /* Rebond across all board cards */
+    .cs-card-num, .cs-card-name, .cs-card-hover-text,
+    .sc-num, .sc-num-label, .sc-quote, .sc-tag, .stamp {
+      font-family: 'Rebond Grotesque', var(--sans);
+    }
+
+    .cs-card-hover-text {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 17px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.82);
+      letter-spacing: -0.01em;
+    }
+
+    .cs-card:hover .case-cta {
+      color: var(--accent);
+      border-color: rgba(203,232,112,0.35);
+    }
+
+    /* ── CASE STUDY LABEL ── */
+    .cs-label {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .cs-num {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .cs-name {
+      font-family: var(--serif);
+      font-size: 26px;
+      font-style: italic;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── MOBILE SPLASH ── */
+    .mobile-splash { display: none; }
+
+    @media (max-width: 768px) {
+      html, body { overflow: auto !important; height: auto !important; cursor: auto !important; background-image: none !important; background-color: #141d14 !important; }
+      nav, .drag-hint, .tool-dock, #canvas { display: none !important; }
+
+      .mobile-splash {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 24px 24px 40px;
+        text-align: center;
+      }
+    }
+
+    .mobile-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 48px;
+    }
+
+    .mobile-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .mobile-logo-row img {
+      height: 32px;
+      width: auto;
+      display: block;
+    }
+
+    .mobile-header-icons {
+      display: flex;
+      gap: 8px;
+    }
+    .mobile-header-icons a {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      overflow: hidden;
+      display: block;
+    }
+    .mobile-header-icons img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .mobile-hello {
+      font-family: 'Just Me Again Down Here', cursive;
+      font-weight: 400;
+      font-size: 52px;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+
+    .mobile-wip {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 24px;
+      line-height: 1.3;
+      color: #ffffff;
+      max-width: 300px;
+      margin-bottom: 56px;
+    }
+
+    .mobile-preview {
+      width: calc(100vw - 16px);
+      margin-left: calc(50% - 50vw + 8px);
+      margin-right: calc(50% - 50vw + 8px);
+      background: #0e1a0e;
+      border-radius: 14px;
+      padding: 8px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 28px;
+    }
+
+    .mobile-preview-video-wrap {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .mobile-preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .mobile-preview-fullscreen {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+    }
+    .mobile-preview-fullscreen svg { width: 16px; height: 16px; }
+
+    .mobile-tease-label {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 15px;
+      color: #ffffff;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
+    .mobile-tease-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0;
+    }
+
+    .mobile-share-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: var(--accent-dark);
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 600;
+      font-size: 13px;
+      border: none;
+      border-radius: 100px;
+      padding: 10px 18px;
+      cursor: pointer;
+      margin-bottom: 56px;
+      width: auto;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ══ MOBILE SPLASH (shown only under 768px) ══ -->
+  <div class="mobile-splash">
+    <div class="mobile-header">
+      <div class="mobile-logo-row">
+        <img src="logo-sg.png" alt="Shrea George">
+      </div>
+      <div class="mobile-header-icons">
+        <a href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener"><img src="dock-linkedin.png" alt="LinkedIn"></a>
+        <a href="/resume.pdf" target="_blank"><img src="dock-resume.png" alt="Resume"></a>
+        <a href="mailto:shreageorge@gmail.com"><img src="dock-contact.png" alt="Contact"></a>
+      </div>
+    </div>
+
+    <p class="mobile-hello">Helluuuuuu</p>
+    <p class="mobile-wip">The mobile version of my portfolio is WIP</p>
+
+    <div class="mobile-preview">
+      <p class="mobile-tease-label">Here's a tease of what it looks like on desktop</p>
+      <p class="mobile-tease-sub">I promise you, it's worth the trouble!</p>
+      <button class="mobile-share-btn" onclick="shareMobileLink()" style="margin-bottom:24px; margin-top:16px; align-self:center;">Share link & open on Desktop</button>
+      <div class="mobile-preview-video-wrap">
+        <video id="mobilePreviewVideo" src="mobile-preview-screencast.mov" autoplay loop muted playsinline></video>
+        <button class="mobile-preview-fullscreen" onclick="enterMobilePreviewFullscreen()" aria-label="View fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo"><img src="logo-sg.png" alt="Shrea George"></a>
+  </nav>
+
+  <div class="drag-hint" id="dragHint">→ Drag to explore</div>
+
+  <!-- TOOL DOCK -->
+  <div class="tool-dock">
+    <a class="tool-item active" href="#" onclick="scrollToWork()">
+      <div class="tool-icon">
+        <img src="dock-mywork.png" alt="My Work" style="transform:scale(1.35);">
+      </div>
+      <span class="tool-tip">My Work</span>
+    </a>
+    <a class="tool-item" href="/playground.html">
+      <div class="tool-icon">
+        <img src="dock-playground.png" alt="Playground">
+      </div>
+      <span class="tool-tip">Playground</span>
+    </a>
+    <a class="tool-item" href="/resume.pdf" target="_blank">
+      <div class="tool-icon">
+        <img src="dock-resume.png" alt="Resume">
+      </div>
+      <span class="tool-tip">Resume</span>
+    </a>
+    <div class="tool-item" aria-disabled="true">
+      <div class="tool-icon">
+        <img src="dock-sg.png" alt="About Me">
+      </div>
+      <span class="tool-tip">About Me (coming soon)</span>
+    </div>
+    <a class="tool-item" href="mailto:shreageorge@gmail.com">
+      <div class="tool-icon">
+        <img src="dock-contact.png" alt="Contact">
+      </div>
+      <span class="tool-tip">Contact</span>
+    </a>
+    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">
+      <div class="tool-icon">
+        <img src="dock-linkedin.png" alt="LinkedIn">
+      </div>
+      <span class="tool-tip">LinkedIn</span>
+    </a>
+  </div>
+
+  <div class="coming-soon-badge" id="comingSoonBadge">Coming soon!</div>
+
+  <!-- INFINITE CANVAS -->
+  <div id="canvas">
+
+    <!-- ══ STRING LAYER ══ -->
+    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:1;" overflow="visible">
+      <!-- Skills → Royal Enfield -->
+      <path d="M 1104,1152 Q 1596,1236 2088,1128" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+      <!-- FYNDNA → ICICI -->
+      <path d="M 792,672 Q 1464,756 2136,672" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+      <!-- ICICI → 30 interviews -->
+      <path d="M 2136,672 Q 2262,804 2388,840" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+      <!-- ICICI → 4 days -->
+      <path d="M 2136,672 Q 2340,852 2544,888" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+      <!-- Skills pills → Good UX quote -->
+      <!-- Constraints quote → FYNDNA -->
+      <path d="M 564,1040 Q 678,856 792,672" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+      <!-- Constraints quote → TerraPay -->
+      <path d="M 564,1040 Q 678,1100 792,1128" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+    </svg>
+
+
+    <!-- ══ CENTRE HERO ══ -->
+    <div class="hero-center">
+      <h1 class="hero-headline">Your strategic<br>partner in crime</h1>
+      <p class="hero-tagline">Four years of solving UX crimes in fintech, media, and e-commerce spaces, welcome to my investigative board.</p>
+      <div class="currently-tag" style="position:static; width:fit-content; margin:16px auto 0;">
+        Currently at <strong>Lollypop Design</strong> · deployed at <strong>FYNDNA</strong>
+      </div>
+    </div>
+
+    <!-- ══ CASE STUDY 01 — FYNDNA ══ -->
+    <div class="cs-card cs-card-soon" style="top:672px; left:672px; transform:rotate(-2deg); background: linear-gradient(170deg, #1a2d6b 0%, #1a5c80 45%, #2ab8b0 100%);">
+      <div class="pin"></div>
+      <div class="cs-card-front" style="background: transparent;">
+        <span class="case-chip">Case 01 | NDA</span>
+        <div class="cs-card-logo-box"><img src="logo-fyndna.png" alt="FYNDNA" style="filter: brightness(0) invert(1);"></div>
+      </div>
+      <div class="cs-card-hover">
+        <p class="cs-card-hover-text">Owned end-to-end flow design for a fraud detection module. Resolved cross-team conflicts via UX rationale.</p>
+        <span class="case-cta" style="margin-top:12px; display:inline-block;">Coming soon!</span>
+      </div>
+    </div>
+
+    <!-- ══ CASE STUDY 02 — TerraPay ══ -->
+    <div class="cs-card cs-card-soon" style="top:1128px; left:672px; transform:rotate(1.5deg); background: radial-gradient(ellipse at 50% 70%, #1a6abf 0%, #0d3d80 50%, #060e2a 100%);">
+      <div class="pin"></div>
+      <div class="cs-card-front" style="background: transparent;">
+        <span class="case-chip">Case 02 | NDA</span>
+        <div class="cs-card-logo-box"><img src="logo-terrapay.png" alt="TerraPay" style="filter: brightness(0) invert(1);"></div>
+      </div>
+      <div class="cs-card-hover">
+        <p class="cs-card-hover-text">Designed cross-border payment validation flows and conducted cross-cultural research with beta-testers from South America and Africa.</p>
+        <span class="case-cta" style="margin-top:12px; display:inline-block;">Coming soon!</span>
+      </div>
+    </div>
+
+    <!-- ══ CASE STUDY 03 — ICICI ══ -->
+    <div class="cs-card" style="top:672px; left:2016px; transform:rotate(-1deg); background: radial-gradient(ellipse at 55% 15%, #f0882a 0%, #e05020 45%, #be3258 100%);">
+      <div class="pin"></div>
+      <div class="cs-card-front" style="background: transparent;">
+        <span class="case-chip">Case 03</span>
+        <div class="cs-card-logo-box"><img src="logo-icici.png" alt="ICICI Bank" style="filter: brightness(0) invert(1);"></div>
+      </div>
+      <div class="cs-card-hover">
+        <p class="cs-card-hover-text">Research into UPI trust gaps. 24 interviews across 5 cities. Research handbook delivered, live product changes within 4 days.</p>
+        <a href="/icici.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
+      </div>
+    </div>
+
+    <!-- ══ CASE STUDY 04 — Royal Enfield ══ -->
+    <div class="cs-card" style="top:1128px; left:1968px; transform:rotate(2deg); background: radial-gradient(ellipse at 30% 80%, #8a1010 0%, #6b0d0d 40%, #1a0505 100%);">
+      <div class="pin"></div>
+      <div class="cs-card-front" style="background: transparent;">
+        <span class="case-chip">Case 04 | NDA</span>
+        <div class="cs-card-logo-box"><img src="logo-re.png" alt="Royal Enfield" style="filter: brightness(0) invert(1);"></div>
+      </div>
+      <div class="cs-card-hover">
+        <p class="cs-card-hover-text">Brought a brand vision to life for an apparel e-commerce store. What convinces a rider to buy a ₹30,000 jacket online?</p>
+        <a href="/royal-enfield.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
+      </div>
+    </div>
+
+    <!-- ══ STATEMENT CARDS ══ -->
+
+    <!-- Quote card — light -->
+    <div class="sc sc-light" style="top:1040px; left:432px; width:264px; transform:rotate(-2deg);">
+      <div class="pin"></div>
+      <span class="sc-star">✦</span>
+      <p class="sc-quote">"Constraints are just problems waiting for a better question."</p>
+    </div>
+
+    <!-- Stat card — 30 interviews -->
+    <div class="sc sc-accent" style="top:840px; left:2292px; width:192px; transform:rotate(-2deg);">
+      <div class="pin"></div>
+      <span class="sc-tag">Research</span>
+      <p class="sc-num">24</p>
+      <p class="sc-num-label">user interviews · ICICI Bank</p>
+    </div>
+
+
+    <!-- Skills pill card -->
+    <div class="sc sc-dark skills-card" style="top:1152px; left:984px; width:240px; transform:rotate(-1.5deg); padding:20px 16px;">
+      <div class="pin"></div>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <span class="skill-pill">Product Design</span>
+        <span class="skill-pill">UX Research</span>
+        <span class="skill-pill">Design Systems</span>
+        <span class="skill-pill">Interaction Design</span>
+        <span class="skill-pill">AI Workflows</span>
+        <span class="skill-pill">Figma MCP</span>
+      </div>
+    </div>
+
+    <!-- Stat card — 8+ collaborations, next to skills pill card -->
+    <div class="sc sc-dark" style="top:1152px; left:1248px; width:208px; transform:rotate(2deg); background:#5E1942;">
+      <div class="pin"></div>
+      <p class="sc-num">8+</p>
+      <p class="sc-num-label">collaborations</p>
+      <a href="/resume.pdf" target="_blank" class="skill-pill" style="pointer-events:all; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; width:100%; box-sizing:border-box; background:#D1E680; border-color:#D1E680;">View my resume →</a>
+    </div>
+
+    <!-- Stat — 4 days -->
+    <div class="sc sc-light" style="top:888px; left:2448px; width:192px; transform:rotate(3deg);">
+      <div class="pin"></div>
+      <span class="sc-tag">Impact</span>
+      <p class="sc-num" style="font-size:52px;">4</p>
+      <p class="sc-num-label">days to live product changes</p>
+    </div>
+
+    <!-- ══ PLAYGROUND TEASER ══ -->
+    <div class="card" style="top:266px; left:1656px; width:288px; transform:rotate(-1deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
+      <div class="pin"></div>
+      <div class="card-pin" style="display:none;"></div>
+      <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
+        <video src="hand-tracker.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
+      </div>
+      <a href="/playground.html" class="skill-pill" style="pointer-events:all; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; width:100%; box-sizing:border-box;">Playground →</a>
+    </div>
+
+    <!-- ══ CLAUDE CODE BADGE — next to playground teaser ══ -->
+    <div class="card" style="top:266px; left:1976px; width:300px; transform:rotate(2deg); background:#1a1a1a;">
+      <div class="pin"></div>
+      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-align:center; margin:0 0 12px;">This portfolio was made with</p>
+      <img src="claude-code-card.png" alt="Built with Claude Code" style="width:100%; display:block; border-radius:6px;">
+    </div>
+
+    <!-- ══ AWARD POLAROID CLUSTER (next to FYNDNA card) ══ -->
+    <img class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:512px; left:428px; width:156px; transform:rotate(4deg);">
+    <img class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:772px; left:434px; width:146px; transform:rotate(-7deg);">
+    <div style="position:absolute; top:500px; left:166px; width:264px; transform:rotate(-3deg);">
+      <div class="pin"></div>
+      <img src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" style="width:100%; display:block; border-radius:14px; box-shadow:0 24px 56px rgba(0,0,0,0.4);">
+    </div>
+
+  </div><!-- /canvas -->
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const hint = document.getElementById('dragHint');
+
+    // Start at centre
+    const startX = window.innerWidth  / 2 - 1440;
+    const startY = window.innerHeight / 2 - 960;
+    let tx = startX, ty = startY;
+
+    function applyTransform() {
+      canvas.style.transform = `translate(${tx}px, ${ty}px)`;
+    }
+    applyTransform();
+
+    // Drag to pan
+    let dragging = false, startMouseX, startMouseY, startTx, startTy;
+
+    document.addEventListener('mousedown', e => {
+      if (e.target.closest('a, button')) return;
+      dragging = true;
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+      startTx = tx; startTy = ty;
+      document.body.classList.add('dragging');
+    });
+
+    let rafId = null;
+    let pendingTx = tx, pendingTy = ty;
+
+    function scheduleRender() {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        tx = pendingTx;
+        ty = pendingTy;
+        applyTransform();
+      });
+    }
+
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      pendingTx = startTx + (e.clientX - startMouseX);
+      pendingTy = startTy + (e.clientY - startMouseY);
+      scheduleRender();
+      hint.classList.add('hidden');
+    });
+
+    document.addEventListener('mouseup', () => {
+      dragging = false;
+      document.body.classList.remove('dragging');
+    });
+
+    // Two-finger trackpad pan (wheel events with no zoom)
+    document.addEventListener('wheel', e => {
+      e.preventDefault();
+      pendingTx -= e.deltaX;
+      pendingTy -= e.deltaY;
+      scheduleRender();
+      hint.classList.add('hidden');
+    }, { passive: false });
+
+    // Touch support
+    let lastTouch = null;
+    document.addEventListener('touchstart', e => {
+      if (e.touches.length === 1) {
+        lastTouch = e.touches[0];
+        startTx = tx; startTy = ty;
+      }
+    });
+    document.addEventListener('touchmove', e => {
+      e.preventDefault();
+      if (e.touches.length === 1 && lastTouch) {
+        pendingTx = startTx + (e.touches[0].clientX - lastTouch.clientX);
+        pendingTy = startTy + (e.touches[0].clientY - lastTouch.clientY);
+        scheduleRender();
+        hint.classList.add('hidden');
+      }
+    }, { passive: false });
+
+    // Hide hint after 4s
+    setTimeout(() => hint.classList.add('hidden'), 4000);
+
+    // Fly to work section
+    function flyToWork() {
+      tx = window.innerWidth / 2 - 700;
+      ty = window.innerHeight / 2 - 800;
+      canvas.style.transition = 'transform 0.8s cubic-bezier(0.4,0,0.2,1)';
+      applyTransform();
+      setTimeout(() => canvas.style.transition = '', 800);
+    }
+
+    function enterMobilePreviewFullscreen() {
+      const video = document.getElementById('mobilePreviewVideo');
+      if (video.webkitEnterFullscreen) {
+        video.webkitEnterFullscreen();
+      } else if (video.requestFullscreen) {
+        video.requestFullscreen();
+      }
+    }
+
+    const comingSoonBadge = document.getElementById('comingSoonBadge');
+    document.querySelectorAll('.cs-card-soon').forEach(card => {
+      card.addEventListener('mouseenter', () => { comingSoonBadge.style.display = 'block'; });
+      card.addEventListener('mousemove', e => {
+        comingSoonBadge.style.left = e.clientX + 'px';
+        comingSoonBadge.style.top = e.clientY + 'px';
+      });
+      card.addEventListener('mouseleave', () => { comingSoonBadge.style.display = 'none'; });
+    });
+
+    function shareMobileLink() {
+      const url = window.location.href;
+      if (navigator.share) {
+        navigator.share({ title: 'Shrea George — Product Designer', url }).catch(() => {});
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          alert('Link copied! Open it on a desktop to see the full experience.');
+        });
+      } else {
+        alert(url);
+      }
+    }
+  </script>
+
+</body>
+</html>

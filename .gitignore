@@ -1,0 +1,20 @@
+# OS junk
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local tooling config, not site content
+.claude/
+
+# Abandoned design direction, unused by any HTML
+src/
+
+# Junk file (accidental error-response dump)
+SKILL.md
+
+# Unused raw screen-recording duplicates (.mp4 versions are tracked + used)
+hand-tracker.mov
+screen-recording.mov
+
+# Vercel CLI local linking artifact (project/org IDs) — preemptive
+.vercel
