@@ -1020,12 +1020,13 @@
     const hint = document.getElementById('dragHint');
 
     // Start at centre
-    const startX = window.innerWidth  / 2 - 1440;
-    const startY = window.innerHeight / 2 - 960;
+    let scale = 0.8;
+    const startX = window.innerWidth  / 2 - 1440 * scale;
+    const startY = window.innerHeight / 2 - 960 * scale;
     let tx = startX, ty = startY;
 
     function applyTransform() {
-      canvas.style.transform = `translate(${tx}px, ${ty}px)`;
+      canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
     }
     applyTransform();
 

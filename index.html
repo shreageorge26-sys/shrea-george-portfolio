@@ -1164,7 +1164,7 @@
     </div>
 
     <!-- ══ CASE STUDY 01 — FYNDNA ══ -->
-    <div class="cs-card cs-card-soon" style="top:672px; left:672px; transform:rotate(-2deg); background: linear-gradient(170deg, #1a2d6b 0%, #1a5c80 45%, #2ab8b0 100%);">
+    <div class="cs-card" style="top:672px; left:672px; transform:rotate(-2deg); background: linear-gradient(170deg, #1a2d6b 0%, #1a5c80 45%, #2ab8b0 100%);">
       <div class="pin"></div>
       <div class="cs-card-front" style="background: transparent;">
         <span class="case-chip">Case 01 | NDA</span>
@@ -1172,7 +1172,7 @@
       </div>
       <div class="cs-card-hover">
         <p class="cs-card-hover-text">Owned end-to-end flow design for a fraud detection module. Resolved cross-team conflicts via UX rationale.</p>
-        <span class="case-cta" style="margin-top:12px; display:inline-block;">Coming soon!</span>
+        <a href="/fyndna.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
       </div>
     </div>
 
@@ -1294,12 +1294,13 @@
     const hint = document.getElementById('dragHint');
 
     // Start at centre
-    const startX = window.innerWidth  / 2 - 1440;
-    const startY = window.innerHeight / 2 - 960;
+    let scale = 0.8;
+    const startX = window.innerWidth  / 2 - 1440 * scale;
+    const startY = window.innerHeight / 2 - 960 * scale;
     let tx = startX, ty = startY;
 
     function applyTransform() {
-      canvas.style.transform = `translate(${tx}px, ${ty}px)`;
+      canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
     }
     applyTransform();
 
@@ -1373,8 +1374,8 @@
 
     // Fly to work section
     function flyToWork() {
-      tx = window.innerWidth / 2 - 700;
-      ty = window.innerHeight / 2 - 800;
+      tx = window.innerWidth / 2 - 700 * scale;
+      ty = window.innerHeight / 2 - 800 * scale;
       canvas.style.transition = 'transform 0.8s cubic-bezier(0.4,0,0.2,1)';
       applyTransform();
       setTimeout(() => canvas.style.transition = '', 800);
