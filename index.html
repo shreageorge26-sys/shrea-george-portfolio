@@ -731,6 +731,8 @@
 
     .tool-item:hover .tool-tip { opacity: 1; }
 
+    .sc, .scatter-photo { z-index: 2; }
+
     /* ── CASE STUDY CARD (hover reveal) ── */
     .cs-card {
       position: absolute;
@@ -882,6 +884,104 @@
       border-color: rgba(203,232,112,0.35);
     }
 
+    /* ══ FYNDNA rich board card (from Figma) ══ */
+    .cs-card-fyndna {
+      position: absolute;
+      width: 520px;
+      background: #0d3b67;
+      border-radius: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      pointer-events: all;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      padding: 26px 24px;
+      box-sizing: border-box;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .cs-card-fyndna:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 14px 34px rgba(0,0,0,0.26), 0 44px 84px rgba(0,0,0,0.30), 0 64px 104px rgba(0,0,0,0.14);
+    }
+    .fy-chip {
+      align-self: flex-start;
+      background: #ADDD8D;
+      color: #1f1f1f;
+      border-radius: 200px;
+      padding: 9px 30px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .fy-metric {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      color: #fff;
+    }
+    .fy-metric-num {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 46px;
+      font-weight: 700;
+      line-height: 46px;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
+    }
+    .fy-metric-text {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 19px;
+      font-weight: 400;
+      line-height: 26px;
+      letter-spacing: -0.01em;
+    }
+    .fy-panel {
+      background: #fff;
+      border: 1px solid #2f4fa7;
+      border-radius: 6px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-family: var(--sans);
+    }
+    .fy-panel-top { display: flex; flex-direction: column; gap: 10px; }
+    .fy-panel-actions { display: flex; flex-direction: column; gap: 16px; }
+    .fy-risk-row { display: flex; align-items: center; gap: 10px; }
+    .fy-status { display: flex; align-items: center; gap: 6px; }
+    .fy-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #f07006;
+      box-shadow: 0 0 0 0 rgba(240,112,6,0.5);
+      animation: fyPulse 1.6s infinite;
+    }
+    @keyframes fyPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(240,112,6,0.5); }
+      70%  { box-shadow: 0 0 0 6px rgba(240,112,6,0); }
+      100% { box-shadow: 0 0 0 0 rgba(240,112,6,0); }
+    }
+    .fy-sev { color: #f07006; font-size: 14px; font-weight: 500; letter-spacing: 0.01em; }
+    .fy-sep-dot { width: 5px; height: 5px; border-radius: 50%; background: #6d6d6d; }
+    .fy-id { color: #1e1e1e; font-size: 15px; font-weight: 400; }
+    .fy-title { color: #1e1e1e; font-size: 15px; font-weight: 500; letter-spacing: 0.01em; }
+    .fy-divider { display: flex; align-items: center; gap: 12px; }
+    .fy-divider::before, .fy-divider::after {
+      content: ''; flex: 1; height: 1px; background: #e0e0e0;
+    }
+    .fy-divider span { color: #6d6d6d; font-size: 13px; white-space: nowrap; }
+    .fy-actions { display: flex; gap: 10px; }
+    .fy-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+      height: 44px; border-radius: 6px; font-size: 14px; font-weight: 400;
+      border: 1px solid; box-sizing: border-box; white-space: nowrap;
+    }
+    .fy-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .fy-btn.cure   { background: #c7ebc9; border-color: #2a6e2e; color: #2a6e2e; }
+    .fy-btn.cannot { background: #fce4e4; border-color: #912323; color: #912323; }
+    .fy-btn.verify { background: #d6efff; border-color: #0d469b; color: #0d469b; }
+
     /* ── CASE STUDY LABEL ── */
     .cs-label {
       position: absolute;
@@ -908,180 +1008,595 @@
       gap: 8px;
     }
 
-    /* ── MOBILE SPLASH ── */
-    .mobile-splash { display: none; }
+    /* ══════════════════════════════════════════════════════════
+       MOBILE — vertical investigative board (shown ≤768px)
+       ══════════════════════════════════════════════════════════ */
+    /* ══ CASE STUDY TEMPLATE CARD ══
+       From Figma "Shrea portfolio" node 2001-7302. Spec given by design:
+       number 80px · subtext 24px · chip 16px · chip fill = white @ 4%
+       · 60px between the chip row and the text block. */
+    .tpl-card {
+      position: absolute;
+      z-index: 2;
+      width: 460px;
+      background: #0F1A2B;
+      border-radius: 16px;
+      padding: 22px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18),
+                  0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      text-decoration: none;
+      pointer-events: all;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .tpl-card:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 14px 34px rgba(0,0,0,0.26),
+                  0 44px 84px rgba(0,0,0,0.30), 0 64px 104px rgba(0,0,0,0.14);
+    }
+    .tpl-card-soon { cursor: none; }
 
-    @media (max-width: 768px) {
-      html, body { overflow: auto !important; height: auto !important; cursor: auto !important; background-image: none !important; background-color: #141d14 !important; }
-      nav, .drag-hint, .tool-dock, #canvas { display: none !important; }
-
-      .mobile-splash {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
-        padding: 24px 24px 40px;
-        text-align: center;
-      }
+    .tpl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tpl-chip {
+      background: rgba(255,255,255,0.04);
+      color: #E9ECF1;
+      border-radius: 200px;
+      padding: 11px 20px;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
     }
 
-    .mobile-header {
+    .tpl-body { display: flex; flex-direction: column; gap: 5px; }
+    .tpl-metric { display: flex; align-items: center; gap: 10px; }
+    .tpl-star { width: 38px; height: 38px; flex: 0 0 38px; display: block; }
+    .tpl-num {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: #F2F4F7;
+    }
+    .tpl-sub {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: #F2F4F7;
+    }
+
+
+    /* ── colour card variants: brand background + a product shot
+       bleeding off one edge, cropped by the card's radius ── */
+    .tpl-media {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .tpl-media img { position: absolute; display: block; height: auto; }
+    .tpl-card > .tpl-chips,
+    .tpl-card > .tpl-body { position: relative; z-index: 1; }
+
+    .tpl-lead {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    /* warm ink for the colour cards */
+    .tpl-warm .tpl-num,
+    .tpl-warm .tpl-sub,
+    .tpl-warm .tpl-lead { color: #F7F0E8; }
+    .tpl-warm .tpl-chip { background: rgba(255,255,255,0.15); color: #FBF6F0; }
+
+    .tpl-icici {
+      min-height: 204px;
+      background: linear-gradient(163deg, #E8893C 0%, #D2652F 42%, #A93823 100%);
+    }
+    .tpl-icici .tpl-body { max-width: 76%; }
+    .tpl-icici .tpl-media img { left: 78%; top: 14%; width: 40%; }
+
+    .tpl-re {
+      min-height: 280px;
+      background: #8C2B25;
+    }
+    .tpl-re .tpl-body { max-width: 92%; }
+    .tpl-re .tpl-media img { left: 8%; top: 72%; width: 112%; }
+
+    /* mobile colour cards — same ink and background, bleed art dropped
+       because the art would crowd a 350px-wide card */
+    .m-tpl.tpl-icici, .m-tpl.tpl-re { min-height: 0; }
+    .m-tpl.tpl-icici { background: linear-gradient(163deg, #E8893C 0%, #D2652F 42%, #A93823 100%); }
+    .m-tpl.tpl-re { background: #8C2B25; }
+    .m-tpl.tpl-icici .tpl-body, .m-tpl.tpl-re .tpl-body { max-width: 100%; }
+    .m-tpl .tpl-media { display: none; }
+    .m-tpl .tpl-lead { font-size: clamp(16px, 4.6vw, 19px); }
+
+
+    /* TerraPay — question card: one paragraph, the figure bold inline */
+    .tpl-terrapay { background: #1B3D68; }
+    .tpl-ask {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: #EAF0F7;
+    }
+    .tpl-ask strong { font-weight: 700; }
+    .m-tpl.tpl-terrapay { background: #1B3D68; }
+    .m-tpl .tpl-ask { font-size: clamp(17px, 4.8vw, 20px); }
+
+    /* mobile flavour of the same card — identical design, scaled type */
+    .m-tpl {
+      position: relative;
+      width: 100%;
+      transform: rotate(var(--rot, 0deg));
+      background: #0F1A2B;
+      border-radius: 20px;
+      padding: clamp(20px, 6vw, 28px);
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: clamp(28px, 9vw, 40px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 10px 22px rgba(0,0,0,0.22), 0 20px 40px rgba(0,0,0,0.28);
+      text-decoration: none;
+    }
+    .m-tpl .tpl-chips { gap: 8px; }
+    .m-tpl .tpl-chip { font-size: 16px; padding: 12px 22px; }
+    .m-tpl .tpl-star { width: 40px; height: 40px; flex: 0 0 40px; }
+    .m-tpl .tpl-metric { gap: 12px; }
+    .m-tpl .tpl-num { font-size: clamp(44px, 14vw, 60px); }
+    .m-tpl .tpl-sub { font-size: clamp(16px, 4.6vw, 19px); }
+
+    .m-shell { display: none; }
+
+    @media (max-width: 768px) {
+      html, body { overflow-x: hidden !important; overflow-y: auto !important; height: auto !important; cursor: auto !important; background-image: none !important; background-color: #141d14 !important; }
+      body > nav, .drag-hint, .tool-dock, #canvas, .coming-soon-badge { display: none !important; }
+
+      .m-shell { display: block; min-height: 100vh; }
+      body.m-menu-open { overflow: hidden !important; }
+    }
+
+    /* ── mobile header + hamburger ── */
+    .m-header {
+      position: sticky;
+      top: 0;
+      z-index: 500;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
-      margin-bottom: 48px;
+      padding: 16px 5vw;
+      background: rgba(20,29,20,0.7);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .mobile-logo-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .mobile-logo-row img {
-      height: 32px;
-      width: auto;
-      display: block;
-    }
+    .m-logo { display: block; line-height: 0; }
+    .m-logo img { height: 28px; width: auto; display: block; }
 
-    .mobile-header-icons {
-      display: flex;
-      gap: 8px;
-    }
-    .mobile-header-icons a {
-      width: 46px;
-      height: 46px;
+    .m-burger {
+      width: 44px;
+      height: 44px;
       border-radius: 12px;
-      overflow: hidden;
-      display: block;
-    }
-    .mobile-header-icons img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .mobile-hello {
-      font-family: 'Just Me Again Down Here', cursive;
-      font-weight: 400;
-      font-size: 52px;
-      color: #ffffff;
-      margin-bottom: 16px;
-    }
-
-    .mobile-wip {
-      font-family: 'Rebond Grotesque', var(--sans);
-      font-weight: 600;
-      font-size: 24px;
-      line-height: 1.3;
-      color: #ffffff;
-      max-width: 300px;
-      margin-bottom: 56px;
-    }
-
-    .mobile-preview {
-      width: calc(100vw - 16px);
-      margin-left: calc(50% - 50vw + 8px);
-      margin-right: calc(50% - 50vw + 8px);
-      background: #0e1a0e;
-      border-radius: 14px;
-      padding: 8px 18px 18px;
+      border: none;
+      background: rgba(255,255,255,0.08);
       display: flex;
       flex-direction: column;
-      margin-bottom: 28px;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      cursor: pointer;
     }
-
-    .mobile-preview-video-wrap {
-      width: 100%;
-      height: 300px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 8px;
-    }
-
-    .mobile-preview video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .m-burger span {
       display: block;
+      width: 18px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .m-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .m-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+    .m-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* ── slide-in menu ── */
+    .m-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 1200;
+      background: var(--accent-dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
+      padding: 32px 8vw;
+      transform: translateX(100%);
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+    .m-menu.open { transform: translateX(0); }
+
+    .m-menu-close {
+      position: absolute;
+      top: 16px;
+      right: 5vw;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: none;
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
     }
 
-    .mobile-preview-fullscreen {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      width: 32px;
-      height: 32px;
-      border: none;
-      border-radius: 8px;
-      background: rgba(0,0,0,0.55);
+    .m-menu-link {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: clamp(28px, 9vw, 38px);
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .m-menu-link:last-child { border-bottom: none; }
+    .m-menu-link small { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.4); }
+    .m-menu-link.m-disabled { color: rgba(255,255,255,0.35); pointer-events: none; }
+
+    /* ── board layout ── */
+    .m-board {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 8vw 5vw 20vw;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    /* ── hero cluster — hero first, then case studies stacked one below
+       the other. Plain vertical scroll, no horizontal drag. ── */
+    .m-hero-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* stat pair — two compact cards side by side, no horizontal scroll */
+    .m-stat-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      gap: 14px;
+    }
+
+    .m-hero { text-align: center; padding: 4px 8vw 4px; }
+    .m-headline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: clamp(32px, 10vw, 44px);
+      font-weight: 600;
+      line-height: 1.08;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+    .m-tagline {
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-size: clamp(14px, 4vw, 16px);
+      line-height: 1.5;
+      color: rgba(255,255,255,0.6);
+      margin-top: 18px;
+    }
+    .m-currently {
+      display: inline-block;
+      margin-top: 20px;
+      background: var(--accent);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent-dark);
+      letter-spacing: -0.01em;
+    }
+    .m-currently strong { font-weight: 700; }
+
+    /* shared card chrome for every board item */
+    .m-card, .m-board .sc {
+      position: relative;
+      width: 100%;
+      transform: rotate(var(--rot, 0deg));
+      box-sizing: border-box;
+    }
+    .m-board .sc { border-radius: 16px; padding: clamp(18px, 5vw, 24px); }
+
+    /* case study cards — full-width, stacked one below the other */
+    .m-case-mini {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      aspect-ratio: 3 / 2;
+      text-decoration: none;
+      border-radius: 16px;
+      padding: clamp(18px, 5vw, 24px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 10px 22px rgba(0,0,0,0.22), 0 20px 40px rgba(0,0,0,0.28);
+    }
+    .m-case-mini .case-chip { font-size: 12px; padding: 7px 16px; }
+    .m-case-mini .cs-card-logo-box { margin-top: 16px; }
+    .m-case-mini .cs-card-logo-box img { max-height: 40px; }
+    .m-case-mini.m-soon { cursor: default; }
+
+    /* quote + stat pair — scattered & bleeding, like the hero cluster */
+    .m-mid-cluster {
+      margin: 0 calc(-1 * 5vw);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .m-mid-cluster > .sc { padding: clamp(18px, 5vw, 24px) 8vw; }
+
+    .m-board .sc-num { font-size: clamp(44px, 15vw, 60px); }
+
+    /* skills wrap */
+    .m-skills-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .m-resume-btn {
+      pointer-events: all;
+      margin-top: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      z-index: 3;
-    }
-    .mobile-preview-fullscreen svg { width: 16px; height: 16px; }
-
-    .mobile-tease-label {
-      font-family: 'Rebond Grotesque', var(--sans);
-      font-weight: 600;
-      font-size: 15px;
-      color: #ffffff;
-      margin-top: 8px;
-      margin-bottom: 8px;
+      gap: 6px;
+      text-decoration: none;
+      width: 100%;
+      background: #D1E680;
+      border-color: #D1E680;
     }
 
-    .mobile-tease-sub {
+    /* playground teaser */
+    .m-playground {
+      border-radius: 16px;
+      background-size: cover;
+      background-position: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 24px 48px rgba(0,0,0,0.24);
+      padding: clamp(16px, 5vw, 20px);
+    }
+    .m-playground-vid { width: 100%; aspect-ratio: 1/1; overflow: hidden; border-radius: 10px; }
+    .m-playground-vid video { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .m-playground-btn { pointer-events: all; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; width: 100%; }
+
+    /* claude code card */
+    .m-claude { border-radius: 16px; background: #1a1a1a; padding: clamp(18px, 5vw, 22px); }
+    .m-claude-label { font-family: 'Rebond Grotesque', var(--sans); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-align: center; margin-bottom: 14px; }
+    .m-claude-img { width: 100%; display: block; border-radius: 8px; }
+
+    /* awards */
+    .m-awards { padding: 0; background: none; box-shadow: none; }
+    .m-award-polaroid { width: 100%; display: block; border-radius: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.4); }
+    .m-award-photos { display: flex; gap: 14px; margin-top: 18px; }
+    .m-award-photos img { width: 50%; border-radius: 10px; box-shadow: 0 12px 28px rgba(0,0,0,0.4); object-fit: cover; display: block; }
+
+    /* footer */
+    .m-footer { text-align: center; padding-top: 8px; }
+    .m-footer p { font-size: 13px; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+    .m-footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .m-footer-links a {
       font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 0;
-    }
-
-    .mobile-share-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--accent);
-      color: var(--accent-dark);
-      font-family: 'Rebond Grotesque', var(--sans);
-      font-weight: 600;
-      font-size: 13px;
-      border: none;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      background: rgba(255,255,255,0.08);
       border-radius: 100px;
-      padding: 10px 18px;
-      cursor: pointer;
-      margin-bottom: 56px;
-      width: auto;
+      padding: 8px 16px;
     }
 
   </style>
 </head>
 <body>
 
-  <!-- ══ MOBILE SPLASH (shown only under 768px) ══ -->
-  <div class="mobile-splash">
-    <div class="mobile-header">
-      <div class="mobile-logo-row">
-        <img src="logo-sg.png" alt="Shrea George">
-      </div>
-      <div class="mobile-header-icons">
-        <a href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener"><img src="dock-linkedin.png" alt="LinkedIn"></a>
-        <a href="/resume.pdf" target="_blank"><img src="dock-resume.png" alt="Resume"></a>
-        <a href="mailto:shreageorge@gmail.com"><img src="dock-contact.png" alt="Contact"></a>
-      </div>
-    </div>
+    <!-- shared radial gradient for the 14-point star on every template card -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+      <radialGradient id="starGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.95"/>
+        <stop offset="45%"  stop-color="#ffffff" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0.18"/>
+      </radialGradient>
+    </defs></svg>
 
-    <p class="mobile-hello">Helluuuuuu</p>
-    <p class="mobile-wip">The mobile version of my portfolio is WIP</p>
 
-    <div class="mobile-preview">
-      <p class="mobile-tease-label">Here's a tease of what it looks like on desktop</p>
-      <p class="mobile-tease-sub">I promise you, it's worth the trouble!</p>
-      <button class="mobile-share-btn" onclick="shareMobileLink()" style="margin-bottom:24px; margin-top:16px; align-self:center;">Share link & open on Desktop</button>
-      <div class="mobile-preview-video-wrap">
-        <video id="mobilePreviewVideo" src="mobile-preview-screencast.mov" autoplay loop muted playsinline></video>
-        <button class="mobile-preview-fullscreen" onclick="enterMobilePreviewFullscreen()" aria-label="View fullscreen">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M16 3h3a2 2 0 0 1 2 2v3"/><path d="M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-        </button>
+  <!-- ══ MOBILE SHELL (shown only under 768px) — vertical investigative board ══ -->
+  <div class="m-shell">
+
+    <header class="m-header">
+      <a href="/" class="m-logo"><img src="logo-sg.png" alt="Shrea George"></a>
+      <button class="m-burger" id="mBurgerBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <nav class="m-menu" id="mMenu">
+      <button class="m-menu-close" id="mMenuClose" aria-label="Close menu">&times;</button>
+      <a class="m-menu-link" href="#mBoard" data-close>My Work</a>
+      <a class="m-menu-link" href="/playground.html">Playground</a>
+      <a class="m-menu-link" href="/resume.pdf" target="_blank">Resume</a>
+      <span class="m-menu-link m-disabled">About Me <small>coming soon</small></span>
+      <a class="m-menu-link" href="mailto:shreageorge@gmail.com">Contact</a>
+      <a class="m-menu-link" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
+
+    <main class="m-board" id="mBoard">
+
+      <!-- ══ HERO, THEN CASE STUDIES STACKED ONE BELOW THE OTHER ══ -->
+      <div class="m-hero-cluster">
+
+        <!-- ══ HERO ══ -->
+        <section class="m-hero">
+          <h1 class="m-headline">Your strategic<br>partner in crime</h1>
+          <p class="m-tagline">Four years of solving UX crimes in fintech, media, and e-commerce spaces, welcome to my investigative board.</p>
+          <div class="m-currently">Currently at <strong>Lollypop Design</strong> · deployed at <strong>FYNDNA</strong></div>
+        </section>
+
+        <!-- ══ CASE 01 — FYNDNA ══ -->
+        <a href="/fyndna.html" class="m-tpl" style="--rot:-1.5deg;">
+          <div class="pin"></div>
+          <div class="tpl-chips">
+            <span class="tpl-chip">Banking</span>
+            <span class="tpl-chip">System thinking</span>
+            <span class="tpl-chip">Project Lead</span>
+          </div>
+          <div class="tpl-body">
+            <div class="tpl-metric">
+              <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
+              <span class="tpl-num">10%</span>
+            </div>
+            <p class="tpl-sub">improved risk identification in bank documents</p>
+          </div>
+        </a>
+
+        <!-- ══ CASE 02 — TerraPay (coming soon) ══ -->
+        <div class="m-tpl tpl-terrapay" style="--rot:1.5deg;">
+          <div class="pin"></div>
+          <div class="tpl-chips">
+            <span class="tpl-chip">Fintech</span>
+            <span class="tpl-chip">UX Research &amp; Design</span>
+          </div>
+          <div class="tpl-body">
+            <p class="tpl-ask">How do <strong>5M+ users</strong> trust this platform to send money across borders daily?</p>
+          </div>
+        </div>
+
+        <!-- ══ CASE 03 — ICICI ══ -->
+        <a href="/icici.html" class="m-tpl tpl-warm tpl-icici" style="--rot:-1deg;">
+          <div class="pin"></div>
+          <div class="tpl-chips">
+            <span class="tpl-chip">Banking</span>
+            <span class="tpl-chip">UX Research</span>
+          </div>
+          <div class="tpl-body">
+            <div class="tpl-metric">
+              <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
+              <span class="tpl-num">2.5M+</span>
+            </div>
+            <p class="tpl-sub">affected by this pivot plan by created studying users&rsquo; payment behaviour</p>
+          </div>
+        </a>
+
+        <!-- ══ CASE 04 — Royal Enfield ══ -->
+        <a href="/royal-enfield.html" class="m-tpl tpl-warm tpl-re" style="--rot:1deg;">
+          <div class="pin"></div>
+          <div class="tpl-chips">
+            <span class="tpl-chip">E-Commerce</span>
+            <span class="tpl-chip">UX Design</span>
+          </div>
+          <div class="tpl-body">
+            <p class="tpl-lead">How do</p>
+            <span class="tpl-num">3.3M+ riders</span>
+            <p class="tpl-sub">trust that they can buy a &#8377;30,000 jacket online?</p>
+          </div>
+        </a>
+
       </div>
-    </div>
+
+      <!-- ══ QUOTE + STAT SCATTER ══ -->
+      <div class="m-mid-cluster">
+        <section class="m-card sc sc-light" style="--rot:-4deg;">
+          <div class="pin"></div>
+          <span class="sc-star">✦</span>
+          <p class="sc-quote">"Constraints are just problems waiting for a better question."</p>
+        </section>
+
+        <div class="m-stat-pair">
+          <section class="m-card sc sc-accent" style="--rot:-3deg;">
+            <div class="pin"></div>
+            <span class="sc-tag">Research</span>
+            <p class="sc-num">24</p>
+            <p class="sc-num-label">user interviews · ICICI Bank</p>
+          </section>
+          <section class="m-card sc sc-light" style="--rot:3deg;">
+            <div class="pin"></div>
+            <span class="sc-tag">Impact</span>
+            <p class="sc-num">4</p>
+            <p class="sc-num-label">days to live product changes</p>
+          </section>
+        </div>
+      </div>
+
+      <!-- ══ SKILLS ══ -->
+      <section class="m-card sc sc-dark" style="--rot:-1deg;">
+        <div class="pin"></div>
+        <div class="m-skills-wrap">
+          <span class="skill-pill">Product Design</span>
+          <span class="skill-pill">UX Research</span>
+          <span class="skill-pill">Design Systems</span>
+          <span class="skill-pill">Interaction Design</span>
+          <span class="skill-pill">AI Workflows</span>
+          <span class="skill-pill">Figma MCP</span>
+        </div>
+      </section>
+
+      <!-- ══ COLLABORATIONS ══ -->
+      <section class="m-card sc sc-dark" style="--rot:1deg; background:#5E1942;">
+        <div class="pin"></div>
+        <p class="sc-num">8+</p>
+        <p class="sc-num-label">collaborations</p>
+        <a href="/resume.pdf" target="_blank" class="skill-pill m-resume-btn">View my resume →</a>
+      </section>
+
+      <!-- ══ PLAYGROUND TEASER ══ -->
+      <section class="m-card m-playground" style="--rot:-1deg; background-image:url('playground-card-bg.jpg');">
+        <div class="pin"></div>
+        <div class="m-playground-vid">
+          <video src="hand-tracker.mp4" autoplay loop muted playsinline></video>
+        </div>
+        <a href="/playground.html" class="skill-pill m-playground-btn">Playground →</a>
+      </section>
+
+      <!-- ══ CLAUDE CODE BADGE ══ -->
+      <section class="m-card m-claude" style="--rot:1deg;">
+        <div class="pin"></div>
+        <p class="m-claude-label">This portfolio was made with</p>
+        <img src="claude-code-card.png" alt="Built with Claude Code" class="m-claude-img">
+      </section>
+
+      <!-- ══ AWARDS ══ -->
+      <section class="m-card m-awards" style="--rot:-1deg;">
+        <div class="pin"></div>
+        <img src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" class="m-award-polaroid">
+        <div class="m-award-photos">
+          <img src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="transform:rotate(3deg);">
+          <img src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="transform:rotate(-4deg);">
+        </div>
+      </section>
+
+      <footer class="m-footer">
+        <p>Also worth a peek —</p>
+        <div class="m-footer-links">
+          <a href="/playground.html">Playground</a>
+          <a href="/resume.pdf" target="_blank">Resume</a>
+          <a href="mailto:shreageorge@gmail.com">Contact</a>
+          <a href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </footer>
+
+    </main>
   </div>
 
   <!-- NAV -->
@@ -1137,20 +1652,8 @@
   <div id="canvas">
 
     <!-- ══ STRING LAYER ══ -->
-    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:1;" overflow="visible">
-      <!-- Skills → Royal Enfield -->
-      <path d="M 1104,1152 Q 1596,1236 2088,1128" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
-      <!-- FYNDNA → ICICI -->
-      <path d="M 792,672 Q 1464,756 2136,672" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
-      <!-- ICICI → 30 interviews -->
-      <path d="M 2136,672 Q 2262,804 2388,840" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
-      <!-- ICICI → 4 days -->
-      <path d="M 2136,672 Q 2340,852 2544,888" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
-      <!-- Skills pills → Good UX quote -->
-      <!-- Constraints quote → FYNDNA -->
-      <path d="M 564,1040 Q 678,856 792,672" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
-      <!-- Constraints quote → TerraPay -->
-      <path d="M 564,1040 Q 678,1100 792,1128" fill="none" stroke="#7ee8a2" stroke-width="2" stroke-opacity="0.6"/>
+    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:0;" overflow="visible">
+      <!-- paths drawn at runtime from the real pin positions -->
     </svg>
 
 
@@ -1164,68 +1667,77 @@
     </div>
 
     <!-- ══ CASE STUDY 01 — FYNDNA ══ -->
-    <div class="cs-card" style="top:672px; left:672px; transform:rotate(-2deg); background: linear-gradient(170deg, #1a2d6b 0%, #1a5c80 45%, #2ab8b0 100%);">
+    <a href="/fyndna.html" class="tpl-card" data-pin="fyndna" style="top:672px; left:600px; transform:rotate(-2deg);">
       <div class="pin"></div>
-      <div class="cs-card-front" style="background: transparent;">
-        <span class="case-chip">Case 01 | NDA</span>
-        <div class="cs-card-logo-box"><img src="logo-fyndna.png" alt="FYNDNA" style="filter: brightness(0) invert(1);"></div>
+      <div class="tpl-chips">
+          <span class="tpl-chip">Banking</span>
+          <span class="tpl-chip">System thinking</span>
+          <span class="tpl-chip">Project Lead</span>
       </div>
-      <div class="cs-card-hover">
-        <p class="cs-card-hover-text">Owned end-to-end flow design for a fraud detection module. Resolved cross-team conflicts via UX rationale.</p>
-        <a href="/fyndna.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
+      <div class="tpl-body">
+        <div class="tpl-metric">
+          <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
+          <span class="tpl-num">10%</span>
+        </div>
+        <p class="tpl-sub">improved risk identification in bank documents</p>
       </div>
-    </div>
+    </a>
 
-    <!-- ══ CASE STUDY 02 — TerraPay ══ -->
-    <div class="cs-card cs-card-soon" style="top:1128px; left:672px; transform:rotate(1.5deg); background: radial-gradient(ellipse at 50% 70%, #1a6abf 0%, #0d3d80 50%, #060e2a 100%);">
+    <!-- ══ CASE STUDY 02 — TerraPay (coming soon) ══ -->
+    <div class="tpl-card tpl-card-soon tpl-terrapay" data-pin="terrapay" style="top:1180px; left:600px; transform:rotate(1.5deg);">
       <div class="pin"></div>
-      <div class="cs-card-front" style="background: transparent;">
-        <span class="case-chip">Case 02 | NDA</span>
-        <div class="cs-card-logo-box"><img src="logo-terrapay.png" alt="TerraPay" style="filter: brightness(0) invert(1);"></div>
+      <div class="tpl-chips">
+          <span class="tpl-chip">Fintech</span>
+          <span class="tpl-chip">UX Research &amp; Design</span>
       </div>
-      <div class="cs-card-hover">
-        <p class="cs-card-hover-text">Designed cross-border payment validation flows and conducted cross-cultural research with beta-testers from South America and Africa.</p>
-        <span class="case-cta" style="margin-top:12px; display:inline-block;">Coming soon!</span>
+      <div class="tpl-body">
+        <p class="tpl-ask">How do <strong>5M+ users</strong> trust this platform to send money across borders daily?</p>
       </div>
     </div>
 
     <!-- ══ CASE STUDY 03 — ICICI ══ -->
-    <div class="cs-card" style="top:672px; left:2016px; transform:rotate(-1deg); background: radial-gradient(ellipse at 55% 15%, #f0882a 0%, #e05020 45%, #be3258 100%);">
+    <a href="/icici.html" class="tpl-card tpl-warm tpl-icici" data-pin="icici" style="top:672px; left:1810px; transform:rotate(-1deg);">
+      <div class="tpl-media"><img src="card-icici-app.png" alt="" onerror="this.style.display='none'"></div>
       <div class="pin"></div>
-      <div class="cs-card-front" style="background: transparent;">
-        <span class="case-chip">Case 03</span>
-        <div class="cs-card-logo-box"><img src="logo-icici.png" alt="ICICI Bank" style="filter: brightness(0) invert(1);"></div>
+      <div class="tpl-chips">
+          <span class="tpl-chip">Banking</span>
+          <span class="tpl-chip">UX Research</span>
       </div>
-      <div class="cs-card-hover">
-        <p class="cs-card-hover-text">Research into UPI trust gaps. 24 interviews across 5 cities. Research handbook delivered, live product changes within 4 days.</p>
-        <a href="/icici.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
+      <div class="tpl-body">
+        <div class="tpl-metric">
+          <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
+          <span class="tpl-num">2.5M+</span>
+        </div>
+        <p class="tpl-sub">affected by this pivot plan by created studying users&rsquo; payment behaviour</p>
       </div>
-    </div>
+    </a>
 
     <!-- ══ CASE STUDY 04 — Royal Enfield ══ -->
-    <div class="cs-card" style="top:1128px; left:1968px; transform:rotate(2deg); background: radial-gradient(ellipse at 30% 80%, #8a1010 0%, #6b0d0d 40%, #1a0505 100%);">
+    <a href="/royal-enfield.html" class="tpl-card tpl-warm tpl-re" data-pin="re" style="top:1200px; left:1900px; transform:rotate(2deg);">
+      <div class="tpl-media"><img src="card-re-site.png" alt="" onerror="this.style.display='none'"></div>
       <div class="pin"></div>
-      <div class="cs-card-front" style="background: transparent;">
-        <span class="case-chip">Case 04 | NDA</span>
-        <div class="cs-card-logo-box"><img src="logo-re.png" alt="Royal Enfield" style="filter: brightness(0) invert(1);"></div>
+      <div class="tpl-chips">
+          <span class="tpl-chip">E-Commerce</span>
+          <span class="tpl-chip">UX Design</span>
       </div>
-      <div class="cs-card-hover">
-        <p class="cs-card-hover-text">Brought a brand vision to life for an apparel e-commerce store. What convinces a rider to buy a ₹30,000 jacket online?</p>
-        <a href="/royal-enfield.html" class="case-cta" style="margin-top:12px; display:inline-block;">View case study →</a>
+      <div class="tpl-body">
+        <p class="tpl-lead">How do</p>
+        <span class="tpl-num">3.3M+ riders</span>
+        <p class="tpl-sub">trust that they can buy a &#8377;30,000 jacket online?</p>
       </div>
-    </div>
+    </a>
 
     <!-- ══ STATEMENT CARDS ══ -->
 
     <!-- Quote card — light -->
-    <div class="sc sc-light" style="top:1040px; left:432px; width:264px; transform:rotate(-2deg);">
+    <div class="sc sc-light" data-pin="quote" style="top:990px; left:432px; width:264px; transform:rotate(-2deg);">
       <div class="pin"></div>
       <span class="sc-star">✦</span>
       <p class="sc-quote">"Constraints are just problems waiting for a better question."</p>
     </div>
 
     <!-- Stat card — 30 interviews -->
-    <div class="sc sc-accent" style="top:840px; left:2292px; width:192px; transform:rotate(-2deg);">
+    <div class="sc sc-accent" data-pin="stat24" style="top:840px; left:2292px; width:192px; transform:rotate(-2deg);">
       <div class="pin"></div>
       <span class="sc-tag">Research</span>
       <p class="sc-num">24</p>
@@ -1234,7 +1746,7 @@
 
 
     <!-- Skills pill card -->
-    <div class="sc sc-dark skills-card" style="top:1152px; left:984px; width:240px; transform:rotate(-1.5deg); padding:20px 16px;">
+    <div class="sc sc-dark skills-card" data-pin="skills" style="top:1152px; left:1150px; width:240px; transform:rotate(-1.5deg); padding:20px 16px;">
       <div class="pin"></div>
       <div style="display:flex; flex-direction:column; gap:8px;">
         <span class="skill-pill">Product Design</span>
@@ -1247,7 +1759,7 @@
     </div>
 
     <!-- Stat card — 8+ collaborations, next to skills pill card -->
-    <div class="sc sc-dark" style="top:1152px; left:1248px; width:208px; transform:rotate(2deg); background:#5E1942;">
+    <div class="sc sc-dark" data-pin="collab" style="top:1152px; left:1420px; width:208px; transform:rotate(2deg); background:#5E1942;">
       <div class="pin"></div>
       <p class="sc-num">8+</p>
       <p class="sc-num-label">collaborations</p>
@@ -1255,7 +1767,7 @@
     </div>
 
     <!-- Stat — 4 days -->
-    <div class="sc sc-light" style="top:888px; left:2448px; width:192px; transform:rotate(3deg);">
+    <div class="sc sc-light" data-pin="stat4" style="top:888px; left:2448px; width:192px; transform:rotate(3deg);">
       <div class="pin"></div>
       <span class="sc-tag">Impact</span>
       <p class="sc-num" style="font-size:52px;">4</p>
@@ -1381,17 +1893,8 @@
       setTimeout(() => canvas.style.transition = '', 800);
     }
 
-    function enterMobilePreviewFullscreen() {
-      const video = document.getElementById('mobilePreviewVideo');
-      if (video.webkitEnterFullscreen) {
-        video.webkitEnterFullscreen();
-      } else if (video.requestFullscreen) {
-        video.requestFullscreen();
-      }
-    }
-
     const comingSoonBadge = document.getElementById('comingSoonBadge');
-    document.querySelectorAll('.cs-card-soon').forEach(card => {
+    document.querySelectorAll('.cs-card-soon, .tpl-card-soon').forEach(card => {
       card.addEventListener('mouseenter', () => { comingSoonBadge.style.display = 'block'; });
       card.addEventListener('mousemove', e => {
         comingSoonBadge.style.left = e.clientX + 'px';
@@ -1400,17 +1903,84 @@
       card.addEventListener('mouseleave', () => { comingSoonBadge.style.display = 'none'; });
     });
 
-    function shareMobileLink() {
-      const url = window.location.href;
-      if (navigator.share) {
-        navigator.share({ title: 'Shrea George — Product Designer', url }).catch(() => {});
-      } else if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => {
-          alert('Link copied! Open it on a desktop to see the full experience.');
-        });
-      } else {
-        alert(url);
+    // ── Board strings — drawn at runtime from the real pin positions, so a
+    //    thread always lands on the pins no matter how the cards are sized
+    //    or moved. Rotation is included because getBoundingClientRect sees
+    //    the pin where it visually sits. ──
+    (function () {
+      const svg = document.getElementById('strings');
+      const canvas = document.getElementById('canvas');
+      if (!svg || !canvas) return;
+
+      const links = [
+        ['fyndna', 'icici'],
+        ['fyndna', 'quote'],
+        ['icici',  'stat24'],
+        ['stat24', 'stat4'],
+        ['stat4',  're'],
+        ['quote',  'terrapay'],
+        ['skills', 'collab'],
+      ];
+
+      function pinAt(name, cr, sc) {
+        const host = canvas.querySelector('[data-pin="' + name + '"]');
+        const dot = host && host.querySelector('.pin');
+        if (!dot) return null;
+        const dr = dot.getBoundingClientRect();
+        return { x: (dr.left + dr.width / 2 - cr.left) / sc,
+                 y: (dr.top + dr.height / 2 - cr.top) / sc };
       }
+
+      function draw() {
+        const cr = canvas.getBoundingClientRect();
+        // the canvas is display:none on mobile — no board, nothing to thread
+        if (!cr.width) return;
+        const sc = cr.width / 3600;
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        links.forEach(function (pair) {
+          const a = pinAt(pair[0], cr, sc), b = pinAt(pair[1], cr, sc);
+          if (!a || !b) return;
+          const sag = Math.hypot(b.x - a.x, b.y - a.y) * 0.14;   // gravity on the thread
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M ' + a.x.toFixed(1) + ',' + a.y.toFixed(1) +
+                                 ' Q ' + ((a.x + b.x) / 2).toFixed(1) + ',' + ((a.y + b.y) / 2 + sag).toFixed(1) +
+                                 ' ' + b.x.toFixed(1) + ',' + b.y.toFixed(1));
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#7ee8a2');
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('stroke-opacity', '0.6');
+          svg.appendChild(path);
+        });
+      }
+
+      draw();
+      window.addEventListener('load', draw);
+      window.addEventListener('resize', draw);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    })();
+
+    // ── Mobile hamburger menu ──
+    const mBurgerBtn = document.getElementById('mBurgerBtn');
+    const mMenu = document.getElementById('mMenu');
+    const mMenuClose = document.getElementById('mMenuClose');
+
+    function openMMenu() {
+      mMenu.classList.add('open');
+      mBurgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('m-menu-open');
+    }
+    function closeMMenu() {
+      mMenu.classList.remove('open');
+      mBurgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('m-menu-open');
+    }
+    if (mBurgerBtn) {
+      mBurgerBtn.addEventListener('click', () => {
+        mMenu.classList.contains('open') ? closeMMenu() : openMMenu();
+      });
+      mMenuClose.addEventListener('click', closeMMenu);
+      mMenu.querySelectorAll('a[data-close]').forEach(a => a.addEventListener('click', closeMMenu));
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMMenu(); });
     }
   </script>
 
