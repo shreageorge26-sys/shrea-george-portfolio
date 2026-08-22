@@ -420,6 +420,13 @@
     }
 
     /* ── SCREEN MOCKUP SECTION ── */
+    /* the scenario phone shrinks too, so the findings column can hold a full line */
+    .scenario-stage .phone-mockup { width: 230px; border-radius: 40px; padding: 10px; }
+    .scenario-stage .phone-screen { border-radius: 32px; }
+
+    .dir-row .phone-mockup { width: 250px; border-radius: 44px; padding: 11px; }
+    .dir-row .phone-screen { border-radius: 34px; }
+
     .mockup-section {
       background: rgba(0,0,0,0.22);
       margin: 0 -210px;
@@ -1044,10 +1051,13 @@
     /* ── SCENARIO STAGE (3-col: left | phone | right) ── */
     .scenario-stage {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 40px;
+      grid-template-columns: minmax(0, 0.85fr) auto minmax(0, 1.15fr);
+      gap: 28px;
       align-items: center;
       flex: 1;
+      /* pull back into the section's 210px bleed padding so the findings
+         column is wide enough to keep each pill on a single line */
+      margin: 0 -150px;
     }
 
     .scenario-side {
@@ -1081,7 +1091,7 @@
     .analytics-num {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 64px;
+      font-size: 48px;
       color: #ADDD8D;
       line-height: 1;
       letter-spacing: -0.01em;
@@ -1090,7 +1100,7 @@
     .analytics-label {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 500;
-      font-size: 15px;
+      font-size: 13px;
       color: rgba(255,255,255,0.6);
       line-height: 1.5;
     }
@@ -1350,16 +1360,23 @@
       text-align: left;
       border: 1.5px solid #DD8D8D;
       border-radius: 999px;
-      padding: 10px 27px;
-      min-height: 48px;
+      padding: 9px 20px;
+      min-height: 38px;
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 18px;
-      letter-spacing: 0.02em;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
       color: #fff;
       background: transparent;
     }
     .finding-pill.green { border-color: #ADDD8D; }
+
+    /* below this the longest pill can no longer hold one line — let it wrap
+       rather than push out of the section */
+    @media (max-width: 1360px) {
+      .finding-pill { white-space: normal; }
+    }
     .finding-pill.neutral { border-color: rgba(255,255,255,0.45); }
 
     .img-placeholder {
@@ -1866,7 +1883,7 @@
         <p>We suggested 3 different ways to highlight ICICI UPI to the user based on the amount of disruption.</p>
       </div>
       <!-- 3 Design Direction Mockups -->
-      <div style="display:flex; justify-content:center; gap:200px; margin-top:56px; align-items:start; flex-wrap:wrap;">
+      <div class="dir-row" style="display:flex; justify-content:center; gap:64px; margin-top:56px; align-items:start; flex-wrap:nowrap;">
         <div style="display:flex; flex-direction:column; align-items:center; gap:28px;">
           <div class="phone-mockup" style="box-shadow:0 0 0 2px #3a3a3c, 0 20px 50px rgba(0,0,0,0.15);">
             <div class="phone-screen" style="background:#5a2020;">
