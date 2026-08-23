@@ -45,6 +45,11 @@
       user-select: none;
     }
 
+    /* Lock the document to the visual viewport. Without this the 3600x2400
+       canvas inflates the layout viewport on mobile, and position:fixed
+       elements (the tool dock) land far off screen. */
+    body { position: fixed; inset: 0; }
+
     body.dragging { cursor: grabbing; }
 
     /* ── NAV ── */
@@ -154,6 +159,12 @@
       margin-right: auto;
     }
 
+    /* Board zoom is ~0.51 on a phone, so canvas type renders about half its
+       CSS size. 78px lands the headline at ~40px on screen, as on the home page. */
+    @media (max-width: 768px) {
+      .hero-headline { font-size: 78px; }
+    }
+
     .hero-sub {
       font-size: 14px;
       font-weight: 500;
@@ -194,6 +205,19 @@
     }
 
     /* ── BOARD CARD ── */
+    /* Article cards are a single artwork each — no card chrome behind them. */
+    .art-card {
+      position: absolute;
+      border-radius: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18),
+                  0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
+      pointer-events: all;
+      cursor: grab;
+      display: block;
+      text-decoration: none;
+    }
+    .art-card img { width: 100%; height: auto; display: block; border-radius: 16px; }
+
     .card {
       position: absolute;
       background-color: var(--card);
@@ -683,6 +707,22 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.18);
     }
 
+    /* On phones the dock becomes a bottom bar; as a left rail it covers the board. */
+    @media (max-width: 768px) {
+      .tool-dock {
+        top: auto;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        border-radius: 22px;
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .tool-icon { width: 40px; height: 40px; border-radius: 10px; }
+      .tool-tip { display: none; }
+    }
+
     .tool-item.active .tool-icon {
       box-shadow: 0 0 0 3px var(--accent);
       transform: scale(1.04);
@@ -952,15 +992,15 @@
     </div>
 
     <!-- ══ AWARD POLAROID CLUSTER (close to hero) ══ -->
-    <img class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:540px; left:850px; width:169px; transform:rotate(4deg);">
-    <img class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:780px; left:850px; width:159px; transform:rotate(-7deg);">
-    <div style="position:absolute; top:520px; left:600px; width:286px; transform:rotate(-3deg);">
+    <img class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:596px; left:934px; width:152px; transform:rotate(4deg);">
+    <img class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:800px; left:935px; width:143px; transform:rotate(-7deg);">
+    <div style="position:absolute; top:578px; left:719px; width:257px; transform:rotate(-3deg);">
       <div class="pin"></div>
       <img src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" style="width:100%; display:block; border-radius:14px; box-shadow:0 24px 56px rgba(0,0,0,0.4);">
     </div>
 
     <!-- ══ GIF / HAND TRACKER CARD ══ -->
-    <div class="card" style="top:660px; left:2016px; width:320px; transform:rotate(1.5deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
+    <div class="card" style="top:698px; left:1922px; width:288px; transform:rotate(1.5deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
       <div class="pin"></div>
       <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
         <video src="hand-tracker.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
@@ -969,7 +1009,7 @@
     </div>
 
     <!-- ══ DESIGN CERTIFICATION ══ -->
-    <div class="card" style="top:1100px; left:2040px; width:500px; transform:rotate(-2deg); overflow:visible;">
+    <div class="card" style="top:1072px; left:1938px; width:450px; transform:rotate(-2deg); overflow:visible;">
       <div class="pin"></div>
       <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:14px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:8px;">Design Certification</p>
       <div style="width:100%; aspect-ratio:3/4; overflow:hidden; border-radius:6px;">
@@ -978,35 +1018,25 @@
     </div>
 
     <!-- ══ ARTICLE 01 — Humour in UX ══ -->
-    <div class="card" style="top:1100px; left:700px; width:280px; transform:rotate(-1.5deg); overflow:visible;">
+    <div class="art-card" style="top:1072px; left:750px; width:360px; transform:rotate(-1.5deg);">
       <div class="pin"></div>
-      <div style="width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:10px; margin-bottom:14px;">
-        <img src="article-humour-ux.png" alt="Humour in UX, the Elaichi in your Chai" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
-      </div>
-      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:6px;">Article</p>
-      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:18px; font-weight:600; line-height:1.3; color:var(--text); letter-spacing:-0.01em;">Humour in UX, the Elaichi in your Chai</p>
-      <a href="#" style="display:inline-block; margin-top:12px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#7a6a55; text-decoration:none; border-bottom:1px solid #d0c8bc;">Read →</a>
+      <img src="article-elaichi.png" alt="Article — Humour in UX, the Elaichi in your Chai. UX Psychology, Behaviour &amp; Persuasion.">
     </div>
 
-    <!-- ══ ARTICLE 02 — Maggi meets GPay ══ -->
-    <div class="card" style="top:480px; left:1820px; width:240px; transform:rotate(2deg); overflow:visible;">
+    <!-- ══ ARTICLE 02 — Maggi Meets GPay ══ -->
+    <div class="art-card" style="top:520px; left:1685px; width:360px; transform:rotate(2deg);">
       <div class="pin"></div>
-      <div style="width:100%; aspect-ratio:16/10; overflow:hidden; border-radius:10px; margin-bottom:14px;">
-        <img src="article-maggi-gpay.jpg" alt="Maggi meets GPay" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
-      </div>
-      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:6px;">Article</p>
-      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:18px; font-weight:600; line-height:1.3; color:var(--text); letter-spacing:-0.01em;">Maggi meets GPay</p>
-      <a href="#" style="display:inline-block; margin-top:12px; font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:#7a6a55; text-decoration:none; border-bottom:1px solid #d0c8bc;">Read →</a>
+      <img src="article-maggi.png" alt="Article — Maggi Meets GPay. Product.">
     </div>
 
     <!-- ══ STATEMENT CARDS (placeholder) ══ -->
-    <div class="sc sc-light" style="top:1080px; left:1656px; width:264px; transform:rotate(-2deg);">
+    <div class="sc sc-light" style="top:1092px; left:1617px; width:238px; transform:rotate(-2deg);">
       <div class="pin"></div>
       <span class="sc-star">✦</span>
       <p class="sc-quote" style="font-family:'Rebond Grotesque', var(--sans); font-style:normal;">"Good design is an opportunity to make the world a better place."</p>
     </div>
 
-    <div class="sc sc-accent" style="top:1320px; left:1392px; width:192px; transform:rotate(2deg);">
+    <div class="sc sc-accent" style="top:1258px; left:1394px; width:173px; transform:rotate(2deg);">
       <div class="pin"></div>
       <span class="sc-tag">Tinkering</span>
       <p class="sc-num">5+</p>
@@ -1020,9 +1050,14 @@
     const hint = document.getElementById('dragHint');
 
     // Start at centre
-    let scale = 0.8;
-    const startX = window.innerWidth  / 2 - 1440 * scale;
-    const startY = window.innerHeight / 2 - 960 * scale;
+    // documentElement.clientWidth, not window.innerWidth: on mobile the latter
+    // reports the inflated layout viewport rather than the CSS pixels on screen.
+    const viewW = () => document.documentElement.clientWidth;
+    const viewH = () => document.documentElement.clientHeight;
+
+    let scale = Math.max(0.30, Math.min(0.8, viewW() / 760));
+    const startX = viewW() / 2 - 1440 * scale;
+    const startY = viewH() / 2 - 960 * scale;
     let tx = startX, ty = startY;
 
     function applyTransform() {

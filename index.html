@@ -45,6 +45,12 @@
       user-select: none;
     }
 
+    /* Lock the document to the visual viewport. Without this the 3600x2400
+       canvas inflates the layout viewport on mobile, and every position:fixed
+       element — the tool dock especially — resolves against that inflated box
+       and lands far off screen. */
+    body { position: fixed; inset: 0; }
+
     body.dragging { cursor: grabbing; }
 
     /* ── NAV ── */
@@ -152,6 +158,12 @@
       text-wrap: balance;
       margin-left: auto;
       margin-right: auto;
+    }
+
+    /* Mobile board zoom is ~0.51, so canvas type renders about half its CSS
+       size. 78px lands the headline at ~40px on screen at 390px wide. */
+    @media (max-width: 768px) {
+      .hero-headline { font-size: 78px; }
     }
 
     .hero-sub {
@@ -683,6 +695,23 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.18);
     }
 
+    /* On phones the dock becomes a bottom bar. As a left rail it covers the
+       hero, because the whole board is only ~390px wide there. */
+    @media (max-width: 768px) {
+      .tool-dock {
+        top: auto;
+        bottom: 18px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        border-radius: 22px;
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .tool-icon { width: 40px; height: 40px; border-radius: 10px; }
+      .tool-tip { display: none; }
+    }
+
     .tool-item.active .tool-icon {
       box-shadow: 0 0 0 3px var(--accent);
       transform: scale(1.04);
@@ -1118,12 +1147,20 @@
 
     /* mobile colour cards — same ink and background, bleed art dropped
        because the art would crowd a 350px-wide card */
-    .m-tpl.tpl-icici, .m-tpl.tpl-re { min-height: 0; }
     .m-tpl.tpl-icici { background: linear-gradient(163deg, #E8893C 0%, #D2652F 42%, #A93823 100%); }
     .m-tpl.tpl-re { background: #8C2B25; }
-    .m-tpl.tpl-icici .tpl-body, .m-tpl.tpl-re .tpl-body { max-width: 100%; }
-    .m-tpl .tpl-media { display: none; }
-    .m-tpl .tpl-lead { font-size: clamp(16px, 4.6vw, 19px); }
+
+    /* the bleed art rides along on mobile too — the card grows to make
+       room for it so the art never lands on the text */
+    .m-tpl .tpl-media { border-radius: 20px; }
+    .m-tpl > .tpl-chips, .m-tpl > .tpl-body { position: relative; z-index: 1; }
+    .m-tpl.tpl-re { min-height: 320px; }
+    .m-tpl.tpl-re .tpl-body { max-width: 100%; }
+    .m-tpl.tpl-re .tpl-media img { left: 6%; top: 61%; width: 120%; }
+    .m-tpl.tpl-icici { min-height: 250px; }
+    .m-tpl.tpl-icici .tpl-body { max-width: 72%; }
+    .m-tpl.tpl-icici .tpl-media img { left: 74%; top: 12%; width: 46%; }
+    .m-tpl .tpl-lead { font-size: 14px; }
 
 
     /* TerraPay — question card: one paragraph, the figure bold inline */
@@ -1138,7 +1175,7 @@
     }
     .tpl-ask strong { font-weight: 700; }
     .m-tpl.tpl-terrapay { background: #1B3D68; }
-    .m-tpl .tpl-ask { font-size: clamp(17px, 4.8vw, 20px); }
+    .m-tpl .tpl-ask { font-size: 14px; }
 
     /* mobile flavour of the same card — identical design, scaled type */
     .m-tpl {
@@ -1147,30 +1184,26 @@
       transform: rotate(var(--rot, 0deg));
       background: #0F1A2B;
       border-radius: 20px;
-      padding: clamp(20px, 6vw, 28px);
+      padding: 20px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: clamp(28px, 9vw, 40px);
+      gap: 24px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 10px 22px rgba(0,0,0,0.22), 0 20px 40px rgba(0,0,0,0.28);
       text-decoration: none;
     }
     .m-tpl .tpl-chips { gap: 8px; }
-    .m-tpl .tpl-chip { font-size: 16px; padding: 12px 22px; }
-    .m-tpl .tpl-star { width: 40px; height: 40px; flex: 0 0 40px; }
-    .m-tpl .tpl-metric { gap: 12px; }
-    .m-tpl .tpl-num { font-size: clamp(44px, 14vw, 60px); }
-    .m-tpl .tpl-sub { font-size: clamp(16px, 4.6vw, 19px); }
+    .m-tpl .tpl-chip { font-size: 14px; padding: 10px 18px; }
+    .m-tpl .tpl-star { width: 26px; height: 26px; flex: 0 0 26px; }
+    .m-tpl .tpl-metric { gap: 10px; }
+    .m-tpl .tpl-num { font-size: 32px; }
+    .m-tpl .tpl-sub { font-size: 14px; }
 
     .m-shell { display: none; }
 
-    @media (max-width: 768px) {
-      html, body { overflow-x: hidden !important; overflow-y: auto !important; height: auto !important; cursor: auto !important; background-image: none !important; background-color: #141d14 !important; }
-      body > nav, .drag-hint, .tool-dock, #canvas, .coming-soon-badge { display: none !important; }
-
-      .m-shell { display: block; min-height: 100vh; }
-      body.m-menu-open { overflow: hidden !important; }
-    }
+    /* The board runs at every width — no separate mobile layout, same as
+       playground.html. .m-shell stays display:none (see above) and is kept
+       in the DOM only so its markup isn't lost. */
 
     /* ── mobile header + hamburger ── */
     .m-header {
@@ -1267,7 +1300,7 @@
     .m-board {
       max-width: 560px;
       margin: 0 auto;
-      padding: 8vw 5vw 20vw;
+      padding: 8vw 28px 20vw;
       display: flex;
       flex-direction: column;
       gap: 32px;
@@ -1485,6 +1518,7 @@
 
         <!-- ══ CASE 03 — ICICI ══ -->
         <a href="/icici.html" class="m-tpl tpl-warm tpl-icici" style="--rot:-1deg;">
+          <div class="tpl-media"><img src="card-icici-app.png" alt="" onerror="this.style.display='none'"></div>
           <div class="pin"></div>
           <div class="tpl-chips">
             <span class="tpl-chip">Banking</span>
@@ -1501,6 +1535,7 @@
 
         <!-- ══ CASE 04 — Royal Enfield ══ -->
         <a href="/royal-enfield.html" class="m-tpl tpl-warm tpl-re" style="--rot:1deg;">
+          <div class="tpl-media"><img src="card-re-site.png" alt="" onerror="this.style.display='none'"></div>
           <div class="pin"></div>
           <div class="tpl-chips">
             <span class="tpl-chip">E-Commerce</span>
@@ -1806,9 +1841,17 @@
     const hint = document.getElementById('dragHint');
 
     // Start at centre
-    let scale = 0.75;
-    const startX = window.innerWidth  / 2 - 1440 * scale;
-    const startY = window.innerHeight / 2 - 960 * scale;
+    // Fit the hero (canvas x 1126-1754, ~630 wide) on screen. Clamps to the
+    // desktop 0.75 at 570px and above, so wide screens are unaffected.
+    // Use documentElement.clientWidth, not window.innerWidth: on mobile the
+    // latter reports the layout viewport (which the 3600px canvas inflates)
+    // rather than the CSS pixels actually on screen.
+    const viewW = () => document.documentElement.clientWidth;
+    const viewH = () => document.documentElement.clientHeight;
+
+    let scale = Math.max(0.30, Math.min(0.75, viewW() / 760));
+    const startX = viewW() / 2 - 1440 * scale;
+    const startY = viewH() / 2 - 960 * scale;
     let tx = startX, ty = startY;
 
     function applyTransform() {
@@ -1854,8 +1897,17 @@
       document.body.classList.remove('dragging');
     });
 
+    // The board only exists on desktop — below the mobile breakpoint #canvas is
+    // display:none, so these pan handlers must not swallow the page's own
+    // scrolling (offsetParent is null once an ancestor is display:none).
+    const boardVisible = () => {
+      const c = document.getElementById('canvas');
+      return !!(c && c.offsetParent !== null);
+    };
+
     // Two-finger trackpad pan (wheel events with no zoom)
     document.addEventListener('wheel', e => {
+      if (!boardVisible()) return;
       e.preventDefault();
       pendingTx -= e.deltaX;
       pendingTy -= e.deltaY;
@@ -1872,6 +1924,7 @@
       }
     });
     document.addEventListener('touchmove', e => {
+      if (!boardVisible()) return;
       e.preventDefault();
       if (e.touches.length === 1 && lastTouch) {
         pendingTx = startTx + (e.touches[0].clientX - lastTouch.clientX);
@@ -1886,8 +1939,8 @@
 
     // Fly to work section
     function flyToWork() {
-      tx = window.innerWidth / 2 - 700 * scale;
-      ty = window.innerHeight / 2 - 800 * scale;
+      tx = viewW() / 2 - 700 * scale;
+      ty = viewH() / 2 - 800 * scale;
       canvas.style.transition = 'transform 0.8s cubic-bezier(0.4,0,0.2,1)';
       applyTransform();
       setTimeout(() => canvas.style.transition = '', 800);
