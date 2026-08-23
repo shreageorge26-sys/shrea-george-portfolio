@@ -158,6 +158,23 @@
       font-family: 'Rebond Grotesque', var(--sans); font-weight: 600; font-size: 36px;
       line-height: 1.2; letter-spacing: -0.01em; color: #ADDD8D; max-width: 800px;
     }
+    /* The states board as six separate cards, so it can reflow: 3 across on
+       desktop, 2 across on phones. drop-shadow (not box-shadow) because the
+       card art is transparent outside its rounded rectangle. */
+    .states-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      align-items: start;
+      margin-top: 28px;
+    }
+    .states-grid img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 14px 28px rgba(0,0,0,0.32));
+    }
+
     .iteration-shots { display: flex; align-items: flex-start; gap: 24px; flex-wrap: wrap; margin-top: 28px; }
     .iteration-shot {
       flex: 1 1 320px; max-width: 460px; width: auto; height: auto; border-radius: 8px; display: block;
@@ -259,6 +276,43 @@
       .analytics-row { gap: 32px; }
       .iteration-shots { flex-direction: column; }
       .iteration-question { font-size: 28px; }
+
+      /* Non-board shots keep a fixed 380/460px cap that overflows a 320px
+         column on small phones. */
+      .iteration-shots:not(.board) .iteration-shot { max-width: 100%; width: 100%; }
+
+      /* Chips: 15px/44px tall was nearly full-bleed on a 350px column. */
+      .finding-pill {
+        font-size: 13px;
+        padding: 8px 16px;
+        min-height: 34px;
+        letter-spacing: 0.01em;
+      }
+      .question-chip {
+        font-size: 13px;
+        padding: 9px 16px;
+      }
+
+      /* Wide board composites are ~3:1. Fitting one to 350px renders it about
+         113px tall, which is far too small to read. Give it a legible height
+         and let it scroll sideways instead of squashing it to the column. */
+      .iteration-shots.board {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 4px;
+      }
+      .iteration-shots.board::-webkit-scrollbar { display: none; }
+      .iteration-shots.board .iteration-shot {
+        flex: 0 0 auto;
+        height: 250px;
+        width: auto;
+        max-width: none;
+      }
+
+      .states-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     }
   </style>
 </head>
@@ -507,8 +561,13 @@
       <div class="iteration-round">
         <p class="iteration-eyebrow">Dilemma 2</p>
         <p class="iteration-question">Cured vs. no action taken, as states</p>
-        <div class="iteration-shots board">
-          <img class="iteration-shot" src="fyndna-iter-states-board.png?v=3" alt="Board of card layout variants exploring visual hierarchy across risk types and states">
+        <div class="states-grid">
+          <img src="fyndna-state-1.png" alt="Document card for bank_statement_jan.pdf, Dual PAN Card, with Cannot Cure and Cure actions">
+          <img src="fyndna-state-2.png" alt="Name Mismatch risk from EPFO verification, comparing name in EPFO against the application">
+          <img src="fyndna-state-3.png" alt="Hand-written Passbook flagged High, with Cannot Cure and Cure and a Raise Verification action">
+          <img src="fyndna-state-4.png" alt="Compact row: True PDF false, High, marked Verification Needed">
+          <img src="fyndna-state-5.png" alt="Compact row: Potential PDF Manipulation Detected, Medium, R1012">
+          <img src="fyndna-state-6.png" alt="R1015 Handwritten Salary Slip, Pending and High, with Cannot Cure and Cure">
         </div>
         <ul class="approach-list">
           <li><strong>Idea:</strong> <span class="approach-text">Played with different visual hierarchies and alignments while coordinating with other teams, to understand which information mattered the most.</span></li>
