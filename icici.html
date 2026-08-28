@@ -179,11 +179,13 @@
     }
     .hero-display .accent { color: #7ee8a2; }
     .hero-subline {
-      font-size: 16px;
-      color: var(--muted);
-      line-height: 1.7;
+      font-family: 'Rebond Grotesque', var(--sans);
+      font-weight: 400;
+      font-size: 22px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
       max-width: 620px;
-      margin: 28px auto 0;
+      margin: 24px auto 0;
     }
     .hero-cards {
       display: flex;
@@ -445,7 +447,7 @@
     .mockup-section-body {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 400;
-      font-size: 16px;
+      font-size: 18px;
       color: rgba(255,255,255,0.7);
       line-height: 1.6;
       max-width: 560px;
@@ -536,7 +538,7 @@
 
     .process-steps-row {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       margin-bottom: 56px;
     }
@@ -564,7 +566,7 @@
 
     .process-step-label {
       font-family: 'Rebond Grotesque', var(--sans);
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 12px;
@@ -765,7 +767,7 @@
 
     .impact-stat {
       font-family: 'Rebond Grotesque', var(--sans);
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 600;
       margin-bottom: 8px;
     }
@@ -1091,7 +1093,7 @@
     .analytics-num {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 48px;
+      font-size: 40px;
       color: #ADDD8D;
       line-height: 1;
       letter-spacing: -0.01em;
@@ -1272,7 +1274,7 @@
       color: var(--text);
     }
 
-    /* ══ Unified heading style: Rebond Grotesque Semibold 60px (all headings except hero) ══ */
+    /* ══ Unified heading style: Rebond Grotesque Semibold 40px (all headings except hero) ══ */
     .section-heading,
     .process-steps-title,
     .mockup-section-title,
@@ -1281,7 +1283,7 @@
     .challenge-title {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 60px;
+      font-size: 40px;
       line-height: 1.1;
       letter-spacing: -0.015em;
       color: var(--text);
@@ -1289,8 +1291,8 @@
 
     .section-body {
       font-family: 'Rebond Grotesque', var(--sans);
-      font-size: 22px;
-      line-height: 1.5;
+      font-size: 18px;
+      line-height: 1.55;
       color: rgba(255,255,255,0.75);
       max-width: 100%;
     }
@@ -1301,14 +1303,14 @@
     .sec-statement {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 28px;
+      font-size: 24px;
       line-height: 1.3;
       color: var(--text);
       max-width: 760px;
     }
     .hand-note {
       font-family: var(--hand);
-      font-size: 38px;
+      font-size: 30px;
       line-height: 1.3;
       color: var(--text);
     }
@@ -1317,8 +1319,8 @@
       background: #ADDD8D;
       color: #1f3a1c;
       border-radius: 100px;
-      padding: 15px 30px;
-      font-size: 18px;
+      padding: 12px 24px;
+      font-size: 16px;
       font-weight: 600;
       font-family: 'Rebond Grotesque', var(--sans);
     }
@@ -1339,14 +1341,14 @@
     .quote-line {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 600;
-      font-size: 22px;
+      font-size: 24px;
       line-height: 1.4;
       color: var(--text);
     }
     .factor-item {
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 400;
-      font-size: 24px;
+      font-size: 20px;
       color: var(--text);
       display: flex;
       gap: 12px;
@@ -1425,18 +1427,18 @@
       background: #2b3a28;
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 26px;
-      padding: 48px 52px;
+      padding: 34px 38px;
       color: #fff;
       font-family: 'Rebond Grotesque', var(--sans);
       font-weight: 500;
-      font-size: 25px;
+      font-size: 20px;
       line-height: 1.45;
       box-shadow: 0 26px 55px rgba(0,0,0,0.28);
     }
     .obj-note {
       position: absolute;
       font-family: var(--hand);
-      font-size: 40px;
+      font-size: 32px;
       color: rgba(255,255,255,0.42);
       white-space: nowrap;
       pointer-events: none;
@@ -1445,6 +1447,121 @@
       .obj-scatter { height: auto; display: flex; flex-direction: column; gap: 20px; }
       .obj-card { position: static !important; width: auto !important; transform: none !important; }
       .obj-note { display: none; }
+    }
+
+    /* ══ Bespoke section layouts (were inline; classed so the media queries can restack them) ══ */
+    .compare-row { display: flex; justify-content: center; align-items: flex-start; flex-wrap: wrap; gap: 140px; margin-top: 56px; }
+    .compare-caption { font-family: 'Rebond Grotesque', var(--sans); font-weight: 600; font-size: 18px; color: var(--text); text-align: center; }
+
+    .sec-statement-lead { margin-top: 120px; }
+
+    .gpay-row { display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; margin-top: 96px; }
+    .gpay-note { justify-self: end; text-align: left; }
+    .gpay-card { background: #fff; border-radius: 18px; padding: 10px; width: 440px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); transform: rotate(3.52deg); }
+    .gpay-card img { width: 100%; border-radius: 12px; display: block; }
+
+    .qr-row { display: grid; grid-template-columns: 700px 1fr; gap: 64px; align-items: stretch; margin-top: 250px; }
+    .qr-photo { width: 100%; border-radius: 18px; display: block; object-fit: cover; }
+    .qr-quotes { display: flex; flex-direction: column; justify-content: space-between; padding: 24px 0; }
+    .qr-quotes .quote-line { max-width: 520px; }
+    .quote-line.indent { margin-left: 100px; }
+
+    .labels-scatter-wrap { margin-top: 56px; }
+    .labels-scatter { width: 80%; display: block; margin: 0 auto; }
+    .labels-row { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 36px; }
+    .hand-note-sm { font-size: 28px; margin-top: 18px; }
+
+    .factors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; margin-top: 56px; align-items: start; }
+    .factors-col { display: flex; flex-direction: column; gap: 26px; }
+
+    .dir-row { display: flex; justify-content: center; align-items: flex-start; flex-wrap: nowrap; gap: 64px; margin-top: 56px; }
+    .dir-col { display: flex; flex-direction: column; align-items: center; gap: 28px; }
+    .dir-caption { font-family: 'Rebond Grotesque', var(--sans); font-size: 15px; font-weight: 600; color: var(--text); text-align: center; line-height: 1.4; max-width: 300px; }
+
+    .map-wrap { margin-top: 56px; }
+
+    /* ══ RESPONSIVE — same scale as the FYNDNA case study ══ */
+    @media (max-width: 900px) {
+      .page { padding: 0 40px 100px; }
+      .cs-hero { margin: 0 -40px; }
+      .work-overview { margin: 0 -40px 80px; padding: 60px 40px 64px; }
+      .mockup-section { margin: 0 -40px 80px; padding: 64px 40px 72px; }
+      .work-overview-grid { grid-template-columns: 1fr; gap: 32px; }
+      .process-steps-row { grid-template-columns: 1fr 1fr; }
+      .scenario-stage { grid-template-columns: 1fr; margin: 0; gap: 32px; }
+      .compare-row { gap: 56px; }
+      .dir-row { flex-wrap: wrap; gap: 40px; }
+      .gpay-row, .qr-row, .labels-row, .factors-grid { grid-template-columns: 1fr; }
+      .gpay-note { justify-self: start; }
+      .gpay-card { width: 100%; }
+      .qr-row { margin-top: 120px; gap: 32px; }
+      .qr-quotes { padding: 0; gap: 24px; }
+      .quote-line.indent { margin-left: 0; }
+      .factors-grid { gap: 26px; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 0 20px 80px; }
+      nav { padding: 16px 20px; }
+      .cs-hero { margin: 0 -20px; }
+      .work-overview { margin: 0 -20px 80px; padding: 48px 20px 56px; }
+      .mockup-section { margin: 0 -20px 80px; padding: 56px 20px 64px; }
+      .case-section { padding: 96px 0; }
+      .process-steps-section { margin: 56px 0; }
+
+      /* type scale */
+      .hero-display { font-size: 40px; }
+      .hero-subline { font-size: 17px; }
+      .section-heading { font-size: 34px; }
+      .section-body { font-size: 17px; }
+      .process-steps-title { font-size: 34px; }
+      .scenario-header-text .mockup-section-title { font-size: 26px; }
+      .mockup-section-body { font-size: 16px; min-height: 0; }
+      .process-step-label { font-size: 16px; }
+      .process-step-items li { font-size: 14px; }
+      .sec-statement { font-size: 20px; }
+      .sec-statement-lead { margin-top: 64px; }
+      .hand-note, .hand-note-sm { font-size: 22px; }
+      .quote-line { font-size: 18px; }
+      .factor-item { font-size: 17px; }
+      .obj-card { font-size: 17px; padding: 24px 26px; }
+      .analytics-num { font-size: 34px; }
+      .impact-stat { font-size: 22px; }
+      .compare-caption { font-size: 16px; }
+      .dir-caption { font-size: 14px; }
+
+      /* chips + pills */
+      .green-pill { font-size: 13px; padding: 9px 16px; }
+      .pill-row { gap: 10px; margin-top: 24px; }
+      .pill-spark { display: none; }
+      .finding-pill { font-size: 13px; padding: 8px 16px; min-height: 34px; letter-spacing: 0.01em; }
+
+      /* hero cards wrap two-up instead of eight slivers */
+      .hero-cards { flex-wrap: wrap; gap: 12px; margin: 64px -20px 0; }
+      .hero-card { flex: 0 0 45%; }
+
+      /* phones fit the column */
+      .phone-mockup { width: 100%; max-width: 240px; border-radius: 40px; padding: 10px; }
+      .phone-screen { border-radius: 32px; }
+      .dir-row .phone-mockup, .scenario-stage .phone-mockup { width: 100%; max-width: 240px; }
+      .phone-island { width: 88px; height: 26px; top: 12px; }
+
+      /* stacked layouts */
+      .compare-row { gap: 48px; margin-top: 40px; }
+      .dir-row { gap: 40px; margin-top: 40px; }
+      .impact-grid { grid-template-columns: 1fr; }
+      .labels-scatter { width: 100%; }
+      .qr-row { margin-top: 80px; }
+      .gpay-row { margin-top: 64px; }
+      .scenario-header { gap: 10px; margin-bottom: 32px; }
+      .carousel-arrow { width: 40px; height: 40px; font-size: 18px; }
+      .process-steps-row { grid-template-columns: 1fr 1fr; gap: 16px; }
+
+      /* the perceptual map is unreadable squashed into a phone column,
+         so give it a legible width and let it scroll sideways */
+      .map-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 32px 0; }
+      .map-wrap::-webkit-scrollbar { display: none; }
+      .map-wrap svg { min-width: 760px; }
     }
   </style>
 </head>
@@ -1561,7 +1678,7 @@
       <h2 class="process-steps-title">The Research Plan</h2>
       <hr class="process-steps-divider">
 
-      <div class="process-steps-row" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="process-steps-row">
         <div class="process-step">
           <div class="process-step-num">1</div>
           <p class="process-step-label">Research Protocol</p>
@@ -1609,7 +1726,7 @@
 
         <!-- Left: text -->
         <div>
-          <h2 style="font-family: 'Rebond Grotesque', var(--sans); font-size: 60px; font-weight: 600; line-height: 1.1; letter-spacing: -0.015em; margin-bottom: 28px;">The Research Plan</h2>
+          <h2 style="font-family: 'Rebond Grotesque', var(--sans); font-size: 40px; font-weight: 600; line-height: 1.1; letter-spacing: -0.015em; margin-bottom: 28px;">The Research Plan</h2>
           <p style="font-size: 15px; color: var(--muted); line-height: 1.8;">The research was structured from a broad to a narrow spectrum using a funnel method.</p>
           <p style="font-size: 15px; color: var(--muted); line-height: 1.8; margin-top: 8px;">24 users across 5 tier-1 cities in India were interviewed.</p>
         </div>
@@ -1692,7 +1809,7 @@
         <p>We had to address the "hard truth" that ICICI bank has <strong>no first-mover advantage</strong> against its competitors.</p>
         <p>So. to stand out as a UPI platform, they would have to innovate on the <strong>branding, marketing and offers</strong> cohorts.</p>
       </div>
-      <div style="display:flex; justify-content:center; gap:140px; margin-top:56px; align-items:start; flex-wrap:wrap;">
+      <div class="compare-row">
         <div style="display:flex; flex-direction:column; align-items:center; gap:24px;">
           <span style="display:inline-flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:50%; background:#fff;"><img src="logo-gpay.png" alt="Google Pay" style="height:40px; width:auto; display:block;"></span>
           <div class="phone-mockup" style="box-shadow:0 0 0 2px #3a3a3c, 0 20px 50px rgba(0,0,0,0.15);">
@@ -1700,7 +1817,7 @@
               <img src="compare-gpay.png" alt="Google Pay UPI" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
             </div>
           </div>
-          <p style="font-family:'Rebond Grotesque', var(--sans); font-weight:600; font-size:20px; color:var(--text); text-align:center;">“We do UPI.”</p>
+          <p class="compare-caption">“We do UPI.”</p>
         </div>
         <div style="display:flex; flex-direction:column; align-items:center; gap:24px;">
           <span style="display:inline-flex; align-items:center; justify-content:center; width:64px; height:64px; border-radius:50%; background:#fff;"><img src="logo-icici-upi.png" alt="ICICI Bank" style="height:40px; width:auto; display:block;"></span>
@@ -1709,7 +1826,7 @@
               <img src="compare-icici.png" alt="ICICI Bank UPI" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
             </div>
           </div>
-          <p style="font-family:'Rebond Grotesque', var(--sans); font-weight:600; font-size:20px; color:var(--text); text-align:center;">“We also do UPI.”</p>
+          <p class="compare-caption">“We also do UPI.”</p>
         </div>
       </div>
     </section>
@@ -1722,7 +1839,7 @@
       </div>
 
       <!-- Perceptual map quadrant (on dark bg) -->
-      <div style="margin-top:56px;">
+      <div class="map-wrap">
         <svg viewBox="0 0 960 520" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family: Inter, sans-serif; overflow: visible;">
           <defs>
             <marker id="ahq" markerWidth="12" markerHeight="12" refX="6" refY="3.2" orient="auto">
@@ -1773,7 +1890,7 @@
         </svg>
       </div>
 
-      <p class="sec-statement" style="margin-top:120px;">Users resort to Gpay / Phonepe / PayTM for small payments because:</p>
+      <p class="sec-statement sec-statement-lead">Users resort to Gpay / Phonepe / PayTM for small payments because:</p>
       <div class="pill-row">
         <span class="green-pill">Privacy Concerns</span>
         <span class="pill-wrap">
@@ -1787,25 +1904,25 @@
       </div>
 
       <!-- GPay processing: handwritten note + card -->
-      <div style="display:grid; grid-template-columns:1fr auto; gap:30px; align-items:center; margin-top:96px;">
-        <div style="justify-self:end; text-align:left;">
+      <div class="gpay-row">
+        <div class="gpay-note">
           <p class="hand-note">Because when your payment gets stuck,<br>the bank gets blamed</p>
           <svg width="260" height="180" viewBox="0 0 260 180" fill="none" style="display:block; margin-top:6px;">
             <defs><marker id="ahn" markerWidth="13" markerHeight="13" refX="6" refY="3.4" orient="auto"><path d="M0,0 L7.5,3.4 L0,6.8" fill="none" stroke="#c4d2c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
             <path d="M44,6 C 20,28 24,74 48,70 C 68,66 58,34 44,44 C 28,54 30,120 96,140 C 150,157 210,150 244,168" fill="none" stroke="#c4d2c4" stroke-width="1.7" stroke-linecap="round" marker-end="url(#ahn)"/>
           </svg>
         </div>
-        <div style="background:#fff; border-radius:18px; padding:10px; width:440px; box-shadow:0 20px 50px rgba(0,0,0,0.25); transform:rotate(3.52deg);">
+        <div class="gpay-card">
           <img src="gpay-processing.png" alt="GPay payment processing" style="width:100%; border-radius:12px; display:block;">
         </div>
       </div>
 
       <!-- QR photo + quotes -->
-      <div style="display:grid; grid-template-columns:700px 1fr; gap:64px; align-items:stretch; margin-top:250px;">
-        <img src="qr-scan-photo.png" alt="Person scanning QR at store" style="width:100%; border-radius:18px; display:block; object-fit:cover;">
-        <div style="display:flex; flex-direction:column; justify-content:space-between; padding:24px 0;">
-          <p class="quote-line" style="font-size:30px; max-width:520px;">&ldquo;They can see my balance also, so I dont open the app in public.&rdquo;</p>
-          <p class="quote-line" style="font-size:30px; max-width:520px; margin-left:100px;">&ldquo;I wont open my banking app around many people they will see my password and snatch my phone.&rdquo;</p>
+      <div class="qr-row">
+        <img src="qr-scan-photo.png" alt="Person scanning QR at store" class="qr-photo">
+        <div class="qr-quotes">
+          <p class="quote-line">&ldquo;They can see my balance also, so I dont open the app in public.&rdquo;</p>
+          <p class="quote-line indent">&ldquo;I wont open my banking app around many people they will see my password and snatch my phone.&rdquo;</p>
         </div>
       </div>
 
@@ -1819,19 +1936,19 @@
       </div>
 
       <!-- Labels scatter (before | after) -->
-      <div style="margin-top:56px;">
-        <img src="labels-scatter.png" alt="Before and after labels comparison" style="width:80%; display:block; margin:0 auto;">
+      <div class="labels-scatter-wrap">
+        <img src="labels-scatter.png" alt="Before and after labels comparison" class="labels-scatter">
       </div>
 
       <!-- Before / After tags + handwritten captions -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:40px; margin-top:36px;">
+      <div class="labels-row">
         <div>
           <span style="display:inline-block; background:#c9a1a6; color:#5a2630; border-radius:100px; padding:9px 26px; font-size:15px; font-weight:600; font-family:'Rebond Grotesque', var(--sans);">Before</span>
-          <p class="hand-note" style="font-size:34px; margin-top:18px;">Similar sounding labels with inconsistent iconography.</p>
+          <p class="hand-note hand-note-sm">Similar sounding labels with inconsistent iconography.</p>
         </div>
         <div>
           <span style="display:inline-block; background:#c3d98f; color:#3a4a22; border-radius:100px; padding:9px 26px; font-size:15px; font-weight:600; font-family:'Rebond Grotesque', var(--sans);">After</span>
-          <p class="hand-note" style="font-size:34px; margin-top:18px;">Consistent labels and icons matching users mental model.</p>
+          <p class="hand-note hand-note-sm">Consistent labels and icons matching users mental model.</p>
         </div>
       </div>
     </section>
@@ -1840,10 +1957,10 @@
     <section class="case-section">
       <h2 class="section-heading">10 Factors that Drive UPI Preference &amp; Usage</h2>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:64px; margin-top:56px; align-items:start;">
+      <div class="factors-grid">
 
         <!-- Left column -->
-        <div style="display:flex; flex-direction:column; gap:26px;">
+        <div class="factors-col">
           <p class="factor-item"><span class="factor-num">1.</span>Social Proof</p>
           <p class="factor-item"><span class="factor-num">2.</span>Visibility</p>
           <p class="factor-item"><span class="factor-num">3.</span>Marketing Push</p>
@@ -1852,7 +1969,7 @@
         </div>
 
         <!-- Right column with low-hanging-fruit box -->
-        <div style="display:flex; flex-direction:column; gap:26px;">
+        <div class="factors-col">
           <p class="factor-item"><span class="factor-num">6.</span>Security Concerns</p>
           <div style="display:flex; align-items:center; gap:24px;">
             <div style="border:3px solid #ADDD8D; border-radius:18px; padding:22px 28px; display:flex; flex-direction:column; gap:26px;">
@@ -1867,7 +1984,7 @@
 
       </div>
 
-      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:22px; line-height:1.5; color:rgba(255,255,255,0.75); margin-top:56px;">Note: The full handbook goes much deeper, this case study highlights only the most striking findings from it.</p>
+      <p class="section-body" style="margin-top:56px;">Note: The full handbook goes much deeper, this case study highlights only the most striking findings from it.</p>
     </section>
 
     <!-- ══ DESIGN DIRECTIONS ══ -->
@@ -1877,8 +1994,8 @@
         <p>We suggested 3 different ways to highlight ICICI UPI to the user based on the amount of disruption.</p>
       </div>
       <!-- 3 Design Direction Mockups -->
-      <div class="dir-row" style="display:flex; justify-content:center; gap:64px; margin-top:56px; align-items:start; flex-wrap:nowrap;">
-        <div style="display:flex; flex-direction:column; align-items:center; gap:28px;">
+      <div class="dir-row">
+        <div class="dir-col">
           <div class="phone-mockup" style="box-shadow:0 0 0 2px #3a3a3c, 0 20px 50px rgba(0,0,0,0.15);">
             <div class="phone-screen" style="background:#5a2020;">
               <img src="direction-1.png" alt="Highlight UPI as an entry point" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
@@ -1886,10 +2003,10 @@
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
             <span style="display:inline-block; background:#c3d98f; color:#3a4a22; border-radius:100px; padding:8px 22px; font-size:14px; font-weight:600; font-family:'Rebond Grotesque', var(--sans);">Safe</span>
-            <p style="font-family:'Rebond Grotesque', var(--sans); font-size:15px; font-weight:600; color:var(--text); text-align:center; line-height:1.4; max-width:300px;">Highlight UPI as an entry point</p>
+            <p class="dir-caption">Highlight UPI as an entry point</p>
           </div>
         </div>
-        <div style="display:flex; flex-direction:column; align-items:center; gap:28px;">
+        <div class="dir-col">
           <div class="phone-mockup" style="box-shadow:0 0 0 2px #3a3a3c, 0 20px 50px rgba(0,0,0,0.15);">
             <div class="phone-screen" style="background:#5a2020;">
               <img src="direction-2.png" alt="Create a separate brand for UPI" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
@@ -1897,10 +2014,10 @@
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
             <span style="display:inline-block; background:#c3d98f; color:#3a4a22; border-radius:100px; padding:8px 22px; font-size:14px; font-weight:600; font-family:'Rebond Grotesque', var(--sans);">Moderately disruptive</span>
-            <p style="font-family:'Rebond Grotesque', var(--sans); font-size:15px; font-weight:600; color:var(--text); text-align:center; line-height:1.4; max-width:300px;">Create a separate brand for UPI</p>
+            <p class="dir-caption">Create a separate brand for UPI</p>
           </div>
         </div>
-        <div style="display:flex; flex-direction:column; align-items:center; gap:28px;">
+        <div class="dir-col">
           <div class="phone-mockup" style="box-shadow:0 0 0 2px #3a3a3c, 0 20px 50px rgba(0,0,0,0.15);">
             <div class="phone-screen" style="background:#5a2020;">
               <img src="direction-3.png" alt="Create a separate app for UPI payments" style="width:100%; height:100%; object-fit:cover; object-position:top; display:block;">
@@ -1908,7 +2025,7 @@
           </div>
           <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
             <span style="display:inline-block; background:#c3d98f; color:#3a4a22; border-radius:100px; padding:8px 22px; font-size:14px; font-weight:600; font-family:'Rebond Grotesque', var(--sans);">Most disruptive</span>
-            <p style="font-family:'Rebond Grotesque', var(--sans); font-size:15px; font-weight:600; color:var(--text); text-align:center; line-height:1.4; max-width:300px;">Create a separate app for UPI payments</p>
+            <p class="dir-caption">Create a separate app for UPI payments</p>
           </div>
         </div>
       </div>

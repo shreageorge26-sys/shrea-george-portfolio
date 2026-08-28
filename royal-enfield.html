@@ -108,20 +108,10 @@
     .closing-text { font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.5; max-width: 580px; margin-bottom: 32px; }
     .btn-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); padding-bottom: 2px; }
 
-    @media (max-width: 640px) {
-      .page { padding: 0 20px 80px; }
-      nav { padding: 16px 20px; }
-      .two-col { grid-template-columns: 1fr; gap: 24px; }
-      .screens-row { flex-direction: column; }
-      .screen-half, .screen-third { height: 220px; }
-      .impact-grid { grid-template-columns: 1fr 1fr; }
-      .cs-meta { gap: 24px; }
-    }
-
     /* ── ICICI-style NDA hero ── */
     @font-face { font-family:'Rebond Grotesque'; src:url('fonts/rebond-grotesque-semibold.otf') format('opentype'); font-weight:600; font-style:normal; font-display:swap; }
     @font-face { font-family:'Rebond Grotesque'; src:url('fonts/rebond-grotesque-regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
-    .nda-hero { background:#162916; padding:72px 60px 0; text-align:center; overflow:hidden; width:100vw; margin-left:calc(50% - 50vw); margin-right:calc(50% - 50vw); }
+    .nda-hero { background:#162916; margin:0 -210px; padding:72px 60px 0; text-align:center; overflow:hidden; }
     .nda-hero-chip { display:inline-block; background:#ADDD8D; color:#1f3a1c; border-radius:100px; padding:9px 20px; font-family:'Rebond Grotesque',sans-serif; font-size:13px; font-weight:600; margin-bottom:28px; }
     .nda-hero-title { font-family:'Rebond Grotesque',sans-serif; font-weight:600; font-size:72px; line-height:1.05; letter-spacing:-0.02em; color:#fff; max-width:1100px; margin:0 auto; }
     .nda-hero-title .accent { color:#7ee8a2; }
@@ -153,6 +143,50 @@
     .work-overview-col-title { font-family:'Rebond Grotesque', var(--sans); font-size:16px; font-weight:600; color:#fff; margin-bottom:16px; }
     .work-overview-col-items { list-style:none; display:flex; flex-direction:column; gap:8px; }
     .work-overview-col-items li { font-family:'Rebond Grotesque', var(--sans); font-size:15px; color:rgba(255,255,255,0.6); line-height:1.6; }
+
+    /* ══ RESPONSIVE — same scale as the FYNDNA case study ══ */
+    @media (max-width: 900px) {
+      .page { padding: 0 40px 100px; }
+      .nda-hero { margin: 0 -40px; }
+      .work-overview { margin: 0 -40px 80px; padding: 60px 40px 64px; }
+      .work-overview-grid { grid-template-columns: 1fr; gap: 32px; }
+      .two-col { grid-template-columns: 1fr; gap: 24px; }
+      .nda-note-box { padding: 36px 32px; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 0 20px 80px; }
+      nav { padding: 16px 20px; }
+      .nda-hero { margin: 0 -20px; }
+      .work-overview { margin: 0 -20px 80px; padding: 48px 20px 56px; }
+      .screens-row { flex-direction: column; }
+      .screen-half, .screen-third { height: 220px; }
+      .impact-grid { grid-template-columns: 1fr; }
+      .cs-meta { gap: 24px; }
+
+      /* type scale */
+      .nda-hero-title { font-size: 40px; }
+      .nda-hero-sub { font-size: 17px; }
+      .impact-heading { font-size: 28px; }
+      .challenge-label { font-size: 16px; }
+      .challenge-title { font-size: 34px; }
+      .challenge-desc { font-size: 17px; }
+      .nda-note-title { font-size: 26px; }
+      .nda-note-text { font-size: 17px; }
+
+      /* chips */
+      .impact-chip { font-size: 13px; padding: 9px 16px; }
+      .impact-chips { gap: 10px; margin-bottom: 80px; }
+
+      /* hero cards wrap two-up instead of eight slivers */
+      .nda-hero-cards { flex-wrap: wrap; gap: 12px; margin: 64px -20px 0; }
+      .nda-ph { flex: 0 0 45%; }
+
+      /* rhythm */
+      .challenge-block { margin-bottom: 48px; }
+      .challenge-block-final { margin-bottom: 80px; }
+      .nda-note-box { padding: 28px 24px; }
+    }
   </style>
 </head>
 <body>
