@@ -797,6 +797,11 @@
       transform: translate(-50%, -50%);
     }
 
+    .coming-soon-badge.is-view {
+      background: var(--accent);
+      color: var(--accent-dark);
+    }
+
     .cs-card .cs-card-hover,
     .cs-card .cs-card-front {
       border-radius: 20px;
@@ -1059,14 +1064,62 @@
                   0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
       text-decoration: none;
       pointer-events: all;
-      cursor: pointer;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      /* the pointer itself is replaced by a pill that names the card */
+      cursor: none;
+      /* the tilt lives in a variable so hover can add scale without losing it */
+      --rot: 0deg;
+      /* the drift colour: this card's own family, one notch brighter */
+      --tpl-glow: 96,150,230;
+      --tpl-strength: 1;
+      transform: rotate(var(--rot));
+      /* grow from the pin, so the thread stays tied to it */
+      transform-origin: top center;
+      transition: transform 0.28s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.28s ease;
     }
-    .tpl-card:hover {
+
+    /* a slow gradient drift across the card, only while it is hovered */
+    .tpl-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 0;
+      pointer-events: none;
+      background: linear-gradient(115deg,
+        rgba(var(--tpl-glow), 0) 10%,
+        rgba(var(--tpl-glow), calc(0.16 * var(--tpl-strength))) 32%,
+        rgba(var(--tpl-glow), calc(0.04 * var(--tpl-strength))) 52%,
+        rgba(var(--tpl-glow), calc(0.13 * var(--tpl-strength))) 72%,
+        rgba(var(--tpl-glow), 0) 92%);
+      background-size: 260% 260%;
+      background-position: 0% 50%;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+    .tpl-card:hover::before,
+    .tpl-card:focus-visible::before {
+      opacity: 1;
+      animation: tplDrift 9s ease-in-out infinite alternate;
+    }
+    @keyframes tplDrift {
+      from { background-position: 0% 50%; }
+      to   { background-position: 100% 50%; }
+    }
+
+    .tpl-card:hover,
+    .tpl-card:focus-visible {
+      transform: rotate(var(--rot)) scale(1.1);
+      z-index: 6;
       box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 14px 34px rgba(0,0,0,0.26),
                   0 44px 84px rgba(0,0,0,0.30), 0 64px 104px rgba(0,0,0,0.14);
     }
-    .tpl-card-soon { cursor: none; }
+    .tpl-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .tpl-card { transition: box-shadow 0.28s ease; }
+      .tpl-card:hover, .tpl-card:focus-visible { transform: rotate(var(--rot)); }
+      .tpl-card:hover::before, .tpl-card:focus-visible::before { animation: none; }
+    }
 
     .tpl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .tpl-chip {
@@ -1132,6 +1185,7 @@
     .tpl-warm .tpl-chip { background: rgba(255,255,255,0.15); color: #FBF6F0; }
 
     .tpl-icici {
+      --tpl-glow: 255,206,150; --tpl-strength: 0.7;
       min-height: 204px;
       background: linear-gradient(163deg, #E8893C 0%, #D2652F 42%, #A93823 100%);
     }
@@ -1139,6 +1193,7 @@
     .tpl-icici .tpl-media img { left: 78%; top: 14%; width: 40%; }
 
     .tpl-re {
+      --tpl-glow: 255,158,138; --tpl-strength: 0.7;
       min-height: 280px;
       background: #8C2B25;
     }
@@ -1164,7 +1219,7 @@
 
 
     /* TerraPay — question card: one paragraph, the figure bold inline */
-    .tpl-terrapay { background: #1B3D68; }
+    .tpl-terrapay { --tpl-glow: 130,190,255; background: #1B3D68; }
     .tpl-ask {
       font-family: 'Rebond Grotesque', var(--sans);
       font-size: 22px;
@@ -1682,6 +1737,7 @@
   </div>
 
   <div class="coming-soon-badge" id="comingSoonBadge">Coming soon!</div>
+  <div class="coming-soon-badge is-view" id="viewCaseBadge">View case study →</div>
 
   <!-- INFINITE CANVAS -->
   <div id="canvas">
@@ -1702,7 +1758,7 @@
     </div>
 
     <!-- ══ CASE STUDY 01 — FYNDNA ══ -->
-    <a href="/fyndna.html" class="tpl-card" data-pin="fyndna" style="top:672px; left:600px; transform:rotate(-2deg);">
+    <a href="/fyndna.html" class="tpl-card" data-pin="fyndna" style="top:672px; left:600px; --rot:-2deg;">
       <div class="pin"></div>
       <div class="tpl-chips">
           <span class="tpl-chip">Banking</span>
@@ -1719,7 +1775,7 @@
     </a>
 
     <!-- ══ CASE STUDY 02 — TerraPay (coming soon) ══ -->
-    <div class="tpl-card tpl-card-soon tpl-terrapay" data-pin="terrapay" style="top:1180px; left:600px; transform:rotate(1.5deg);">
+    <div class="tpl-card tpl-card-soon tpl-terrapay" data-pin="terrapay" style="top:1180px; left:600px; --rot:1.5deg;">
       <div class="pin"></div>
       <div class="tpl-chips">
           <span class="tpl-chip">Fintech</span>
@@ -1731,7 +1787,7 @@
     </div>
 
     <!-- ══ CASE STUDY 03 — ICICI ══ -->
-    <a href="/icici.html" class="tpl-card tpl-warm tpl-icici" data-pin="icici" style="top:672px; left:1810px; transform:rotate(-1deg);">
+    <a href="/icici.html" class="tpl-card tpl-warm tpl-icici" data-pin="icici" style="top:672px; left:1810px; --rot:-1deg;">
       <div class="tpl-media"><img src="card-icici-app.png" alt="" onerror="this.style.display='none'"></div>
       <div class="pin"></div>
       <div class="tpl-chips">
@@ -1748,7 +1804,7 @@
     </a>
 
     <!-- ══ CASE STUDY 04 — Royal Enfield ══ -->
-    <a href="/royal-enfield.html" class="tpl-card tpl-warm tpl-re" data-pin="re" style="top:1200px; left:1900px; transform:rotate(2deg);">
+    <a href="/royal-enfield.html" class="tpl-card tpl-warm tpl-re" data-pin="re" style="top:1200px; left:1900px; --rot:2deg;">
       <div class="tpl-media"><img src="card-re-site.png" alt="" onerror="this.style.display='none'"></div>
       <div class="pin"></div>
       <div class="tpl-chips">
@@ -1946,15 +2002,21 @@
       setTimeout(() => canvas.style.transition = '', 800);
     }
 
-    const comingSoonBadge = document.getElementById('comingSoonBadge');
-    document.querySelectorAll('.cs-card-soon, .tpl-card-soon').forEach(card => {
-      card.addEventListener('mouseenter', () => { comingSoonBadge.style.display = 'block'; });
-      card.addEventListener('mousemove', e => {
-        comingSoonBadge.style.left = e.clientX + 'px';
-        comingSoonBadge.style.top = e.clientY + 'px';
+    // ── Cursor tags — the pointer is hidden over a board card and a pill
+    //    saying what the card does rides along instead ──
+    function cursorTag(selector, badge) {
+      if (!badge) return;
+      document.querySelectorAll(selector).forEach(card => {
+        card.addEventListener('mouseenter', () => { badge.style.display = 'block'; });
+        card.addEventListener('mousemove', e => {
+          badge.style.left = e.clientX + 'px';
+          badge.style.top = e.clientY + 'px';
+        });
+        card.addEventListener('mouseleave', () => { badge.style.display = 'none'; });
       });
-      card.addEventListener('mouseleave', () => { comingSoonBadge.style.display = 'none'; });
-    });
+    }
+    cursorTag('.cs-card-soon, .tpl-card-soon', document.getElementById('comingSoonBadge'));
+    cursorTag('a.tpl-card', document.getElementById('viewCaseBadge'));
 
     // ── Board strings — drawn at runtime from the real pin positions, so a
     //    thread always lands on the pins no matter how the cards are sized
