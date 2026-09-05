@@ -311,6 +311,36 @@
     .cs-flow-card.current .cs-flow-text { color: var(--ink-green); }
     .cs-flow-arrow { flex: 0 0 auto; align-self: center; font-size: 20px; line-height: 1; color: var(--text-45); }
 
+    /* ── Inside a concept well: a lead line, then media beside a numbered list ── */
+    .cs-concept-lead {
+      font-family: var(--display); font-weight: 400;
+      font-size: clamp(17px, 1.9vw, 20px); line-height: 1.5;
+      color: var(--text); max-width: 780px; text-wrap: pretty;
+      margin-top: clamp(12px, 1.6vw, 20px);
+    }
+    .cs-concept .cs-split { margin-top: 16px; }
+    .cs-split-media .cs-shot { margin-top: 0; }
+    .cs-numbered {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: clamp(20px, 2.4vw, 32px);
+    }
+    .cs-numbered li {
+      display: flex; align-items: center; gap: 16px;
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(16px, 1.7vw, 18px); line-height: 1.35; color: var(--text);
+    }
+    .cs-num-badge {
+      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%;
+      background: var(--lime-300); color: var(--ink-green);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--display); font-weight: 600; font-size: 14px; line-height: 1;
+    }
+    .cs-numbered-note {
+      margin-top: clamp(28px, 3vw, 36px); padding-top: clamp(20px, 2.4vw, 28px);
+      border-top: 1px solid var(--hairline);
+      font-size: 16px; line-height: 1.65; color: var(--text-60); text-wrap: pretty;
+    }
+
     /* ── A statement that carries a section on its own ── */
     .cs-statement {
       border-left: 2px solid var(--lime-300);
@@ -637,6 +667,9 @@
       <div class="cs-dilemma">
         <p class="cs-dilemma-label">Dilemma 3</p>
         <p class="cs-accent-heading cs-dilemma-question">Document type, or risk type, on the dashboard?</p>
+        <div class="cs-lead cs-lead--spaced">
+          <p>That meant deciding whether to segregate by document type or by risk type, and prioritizing that with input from other teams.</p>
+        </div>
         <figure class="cs-concept">
           <div class="cs-concept-head">
             <span class="cs-concept-pill">Dashboard widgets</span>
@@ -645,15 +678,24 @@
             </div>
           </div>
         </figure>
-        <ul class="cs-approach">
-          <li><strong>Idea:</strong> Give the user enough on the dashboard, through widgets, to understand what they were walking into before opening a specific risk. That meant deciding whether to segregate by document type or by risk type, and prioritizing that with input from other teams.</li>
-          <li><strong>What worked:</strong> The final version shows different filters on top, the risks under each document, and a status indicating whether a risk is cured or pending. This design supports accessible navigation while making it easier for users to locate and refine filter selections with minimal cognitive effort.</li>
-        </ul>
         <figure class="cs-concept">
           <div class="cs-concept-head">
             <span class="cs-concept-pill">Final version</span>
-            <div class="cs-shot">
-              <img src="fyndna-dilemma3-final.png" alt="Final Risk Analysis design with filters on top, risks grouped under each document, and a status pill showing cured or pending">
+          </div>
+          <p class="cs-concept-lead">Give the user enough on the dashboard, through widgets, to understand what they were walking into before opening a specific risk.</p>
+          <div class="cs-split">
+            <div class="cs-split-media">
+              <div class="cs-shot">
+                <img src="fyndna-dilemma3-final.png" alt="Final Risk Analysis design with filters on top, risks grouped under each document, and a status pill showing cured or pending">
+              </div>
+            </div>
+            <div class="cs-split-text">
+              <ol class="cs-numbered">
+                <li><span class="cs-num-badge">1</span>Different filters on top</li>
+                <li><span class="cs-num-badge">2</span>The risks under each document</li>
+                <li><span class="cs-num-badge">3</span>A status &mdash; cured or pending</li>
+              </ol>
+              <p class="cs-numbered-note">This design supports accessible navigation while making it easier for users to locate and refine filter selections with minimal cognitive effort.</p>
             </div>
           </div>
         </figure>
