@@ -6,431 +6,464 @@
   <title><!-- FILL: Case Study Title --> · Shrea George</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
+      font-weight: 600; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Rebond Grotesque';
+      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
     :root {
-      --bg: #f5f5f3;
-      --surface: #e8e8e5;
-      --border: #c8c8c4;
-      --text: #1a1a1a;
-      --muted: #777;
-      --placeholder: #d0d0cc;
-      --serif: 'Instrument Serif', serif;
-      --sans: 'Inter', sans-serif;
+      /* One flat green for the whole page — no lighter or darker bands. */
+      --sg-forest-900: #0d180d;
+
+      --lime-300: #ADDD8D;   /* eyebrite accents, pills, stat values, group names, ✓ */
+      --mint: #7ee8a2;       /* exactly one accented word in the hero */
+      --ink-green: #163300;  /* text on lime fills — never white on lime */
+      --ink-green-soft: #1f3a1c;
+      --flag-red: #A8200D;   /* ✗ marks. See note in the handoff if NDA-stamp
+                                exclusivity matters — swap for rgba(255,255,255,0.45). */
+
+      --text: #ffffff;
+      --text-75: rgba(255,255,255,0.75);
+      --text-60: rgba(255,255,255,0.6);
+      --text-45: rgba(255,255,255,0.45);
+      --hairline: rgba(255,255,255,0.15);
+      --well: rgba(0,0,0,0.45);      /* concept card fill — a sunken well */
+      --card: rgba(255,255,255,0.06);
+
+      --display: 'Rebond Grotesque', 'Inter', sans-serif;
+      --body: 'Inter', system-ui, sans-serif;
+
+      /* Fluid by construction — this page carries no media queries.
+         The gutter collapses 210px → 20px; section rhythm 120px → 64px. */
+      --gutter: clamp(20px, 6vw, 210px);
+      --rhythm: clamp(64px, 10vw, 120px);
+      --radius: 8px;
     }
 
     body {
-      background: var(--bg);
+      background-color: var(--sg-forest-900);
       color: var(--text);
-      font-family: var(--sans);
-      font-size: 14px;
+      font-family: var(--body);
       line-height: 1.6;
+      overflow-x: clip;           /* backstop against any stray wide child */
+    }
+    /* Film grain, behind all content. */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
     }
 
-    /* ── NAV ── */
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      background: var(--bg);
-      z-index: 100;
+    /* ══ NAV ══ */
+    .cs-nav {
+      display: flex; align-items: center;
+      padding: clamp(16px, 4vw, 20px) clamp(20px, 6vw, 40px);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .cs-wordmark { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: var(--text); }
+
+    /* ══ HERO ══ */
+    .cs-hero { padding: clamp(48px, 9vw, 72px) clamp(20px, 6vw, 60px) 0; text-align: center; }
+    .cs-hero-eyebrow { margin-bottom: clamp(20px, 4vw, 28px); }
+    .cs-pill {
+      display: inline-block; background: var(--lime-300); color: var(--ink-green-soft);
+      border-radius: 100px; padding: 9px 20px;
+      font-family: var(--display); font-size: 13px; font-weight: 600;
+    }
+    .cs-hero-title {
+      font-family: var(--display); font-weight: 600; font-size: 40px;
+      line-height: 1.08; letter-spacing: -0.02em; color: var(--text);
+      max-width: 1100px; margin: 0 auto; text-wrap: balance;
+    }
+    .cs-hero-title .accent { color: var(--mint); }
+    .cs-hero-lead {
+      font-size: clamp(15px, 1.6vw, 16px); color: var(--text-60); line-height: 1.7;
+      max-width: 620px; margin: clamp(20px, 4vw, 28px) auto 24px; text-wrap: pretty;
     }
 
-    .nav-logo { display: inline-flex; align-items: center; text-decoration: none; }
-    .nav-logo img { height: 32px; width: auto; display: block; filter: brightness(0); }
-    .nav-links { display: flex; gap: 32px; align-items: center; }
-    .nav-link  { font-size: 13px; color: var(--muted); text-decoration: none; }
+    /* ══ META + STATS BAND ══
+       No heading — the hairlines carry the structure. Sits close under the hero. */
+    .cs-band {
+      margin-top: clamp(28px, 4vw, 56px);
+      padding: clamp(12px, 1.6vw, 20px) var(--gutter) clamp(56px, 8vw, 80px);
+    }
+    .cs-meta-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+      gap: clamp(24px, 3vw, 36px);
+      padding: clamp(24px, 3vw, 32px) 0;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .cs-meta-item { display: flex; flex-direction: column; gap: 8px; }
+    .cs-meta-label { font-size: 13px; font-weight: 400; color: var(--text-45); }
+    .cs-meta-value { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.3; color: var(--text); }
 
-    /* ── LAYOUT ── */
-    .page { max-width: 900px; margin: 0 auto; padding: 0 40px 120px; }
+    .cs-stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+      gap: clamp(32px, 4vw, 48px);
+      margin-top: clamp(48px, 7vw, 72px);
+    }
+    .cs-stat { display: flex; flex-direction: column; gap: 10px; }
+    /* In the band each stat sits in a track far wider than its content, so
+       left-aligning strands the figure at the edge of its third. Centre the
+       pair within the track; inline/compact stats stay left-aligned. */
+    .cs-band .cs-stat { align-items: center; text-align: center; }
+    .cs-stat-value {
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(34px, 4.6vw, 52px); line-height: 1; letter-spacing: -0.02em;
+      color: var(--lime-300);
+    }
+    .cs-stat-value.plain { color: var(--text); }   /* white, for variety in a row */
+    .cs-stat-caption { font-size: 13px; line-height: 1.5; color: var(--text-60); }
 
-    hr.divider { border: none; border-top: 1px solid var(--border); margin: 64px 0; }
+    /* ══ PAGE BODY ══ */
+    .cs-page { padding: 0 var(--gutter) clamp(72px, 10vw, 120px); }
 
-    /* ── SCREEN PLACEHOLDER ── */
-    .screen-box {
-      background: var(--placeholder);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 0 24px;
+    .cs-section { padding: var(--rhythm) 0; border-top: 1px solid var(--hairline); }
+    .cs-section:first-child { border-top: none; }
+    /* Runs straight on from the section above it — no rule, no top padding. */
+    .cs-section--flush { padding: 0 0 var(--rhythm); border-top: none; }
+
+    .cs-eyebrow { font-family: var(--display); font-size: 14px; font-weight: 600; color: var(--text-60); margin-bottom: 16px; }
+    /* The second eyebrow in a brief/response pair sits between two blocks. */
+    .cs-eyebrow--between { margin: 32px 0 16px; }
+    .cs-heading {
+      font-family: var(--display); font-weight: 600; font-size: 32px;
+      line-height: 1.1; letter-spacing: -0.015em; color: var(--text);
+      margin-bottom: 20px; text-wrap: pretty;
+    }
+    /* Pull quote, dilemma question, "Closing thoughts" all share this level. */
+    .cs-accent-heading {
+      font-family: var(--display); font-weight: 600; font-size: 24px;
+      line-height: 1.2; letter-spacing: -0.01em; color: var(--lime-300);
+      text-wrap: pretty;
+    }
+    .cs-lead {
+      font-family: var(--display); font-size: clamp(17px, 2.2vw, 22px);
+      line-height: 1.5; color: var(--text-75); max-width: 780px; text-wrap: pretty;
+    }
+    .cs-lead p + p { margin-top: 16px; }
+
+    /* ══ IMPACT PILLS ══ */
+    .cs-pill-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .cs-pill-outline {
+      display: inline-flex; align-items: center;
+      border: 1.5px solid var(--lime-300); border-radius: 999px;
+      padding: 10px 22px; min-height: 44px;      /* touch target */
+      font-family: var(--display); font-weight: 600; font-size: 15px;
+      letter-spacing: 0.02em; color: var(--text); background: transparent;
+      transition: background 0.2s, color 0.2s;
+    }
+    .cs-pill-outline:hover { background: var(--lime-300); color: var(--ink-green); }
+
+    /* ══ BULLETS ══ */
+    .cs-bullets { list-style: none; padding: 0; margin-top: 24px; display: flex; flex-direction: column; gap: 16px; max-width: 780px; }
+    .cs-bullets li { font-size: 16px; line-height: 1.7; color: var(--text-60); padding-left: 20px; position: relative; }
+    .cs-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--hairline); }
+
+    /* ══ NUMBERED GROUP STACK ══
+       Rows, not cards: the item count varies per case study and the body copy
+       can run several lines. Rows absorb both; card grids did not. */
+    .cs-groups { display: flex; flex-direction: column; margin-top: 40px; border-bottom: 1px solid var(--hairline); }
+    .cs-group {
+      display: grid; grid-template-columns: auto 1fr;
+      column-gap: clamp(20px, 4vw, 44px); row-gap: 6px; align-items: baseline;
+      padding: clamp(22px, 3vw, 30px) 0;
+      border-top: 1px solid var(--hairline);
+    }
+    .cs-group-num {
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(30px, 5vw, 44px); line-height: 1; letter-spacing: -0.02em;
+      color: var(--hairline);
+    }
+    .cs-group-body { display: flex; flex-direction: column; gap: 8px; }
+    .cs-group-name {
+      font-family: var(--display); font-weight: 600;
+      font-size: clamp(19px, 2.4vw, 24px); line-height: 1.2; letter-spacing: -0.01em;
+      color: var(--lime-300);
+    }
+    .cs-group-text { font-size: 16px; line-height: 1.65; color: var(--text-60); max-width: 640px; text-wrap: pretty; }
+
+    /* ══ PULL QUOTE ══
+       No border, no quote glyph — the quotation marks live in the copy. */
+    .cs-quote {
+      font-family: var(--display); font-weight: 600; font-size: 24px;
+      color: var(--lime-300); line-height: 1.2; letter-spacing: -0.01em;
+      margin: 28px 0; max-width: 720px; border: none; padding: 0; text-wrap: pretty;
     }
 
-    .screen-full  { width: 100%; height: 360px; }
-    .screen-half  { flex: 1; height: 300px; }
-    .screen-third { flex: 1; height: 260px; }
-    .screen-tall  { flex: 1; height: 420px; }
+    /* ══ DESIGN DILEMMAS ══ */
+    .cs-dilemma { margin-top: clamp(48px, 7vw, 72px); }
+    .cs-dilemma-label { font-family: var(--display); font-size: 14px; font-weight: 600; color: var(--text-60); margin-bottom: 8px; }
+    .cs-dilemma-question { max-width: 800px; }
+    /* A concept well used on its own, rather than inside a .cs-compare grid,
+       still needs the 32px the grid would have supplied. */
+    .cs-dilemma > .cs-concept { margin-top: 32px; }
 
-    .screens-row { display: flex; gap: 16px; margin-top: 24px; }
-    .screen-caption { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
-    .screen-col { display: flex; flex-direction: column; flex: 1; }
-
-    /* ── HERO ── */
-    .cs-hero { padding: 80px 0 56px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
-
-    .cs-tag {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); margin-bottom: 20px;
+    /* Two cards side by side on desktop, stacked below ~700px. The
+       min(300px,100%) wrapper is load-bearing: a bare minmax(300px,1fr)
+       overflows a 320px viewport by 20px, because auto-fit cannot shrink a
+       track below its floor. Do not drop it. */
+    .cs-compare {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: clamp(20px, 3vw, 32px);
+      margin-top: 32px;
     }
-
-    .cs-title {
-      font-family: var(--serif); font-size: clamp(28px, 4vw, 48px);
-      font-weight: 400; line-height: 1.15; margin-bottom: 16px; max-width: 720px;
+    /* One rectangle, no border — a border plus an inner frame reads as two
+       nested rectangles. */
+    .cs-concept {
+      margin: 0; background: var(--well); border-radius: var(--radius);
+      padding: clamp(16px, 2.4vw, 22px);
+      display: flex; flex-direction: column; gap: 16px;
     }
-
-    .cs-subtitle { font-size: 15px; color: var(--muted); max-width: 600px; line-height: 1.7; margin-bottom: 40px; }
-
-    .cs-meta { display: flex; gap: 40px; flex-wrap: wrap; }
-    .meta-item { display: flex; flex-direction: column; gap: 4px; }
-    .meta-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-    .meta-value { font-size: 13px; color: var(--text); font-weight: 500; }
-
-    .impact-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
-
-    .impact-pill {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 100px; padding: 6px 14px; font-size: 12px; color: var(--text);
+    .cs-concept-head { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+    .cs-concept-pill {
+      background: var(--lime-300); color: var(--ink-green); border-radius: 999px;
+      padding: 7px 16px; font-family: var(--display); font-weight: 600;
+      font-size: 14px; line-height: 1.2;
     }
-
-    /* ── NDA STAMP ── */
-    .stamp {
-      display: inline-block;
-      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; color: #A8200D;
-      border: 1.5px solid #A8200D; border-radius: 4px;
-      padding: 2px 7px; opacity: 0.75; transform: rotate(4deg);
-      margin-left: 12px; vertical-align: middle;
+    /* No fixed aspect ratio and no crop — real screenshots vary in proportion
+       because they are design elements arranged for their own padding. */
+    .cs-concept-media {
+      width: 100%; min-height: clamp(170px, 22vw, 280px);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-60); font-size: clamp(13px, 1.6vw, 15px); text-align: center;
     }
+    .cs-concept-media img { max-width: 100%; height: auto; display: block; }
+    .cs-concept-media.empty { border: 1.5px dashed var(--hairline); border-radius: var(--radius); }
 
-    /* ── SECTION TITLES ── */
-    .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
-    .section-heading { font-family: var(--serif); font-size: 30px; font-weight: 400; line-height: 1.2; margin-bottom: 16px; }
-    .section-body { font-size: 14px; color: var(--muted); line-height: 1.75; max-width: 640px; }
+    .cs-points { display: flex; flex-direction: column; gap: 12px; }
+    .cs-point { display: flex; gap: 12px; font-size: 15px; line-height: 1.55; color: var(--text-75); }
+    .cs-point::before { content: '✓'; flex: 0 0 auto; color: var(--lime-300); font-size: 16px; line-height: 1.5; }
+    .cs-point.against::before { content: '✗'; color: var(--flag-red); }
 
-    /* ── CHALLENGE BLOCK ── */
-    .challenge-block { margin-bottom: 80px; }
-    .challenge-number { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-    .challenge-title { font-family: var(--serif); font-size: 26px; font-weight: 400; margin-bottom: 8px; }
-    .challenge-tension { font-size: 14px; color: var(--muted); margin-bottom: 32px; max-width: 580px; line-height: 1.7; }
+    .cs-approach { list-style: none; padding: 0; margin-top: 28px; display: flex; flex-direction: column; gap: 20px; max-width: 720px; }
+    .cs-approach li { font-size: 17px; line-height: 1.6; color: var(--text-60); }
+    .cs-approach strong { color: var(--text); font-weight: 600; }
 
-    /* ── TWO COL ── */
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 32px 0; }
-    .col-heading { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text); margin-bottom: 12px; }
-    .col-body { font-size: 13px; color: var(--muted); line-height: 1.7; }
-
-    /* ── BULLETS ── */
-    ul.cs-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; padding: 0; }
-    ul.cs-bullets li { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-    /* ── INSIGHT BOX ── */
-    .insight-box {
-      background: var(--surface); border-left: 3px solid var(--border);
-      border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 28px 0;
-      font-size: 14px; color: var(--text); line-height: 1.65; max-width: 600px;
+    .cs-takeaway {
+      background: var(--card); border: 1px solid var(--hairline); border-radius: var(--radius);
+      padding: 20px 24px; margin-top: 32px; max-width: 640px;
     }
+    .cs-takeaway-label { font-size: 13px; font-weight: 400; color: var(--text-60); margin-bottom: 8px; }
+    .cs-takeaway-text { font-size: 14px; color: var(--text); line-height: 1.65; }
 
-    /* ── QUOTE ── */
-    blockquote {
-      font-family: var(--serif); font-size: 18px; font-weight: 400; font-style: italic;
-      color: var(--text); border-left: 2px solid var(--border);
-      padding-left: 24px; margin: 28px 0; line-height: 1.6;
+    /* ══ CLOSING THOUGHTS ══ */
+    .cs-closing { padding: 0 0 40px; }
+    .cs-thoughts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+      gap: 20px; margin-top: 40px;
     }
+    .cs-thought { background: var(--card); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 24px 20px; }
+    .cs-thought p { font-size: 15px; color: var(--text); line-height: 1.65; }
 
-    /* ── LEARNING ── */
-    .learning { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; margin-top: 32px; }
-    .learning-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-    .learning-text { font-size: 14px; color: var(--text); line-height: 1.65; }
-
-    /* ── IMPACT GRID ── */
-    .impact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
-    .impact-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px 20px; }
-    .impact-stat { font-family: var(--serif); font-size: 28px; margin-bottom: 8px; }
-    .impact-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-
-    /* ── CLOSING ── */
-    .cs-closing { padding: 64px 0 0; border-top: 1px solid var(--border); margin-top: 80px; }
-    .closing-text { font-family: var(--serif); font-size: 22px; font-weight: 400; line-height: 1.5; max-width: 580px; margin-bottom: 32px; }
-    .btn-back {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 13px; color: var(--muted); text-decoration: none;
-      border-bottom: 1px solid var(--border); padding-bottom: 2px;
+    /* ══ FOOTER ══ */
+    .cs-footer { padding-top: 40px; }
+    .cs-back {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
+      color: var(--text-60); text-decoration: none;
+      border-bottom: 1px solid var(--hairline); padding-bottom: 2px;
+      transition: color 0.15s, border-color 0.15s;
     }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
-      .page { padding: 0 20px 80px; }
-      nav { padding: 16px 20px; }
-      .two-col { grid-template-columns: 1fr; gap: 24px; }
-      .screens-row { flex-direction: column; }
-      .screen-half, .screen-third, .screen-tall { height: 220px; }
-      .impact-grid { grid-template-columns: 1fr 1fr; }
-      .cs-meta { gap: 24px; }
-    }
+    .cs-back:hover { color: var(--text); border-bottom-color: var(--lime-300); }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo"><img src="logo-sg.png" alt="Shrea George"></a>
+  <nav class="cs-nav">
+    <span class="cs-wordmark">Shrea George</span>
   </nav>
 
-  <div class="page">
+  <!-- ══ HERO ══ -->
+  <header class="cs-hero">
+    <p class="cs-hero-eyebrow"><span class="cs-pill">Case 0X · <!-- FILL: Client --> · <!-- FILL: Discipline --></span></p>
+    <h1 class="cs-hero-title">The one-line claim this project earned, with <span class="accent">one</span> word that matters</h1>
+    <p class="cs-hero-lead">One or two sentences on what the thing is and what made it hard. No throat-clearing.</p>
+  </header>
 
-    <!-- ══ HERO ══ -->
-    <header class="cs-hero">
-      <!-- FILL: "Case 0X · Client Name · Discipline · NDA" -->
-      <p class="cs-tag">Case 0X · Client · Discipline <span class="stamp">NDA</span></p>
-
-      <!-- FILL: Case study title (serif headline) -->
-      <h1 class="cs-title"><!-- FILL: Title --></h1>
-
-      <!-- FILL: 1–2 sentence subtitle summarising the project -->
-      <p class="cs-subtitle"><!-- FILL: Subtitle --></p>
-
-      <div class="cs-meta">
-        <div class="meta-item">
-          <span class="meta-label">Role</span>
-          <!-- FILL: e.g. "UX Designer" -->
-          <span class="meta-value"><!-- FILL --></span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Duration</span>
-          <!-- FILL: e.g. "6 Months" -->
-          <span class="meta-value"><!-- FILL --></span>
-        </div>
-        <div class="meta-item">
-          <span class="meta-label">Scope</span>
-          <!-- FILL: e.g. "Research · 0→1 Design · Handoff" -->
-          <span class="meta-value"><!-- FILL --></span>
-        </div>
+  <!-- ══ META + STATS BAND ══
+       Both rows are data: field count and stat count vary per case study. -->
+  <div class="cs-band">
+    <div class="cs-meta-row">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Role</span>
+        <span class="cs-meta-value">UX Designer</span>
       </div>
-
-      <!-- FILL: 2–3 short outcome pills. Remove this block if outcomes TBD. -->
-      <div class="impact-pills">
-        <span class="impact-pill"><!-- FILL: Outcome 1 --></span>
-        <span class="impact-pill"><!-- FILL: Outcome 2 --></span>
-        <span class="impact-pill"><!-- FILL: Outcome 3 --></span>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Company</span>
+        <span class="cs-meta-value">Client name</span>
       </div>
-    </header>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Tools</span>
+        <span class="cs-meta-value">Claude · Figma</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Domain</span>
+        <span class="cs-meta-value">Fintech · B2B</span>
+      </div>
+    </div>
 
+    <!-- Short expressive strings, not just numbers. -->
+    <div class="cs-stats-row">
+      <div class="cs-stat">
+        <span class="cs-stat-value">58–63%</span>
+        <span class="cs-stat-caption">PDP → Cart progression</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-value">+reviews</span>
+        <span class="cs-stat-caption">higher participation</span>
+      </div>
+      <div class="cs-stat">
+        <span class="cs-stat-value plain">↓fatigue</span>
+        <span class="cs-stat-caption">faster decisions</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs-page">
+
+    <!-- ══ MY IMPACT ══ -->
+    <section class="cs-section">
+      <p class="cs-eyebrow">My impact</p>
+      <h2 class="cs-heading">What changed because you were on it, in one sentence.</h2>
+      <div class="cs-pill-row">
+        <span class="cs-pill-outline">Outcome one</span>
+        <span class="cs-pill-outline">Outcome two</span>
+        <span class="cs-pill-outline">Measured result, if you have one</span>
+      </div>
+    </section>
 
     <!-- ══ CONTEXT ══ -->
-    <section style="margin-bottom: 64px;">
-      <p class="section-label">Context</p>
-      <!-- FILL: A sharp one-liner that frames the core tension -->
-      <h2 class="section-heading"><!-- FILL: Context heading --></h2>
-      <!-- FILL: 2–3 sentences explaining the situation and why it matters -->
-      <p class="section-body"><!-- FILL: Context body --></p>
+    <section class="cs-section">
+      <p class="cs-eyebrow">Understanding the brief</p>
+      <h2 class="cs-heading">Context</h2>
+      <div class="cs-lead">
+        <p>Set the scene in second person, the way a person would explain it out loud. Who does this, what are they deciding, and what happens next.</p>
+      </div>
+      <ul class="cs-bullets">
+        <li>A concrete example of the problem</li>
+        <li>Another one, specific enough to be believable</li>
+      </ul>
 
-      <!-- FILL: Two context screenshots or diagrams. Label each with a caption. -->
-      <div class="screens-row" style="margin-top: 32px;">
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption 1 --></p>
+      <!-- Not always "user groups" — on ICICI this block is "Objective". -->
+      <div class="cs-groups">
+        <div class="cs-group">
+          <span class="cs-group-num">01</span>
+          <div class="cs-group-body">
+            <strong class="cs-group-name">User group one</strong>
+            <p class="cs-group-text">Who they are and what they are trying to get done. Runs to a few lines when the case needs it.</p>
+          </div>
         </div>
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption 2 --></p>
+        <div class="cs-group">
+          <span class="cs-group-num">02</span>
+          <div class="cs-group-body">
+            <strong class="cs-group-name">User group two</strong>
+            <p class="cs-group-text">Who they are and what they are trying to get done. Runs to a few lines when the case needs it.</p>
+          </div>
+        </div>
+        <div class="cs-group">
+          <span class="cs-group-num">03</span>
+          <div class="cs-group-body">
+            <strong class="cs-group-name">User group three</strong>
+            <p class="cs-group-text">Who they are and what they are trying to get done. Runs to a few lines when the case needs it.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <hr class="divider">
-
-
-    <!-- ══ CHALLENGE 01 ══ -->
-    <section class="challenge-block">
-      <p class="challenge-number">Challenge 01</p>
-      <!-- FILL: Short evocative title for this challenge -->
-      <h2 class="challenge-title"><!-- FILL: Challenge title --></h2>
-      <!-- FILL: The tension in 1–2 sentences. What made this hard? -->
-      <p class="challenge-tension"><!-- FILL: Tension --></p>
-
-      <!-- FILL: A sharp insight or data point that crystallised the problem -->
-      <div class="insight-box"><!-- FILL: Insight --></div>
-
-      <div class="two-col">
-        <div>
-          <p class="col-heading">What made this hard</p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
-        <div>
-          <!-- FILL: heading — "Design directions explored" OR "The design question" -->
-          <p class="col-heading"><!-- FILL: Right col heading --></p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="screens-row">
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
-        </div>
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <p class="learning-label">What this changed in how I design</p>
-        <!-- FILL: One clear sentence on the shift in perspective -->
-        <p class="learning-text"><!-- FILL --></p>
+    <!-- ══ THE BRIEF / MY RESPONSE ══ -->
+    <section class="cs-section--flush">
+      <p class="cs-eyebrow">Here's what I was told</p>
+      <blockquote class="cs-quote">"The thing someone actually said that started this."</blockquote>
+      <p class="cs-eyebrow cs-eyebrow--between">This was my response</p>
+      <div class="cs-lead">
+        <p>Why that framing did not hold, argued from the user's task rather than from taste.</p>
       </div>
     </section>
 
-    <hr class="divider">
-
-
-    <!-- ══ CHALLENGE 02 ══ -->
-    <section class="challenge-block">
-      <p class="challenge-number">Challenge 02</p>
-      <h2 class="challenge-title"><!-- FILL: Challenge title --></h2>
-      <p class="challenge-tension"><!-- FILL: Tension --></p>
-
-      <!-- FILL: Optional blockquote from a user or stakeholder -->
-      <!-- <blockquote>"<!-- FILL -->"</blockquote> -->
-
-      <div class="insight-box"><!-- FILL: Insight --></div>
-
-      <div class="two-col">
-        <div>
-          <p class="col-heading">What made this hard</p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
-        <div>
-          <p class="col-heading"><!-- FILL: Right col heading --></p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
+    <!-- ══ DESIGN DILEMMAS ══
+         Duplicate .cs-dilemma per dilemma; option count is free. -->
+    <section class="cs-section">
+      <h2 class="cs-heading">Design dilemmas</h2>
+      <div class="cs-lead">
+        <p>How each iteration was evaluated, and the trade-offs that led to the final direction.</p>
       </div>
 
-      <div class="screens-row">
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
+      <div class="cs-dilemma">
+        <p class="cs-dilemma-label">Dilemma 1</p>
+        <p class="cs-accent-heading cs-dilemma-question">Option A, or option B?</p>
+
+        <!-- No "V/S" mark between the cards — the pills label the options. -->
+        <div class="cs-compare">
+          <figure class="cs-concept">
+            <div class="cs-concept-head">
+              <span class="cs-concept-pill">Idea 1 title</span>
+              <div class="cs-concept-media empty">Option A screenshot</div>
+            </div>
+            <figcaption class="cs-points">
+              <span class="cs-point">What this option gets right.</span>
+              <span class="cs-point">Another thing it handles well.</span>
+              <span class="cs-point against">Where it breaks down under real use.</span>
+            </figcaption>
+          </figure>
+
+          <figure class="cs-concept">
+            <div class="cs-concept-head">
+              <span class="cs-concept-pill">Idea 2 title</span>
+              <div class="cs-concept-media empty">Option B screenshot</div>
+            </div>
+            <figcaption class="cs-points">
+              <span class="cs-point">What this option gets right.</span>
+              <span class="cs-point">Another thing it handles well.</span>
+              <span class="cs-point against">Where it breaks down under real use.</span>
+            </figcaption>
+          </figure>
         </div>
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
-        </div>
-      </div>
 
-      <div class="learning">
-        <p class="learning-label">What this changed in how I design</p>
-        <p class="learning-text"><!-- FILL --></p>
-      </div>
-    </section>
+        <ul class="cs-approach">
+          <li><strong>Idea:</strong> what you tried and why it seemed right at the time.</li>
+          <li><strong>Why it failed:</strong> the specific way it broke down under real use.</li>
+          <li><strong>Learning:</strong> one sentence, stated plainly.</li>
+        </ul>
 
-    <hr class="divider">
-
-
-    <!-- ══ CHALLENGE 03 ══ -->
-    <section class="challenge-block">
-      <p class="challenge-number">Challenge 03</p>
-      <h2 class="challenge-title"><!-- FILL: Challenge title --></h2>
-      <p class="challenge-tension"><!-- FILL: Tension --></p>
-
-      <div class="insight-box"><!-- FILL: Insight --></div>
-
-      <div class="two-col">
-        <div>
-          <p class="col-heading">What made this hard</p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
-        <div>
-          <p class="col-heading"><!-- FILL: Right col heading --></p>
-          <ul class="cs-bullets">
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-            <li><!-- FILL --></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="screens-row">
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
-        </div>
-        <div class="screen-col">
-          <div class="screen-box screen-half">Visuals abstracted — NDA</div>
-          <p class="screen-caption"><!-- FILL: Caption --></p>
-        </div>
-      </div>
-
-      <div class="learning">
-        <p class="learning-label">What this changed in how I design</p>
-        <p class="learning-text"><!-- FILL --></p>
-      </div>
-    </section>
-
-    <hr class="divider">
-
-
-    <!-- ══ IMPACT ══ -->
-    <section style="margin-bottom: 64px;">
-      <p class="section-label">Impact</p>
-      <!-- FILL: A heading that states the most important outcome -->
-      <h2 class="section-heading"><!-- FILL: Impact heading --></h2>
-
-      <!-- FILL: 3 outcome cards. Use a qualitative phrase if numbers are TBD. -->
-      <div class="impact-grid">
-        <div class="impact-card">
-          <!-- FILL: stat or short phrase, e.g. "6 months" or "Shipped" -->
-          <p class="impact-stat"><!-- FILL --></p>
-          <p class="impact-desc"><!-- FILL: Description --></p>
-        </div>
-        <div class="impact-card">
-          <p class="impact-stat"><!-- FILL --></p>
-          <p class="impact-desc"><!-- FILL: Description --></p>
-        </div>
-        <div class="impact-card">
-          <p class="impact-stat"><!-- FILL --></p>
-          <p class="impact-desc"><!-- FILL: Description --></p>
+        <div class="cs-takeaway">
+          <p class="cs-takeaway-label">What this changed in how I design</p>
+          <p class="cs-takeaway-text">The shift in perspective this project produced.</p>
         </div>
       </div>
     </section>
 
-    <hr class="divider">
+    <!-- ══ CLOSING THOUGHTS ══ -->
+    <section class="cs-closing">
+      <p class="cs-accent-heading">Closing thoughts</p>
+      <div class="cs-thoughts">
+        <div class="cs-thought"><p>The thing you would do the same way again, and why.</p></div>
+        <div class="cs-thought"><p>The reframe that actually did the work, not the visual polish.</p></div>
+        <div class="cs-thought"><p>The part you are proudest of, even if it does not screenshot well.</p></div>
+      </div>
+    </section>
 
-
-    <!-- ══ CLOSING ══ -->
-    <footer class="cs-closing">
-      <!-- FILL: A one-sentence reflection on what this project changed in how you work -->
-      <p class="closing-text"><!-- FILL: Closing reflection --></p>
-      <a href="index.html" class="btn-back">← Back to all case files</a>
+    <footer class="cs-footer">
+      <a href="index.html" class="cs-back">← Back to all case files</a>
     </footer>
 
   </div>
