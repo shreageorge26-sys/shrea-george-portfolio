@@ -418,6 +418,110 @@
     .cs-video-crop video { position: absolute; top: 0; left: 0; width: 100%; height: auto; display: block; transform: translateY(-6.073%); }
     .cs-stats-row--inline { margin-top: 40px; }
     .cs-lead--spaced { margin-top: 32px; }
+    /* ══ SPLIT HERO: copy + meta left, pinned board right; stats in a well ══ */
+    .cs-hero--split {
+      text-align: left; padding: clamp(40px, 7vw, 88px) var(--gutter) 0;
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: clamp(32px, 5vw, 72px); align-items: center;
+    }
+    .cs-hero--split .cs-hero-title {
+      font-size: clamp(40px, 5.4vw, 68px); line-height: 1.02; margin: 0; max-width: none;
+    }
+    .cs-hero--split .cs-hero-title .accent { color: #E8893C; }
+    .cs-hero--split .cs-hero-lead {
+      font-family: var(--display); font-size: clamp(17px, 1.7vw, 20px); line-height: 1.5;
+      color: var(--text-75); margin: clamp(20px, 2.4vw, 28px) 0 0; max-width: 560px;
+    }
+    .cs-hero-meta {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px;
+      margin-top: clamp(32px, 4vw, 48px); padding-top: clamp(24px, 3vw, 32px);
+      border-top: 1px solid var(--hairline);
+    }
+    .cs-hero-meta dt { font-size: 13px; color: var(--text-45); margin-bottom: 6px; }
+    .cs-hero-meta dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--text); }
+    /* Pinned board, in the homepage's language: rotated cards, lime pins. */
+    .cs-hero-board { position: relative; height: clamp(460px, 44vw, 620px); }
+    .hb {
+      position: absolute; margin: 0; border-radius: 16px; padding: 24px 24px 22px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 160px 160px; background-blend-mode: multiply;
+      transform: rotate(var(--r, 0deg));
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22);
+      transition: transform 0.3s ease;
+    }
+    .hb:hover { transform: rotate(0deg) scale(1.03); z-index: 5; }
+    .hb-pin {
+      position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+      width: 14px; height: 14px; border-radius: 50%; background: var(--lime-300); z-index: 2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.35), inset 0 -2px 3px rgba(0,0,0,0.2), inset 0 1px 2px rgba(255,255,255,0.3);
+    }
+    .hb-pin::after { content: ''; position: absolute; top: 3px; left: 3px; width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.45); }
+    .hb-photo { left: 2%; top: 4%; width: 46%; padding: 10px 10px 14px; background: #f4f1ea; border-radius: 6px; z-index: 1; }
+    .hb-photo img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 2px; }
+    .hb-photo figcaption { font-size: 12px; line-height: 1.4; color: #3a3a3a; margin-top: 10px; padding: 0 2px; }
+    .hb-lime { right: 4%; top: 2%; width: 40%; }
+    /* ICICI's warm gradient, the same one its card wears on the homepage. */
+    .hb-dark { right: 0; top: 40%; width: 42%; z-index: 2; }
+    .hb-lime, .hb-dark {
+      color: #F7F0E8;
+      background-color: #D2652F;
+      background-image: linear-gradient(163deg, #E8893C 0%, #D2652F 100%);
+      background-size: 100% 100%; background-blend-mode: normal;
+    }
+    /* The ICICI stat takes the deeper end of the same gradient. */
+    .hb-dark { background-image: linear-gradient(163deg, #D2652F 0%, #A93823 100%); }
+    .hb-light { left: 10%; bottom: 0; width: 44%; background: #fff; color: #1a1a1a; z-index: 3; }
+    .hb-tag {
+      display: inline-block; font-family: var(--display); font-size: 13px; font-weight: 600;
+      padding: 5px 12px; border-radius: 999px; margin-bottom: 18px;
+      background: rgba(22, 51, 0, 0.1);
+    }
+    .hb-lime .hb-tag, .hb-dark .hb-tag { background: rgba(255, 255, 255, 0.15); color: #FBF6F0; }
+    .hb-num { font-family: var(--display); font-weight: 600; font-size: clamp(44px, 4.6vw, 64px); line-height: 0.9; letter-spacing: -0.03em; }
+    .hb-lime .hb-num, .hb-dark .hb-num { color: #F7F0E8; }
+    .hb-label { font-family: var(--display); font-weight: 500; font-size: 15px; line-height: 1.35; margin-top: 10px; opacity: 0.85; text-wrap: pretty; }
+    .hb-star { display: block; font-size: 18px; color: #E8893C; margin-bottom: 8px; }
+    .hb-quote { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.4; letter-spacing: -0.005em; text-wrap: pretty; }
+    .hb-cite { display: block; font-size: 13px; color: #6b6b6b; margin-top: 12px; }
+    .cs-hero-stats {
+      margin-top: 0; background: var(--well); border-radius: var(--radius);
+      padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 40px);
+      grid-template-columns: repeat(3, 1fr); gap: 0;
+    }
+    .cs-hero-stats .cs-stat { padding: 0 clamp(12px, 2vw, 24px); }
+    .cs-hero-stats .cs-stat + .cs-stat { border-left: 1px solid var(--hairline); }
+    .cs-hero-stats .cs-stat-value { font-size: clamp(40px, 5.6vw, 72px); }
+    .cs-hero-stats .cs-stat-caption { font-size: 14px; }
+    @media (max-width: 900px) {
+      .cs-hero--split { grid-template-columns: 1fr; }
+      .cs-hero-board { height: 520px; max-width: 560px; width: 100%; margin: 24px auto 0; }
+    }
+    @media (max-width: 560px) {
+      .cs-hero-meta { grid-template-columns: 1fr; }
+      .cs-hero-board { height: 540px; }
+      .hb { padding: 16px; }
+      .hb-photo { width: 52%; }
+      .hb-lime, .hb-dark { width: 44%; }
+      .hb-light { left: 14%; width: 62%; }
+      .cs-hero-stats { grid-template-columns: 1fr; }
+      .cs-hero-stats .cs-stat { padding: 20px 0; }
+      .cs-hero-stats .cs-stat + .cs-stat { border-left: none; border-top: 1px solid var(--hairline); }
+    }
+    /* FYNDNA's own colours, from its homepage card: navy and its blue glow. */
+    .cs-hero--split .cs-hero-title .accent { color: #6096E6; }
+    .hb-photo { width: 54%; top: 6%; }
+    .hb-photo img { aspect-ratio: 4 / 3; object-position: top left; }
+    .hb-lime { width: 38%; top: 0; }
+    .hb-dark { top: 42%; width: 44%; }
+    .hb-lime, .hb-dark, .hb-dark { background-image: none; }
+    .hb-lime { background-color: #6096E6; color: #0F1A2B; }
+    .hb-lime .hb-tag { background: rgba(15, 26, 43, 0.12); color: #0F1A2B; }
+    .hb-lime .hb-num { color: #0F1A2B; }
+    .hb-dark { background-color: #0F1A2B; color: #E9ECF1; border: 1px solid rgba(96, 150, 230, 0.25); }
+    .hb-dark .hb-tag { background: rgba(96, 150, 230, 0.16); color: #E9ECF1; }
+    .hb-dark .hb-quote { color: #E9ECF1; }
+    .hb-star { color: #6096E6; }
+    .hb-light { left: 6%; width: 46%; }
   </style>
 </head>
 <body>
@@ -426,14 +530,46 @@
     <span class="cs-wordmark">Shrea George</span>
   </nav>
 
-  <header class="cs-hero">
-    <p class="cs-hero-eyebrow"><span class="cs-pill">Case 01 &middot; FYNDNA &middot; Product Design</span></p>
-    <h1 class="cs-hero-title">Manual document verification has <span class="accent">never</span> been easier</h1>
-    <p class="cs-hero-lead">A fraud &amp; document-risk module with an 8-step decision flow inherited from an unrelated feature, and the case for collapsing it into one.</p>
+  <header class="cs-hero cs-hero--split">
+    <div class="cs-hero-copy">
+      <p class="cs-hero-eyebrow"><span class="cs-pill">Case 01 &middot; FYNDNA &middot; Product Design</span></p>
+      <h1 class="cs-hero-title">Manual document verification has <span class="accent">never</span> been easier</h1>
+      <p class="cs-hero-lead">A fraud &amp; document-risk module with an 8-step decision flow inherited from an unrelated feature, and the case for collapsing it into one.</p>
+      <dl class="cs-hero-meta">
+        <div><dt>Role</dt><dd>Lead Designer (solo IC)</dd></div>
+        <div><dt>Timeline</dt><dd>Mar 2026 &ndash; Apr 2026</dd></div>
+        <div><dt>Disciplines</dt><dd>Product Design, Interaction Design, Design Systems, Cross-team Facilitation</dd></div>
+        <div><dt>Responsibilities</dt><dd>End-to-end Flow Design, Stakeholder Alignment, Fraud &amp; Risk Decision Flows, Working Within an Inherited Design System</dd></div>
+      </dl>
+    </div>
+    <div class="cs-hero-board">
+      <figure class="hb hb-photo" style="--r:-3deg">
+        <span class="hb-pin"></span>
+        <img src="fyndna-dilemma3-final.png" alt="The final Risk Analysis screen, risks grouped under each document">
+        <figcaption>Every risk, sorted under its document.</figcaption>
+      </figure>
+      <div class="hb hb-lime" style="--r:3deg">
+        <span class="hb-pin"></span>
+        <span class="hb-tag">One agent, one day</span>
+        <p class="hb-num">9&ndash;10</p>
+        <p class="hb-label">documents, with 3&ndash;4 risks each</p>
+      </div>
+      <div class="hb hb-dark" style="--r:-2deg">
+        <span class="hb-pin"></span>
+        <span class="hb-tag">A risk looks like</span>
+        <p class="hb-quote">&ldquo;Anish Verma Shah&rdquo; in one document, &ldquo;Anish Shah&rdquo; in another.</p>
+      </div>
+      <div class="hb hb-light" style="--r:2deg">
+        <span class="hb-pin"></span>
+        <span class="hb-star">&#10022;</span>
+        <p class="hb-quote">&ldquo;There&rsquo;s an existing flow similar to this, just finish it off.&rdquo;</p>
+        <span class="hb-cite">The brief I was given</span>
+      </div>
+    </div>
   </header>
 
   <div class="cs-band">
-    <div class="cs-stats-row">
+    <div class="cs-stats-row cs-hero-stats">
       <div class="cs-stat">
         <span class="cs-stat-value">8 &rarr; 4</span>
         <span class="cs-stat-caption">steps to close one risk</span>
@@ -443,27 +579,8 @@
         <span class="cs-stat-caption">task completion time</span>
       </div>
       <div class="cs-stat">
-        <span class="cs-stat-value plain">+10%</span>
+        <span class="cs-stat-value">+10%</span>
         <span class="cs-stat-caption">better risk identification</span>
-      </div>
-    </div>
-
-    <div class="cs-meta-row">
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Role</span>
-        <span class="cs-meta-value">Lead Designer (solo IC)</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Timeline</span>
-        <span class="cs-meta-value">Mar 2026 &ndash; Apr 2026</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Disciplines</span>
-        <span class="cs-meta-value">Product Design &middot; Interaction Design &middot; Design Systems &middot; Cross-team Facilitation</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Responsibilities</span>
-        <span class="cs-meta-value">End-to-end Flow Design &middot; Stakeholder Alignment &middot; Fraud &amp; Risk Decision Flows &middot; Working Within an Inherited Design System</span>
       </div>
     </div>
   </div>
