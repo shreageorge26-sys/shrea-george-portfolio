@@ -6,376 +6,649 @@
   <title>Royal Enfield Case Study &middot; Shrea George</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="case-study.css">
   <style>
+    /* ══ Royal Enfield-only components, on the shared tokens ══ */
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    /* 01 — photo strip: three frames, the middle one taller */
+    .strip { display: grid; grid-template-columns: 1fr 1.25fr 1fr; gap: clamp(12px, 1.6vw, 20px); align-items: center; margin-top: clamp(40px, 6vh, 64px); }
+    .strip img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
+    .strip figure:nth-child(2) img { aspect-ratio: 3 / 4; }
 
-    @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
-      font-weight: 600; font-style: normal; font-display: swap;
-    }
-    @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
-      font-weight: 400; font-style: normal; font-display: swap;
-    }
+    /* 01 — store, culture, website. The phone sets the row height; both photos
+       stretch to match it, so all three tops, bottoms and labels line up. */
+    .strip--vision { grid-template-columns: 1fr 1fr auto; align-items: stretch; }
+    .strip--vision figure { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+    .strip--vision figure:not(.strip-phone) img { flex: 1 1 0; min-height: 0; height: 100%; aspect-ratio: auto; }
+    .strip-phone { align-items: center; }
+    .strip .phone-screen img { aspect-ratio: auto; height: 100%; object-fit: cover; object-position: top; border-radius: 0; }
+    .phone.phone--sm { --sw: clamp(170px, 14vw, 210px); }
+    .strip-label { font-size: 14px; color: var(--ink-50); align-self: stretch; }
+    .strip-label b { display: block; font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--ink); margin-bottom: 2px; }
 
-    :root {
-      /* One flat green for the whole page — no lighter or darker bands. */
-      --sg-forest-900: #0d180d;
+    /* 02 — search ranking as one row: marketplaces first, the store last */
+    .ranks { list-style: none; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 30px; margin-top: clamp(32px, 5vh, 48px); }
+    .ranks li { position: relative; display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--rule); border-radius: 999px; background: var(--card); font-size: 15px; opacity: 0; transform: translateY(8px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); transition-delay: calc(0.2s + var(--i) * 0.15s); }
+    .ranks li + li::before { content: '\2192'; position: absolute; left: -23px; color: var(--ink-30); }
+    .ranks li span { font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--ink-50); }
+    .ranks .is-store { border: 1.5px dashed var(--ink); font-weight: 600; }
+    .ranks.in li { opacity: 1; transform: none; }
+    h3.then { margin-top: clamp(48px, 7vh, 72px); }
+    h3.then + .lead { margin-top: 10px; }
 
-      --lime-300: #ADDD8D;   /* eyebrite accents, pills, stat values, group names, ✓ */
-      --mint: #7ee8a2;       /* exactly one accented word in the hero */
-      --ink-green: #163300;  /* text on lime fills — never white on lime */
-      --ink-green-soft: #1f3a1c;
-      --flag-red: #A8200D;   /* ✗ marks. See note in the handoff if NDA-stamp
-                                exclusivity matters — swap for rgba(255,255,255,0.45). */
+    /* 04 — marketplace vs store: pros then cons, the store side outlined */
+    .tradeoffs { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.4vw, 32px); margin-top: clamp(32px, 5vh, 48px); }
+    .tradeoff { border: 1px solid var(--rule); border-radius: var(--radius); padding: clamp(20px, 2.6vw, 32px); background: var(--card); }
+    .tradeoff.is-store { border: 1.5px solid var(--ink); }
+    .tradeoff-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 16px; margin-bottom: 8px; border-bottom: 1px solid var(--rule); }
+    .tradeoff-head b { font-family: var(--display); font-weight: 600; font-size: 22px; }
+    .tradeoff-head span { font-size: var(--t-small); color: var(--ink-50); }
+    .tradeoff ul { list-style: none; display: flex; flex-direction: column; }
+    .tradeoff li { font-size: 15px; line-height: 1.5; padding: 10px 0 10px 28px; position: relative; }
+    .tradeoff li::before { position: absolute; left: 0; top: 10px; width: 18px; text-align: center; }
+    .tradeoff .pro::before { content: '\2713'; color: var(--accent-ink); font-size: 15px; }
+    .tradeoff .con { color: var(--ink-70); }
+    .tradeoff .con::before { content: '\2715'; color: var(--ink-50); font-size: 13px; }
+    .tradeoff .pro + .con { margin-top: 8px; border-top: 1px dashed var(--rule); padding-top: 18px; }
+    .tradeoff .pro + .con::before { top: 18px; }
 
-      --text: #ffffff;
-      --text-75: rgba(255,255,255,0.75);
-      --text-60: rgba(255,255,255,0.6);
-      --text-45: rgba(255,255,255,0.45);
-      --hairline: rgba(255,255,255,0.15);
-      --well: rgba(0,0,0,0.45);      /* concept card fill — a sunken well */
-      --card: rgba(255,255,255,0.06);
+    /* 05 — a longer question than the other pages: smaller, and the answer reads as a lead */
+    .chapter--question .brief-quote { font-size: clamp(34px, 4.4vw, 64px); max-width: 20ch; }
+    .chapter--question .brief-cite { font-family: var(--display); font-size: var(--t-lead); line-height: 1.5; color: var(--ink-70); max-width: 52ch; margin-top: 32px; }
 
-      --display: 'Rebond Grotesque', 'Inter', sans-serif;
-      --body: 'Inter', system-ui, sans-serif;
+    /* 03 — the data: one lead figure as a 100-dot grid, two as meters */
+    .figures { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: clamp(16px, 2.4vw, 32px); margin-top: clamp(40px, 6vh, 64px); align-items: stretch; }
+    .figure { border: 1px solid var(--rule); border-radius: var(--radius); padding: clamp(20px, 2.4vw, 28px); background: var(--card); display: flex; flex-direction: column; gap: 14px; }
+    .figure-num { font-family: var(--display); font-weight: 600; font-size: clamp(36px, 3.6vw, 56px); line-height: 1; letter-spacing: -0.03em; color: var(--accent-ink); }
+    .figure-cap { font-size: 15px; line-height: 1.5; color: var(--ink-70); text-wrap: pretty; }
+    .figure-num--word { font-size: clamp(30px, 2.8vw, 44px); white-space: nowrap; }
+    .figure--lead { flex-direction: row; align-items: center; gap: clamp(16px, 2vw, 28px); }
+    .figure--lead .figure-num { font-size: clamp(48px, 5vw, 76px); }
+    .dotgrid { flex: 0 0 auto; width: clamp(120px, 11vw, 160px); display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; }
+    .dotgrid i { aspect-ratio: 1; border-radius: 50%; background: var(--ink); opacity: 0.12; transition: opacity 0.25s linear; transition-delay: calc(var(--d, 0) * 12ms); }
+    .figure.in .dotgrid i.on { opacity: 1; }
+    .meter { height: 10px; border-radius: 5px; background: var(--paper-2); overflow: hidden; }
+    .meter span { display: block; height: 100%; width: var(--w); background: var(--accent-fill); border-radius: 5px; transform: scaleX(0); transform-origin: left; transition: transform 1.2s var(--ease) 0.3s; }
+    .figure.in .meter span { transform: scaleX(1); }
 
-      /* Fluid by construction — this page carries no media queries.
-         The gutter collapses 210px → 20px; section rhythm 120px → 64px. */
-      --gutter: clamp(20px, 6vw, 210px);
-      --rhythm: clamp(64px, 10vw, 120px);
-      --radius: 8px;
-    }
+    /* 03 — two kinds of shopper, side by side, with what they share below */
+    .shoppers { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.4vw, 32px); margin-top: clamp(40px, 6vh, 64px); }
+    .riders .shopper img { aspect-ratio: 4 / 3; object-fit: cover; }
+    .riders { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2.4vw, 32px); margin-top: clamp(40px, 6vh, 64px); }
+    .shopper--wide { display: grid; grid-template-columns: clamp(180px, 18vw, 240px) 1fr; align-items: center; margin-top: clamp(16px, 2.4vw, 32px); }
+    /* Portrait photo in a narrow column, shown at close to its real size and shape */
+    .shopper--wide .shopper-wide-img { width: 100%; height: auto; aspect-ratio: 315 / 354; object-fit: cover; }
+    .shopper-type { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-50); margin-bottom: -8px; }
+    /* Placeholder until the real photos arrive. Swap each for an <img>. */
+    .img-slot { aspect-ratio: 4 / 3; display: grid; place-items: center; background: var(--paper-2); border-bottom: 1px dashed var(--ink-30); color: var(--ink-50); font-size: 13px; }
+    .shopper { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--card); }
+    .shopper img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+    .shopper-body { padding: clamp(18px, 2.4vw, 28px); display: flex; flex-direction: column; gap: 14px; }
+    .shopper-body h3 { font-size: 22px; }
+    .shopper-body ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .shopper-body li { font-size: 15px; color: var(--ink-70); padding-left: 18px; position: relative; }
+    .shopper-body li::before { content: ''; position: absolute; left: 0; top: 0.62em; width: 8px; height: 1.5px; background: var(--ink-50); }
 
-    body {
-      background-color: var(--sg-forest-900);
-      color: var(--text);
-      font-family: var(--body);
-      line-height: 1.6;
-      overflow-x: clip;           /* backstop against any stray wide child */
-    }
-    /* Film grain, behind all content. */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      opacity: 0.06;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-    }
+    .swap-arrow { font-size: 28px; color: var(--ink-30); }
 
-    /* ══ NAV ══ */
-    .cs-nav {
-      display: flex; align-items: center;
-      padding: clamp(16px, 4vw, 20px) clamp(20px, 6vw, 40px);
-      border-bottom: 1px solid var(--hairline);
-    }
-    .cs-wordmark { font-family: var(--display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em; color: var(--text); }
+    /* 05 — navigation routes: shopper → section → what they find */
+    .routes { display: flex; flex-direction: column; gap: clamp(20px, 3vh, 28px); margin-top: clamp(40px, 6vh, 64px); }
+    .route { display: grid; grid-template-columns: 1fr 48px 1fr 48px 1.3fr; align-items: center; }
+    .node { border: 1px solid var(--rule); border-radius: var(--radius); padding: 16px 18px; background: var(--card); }
+    .node small { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-50); margin-bottom: 6px; }
+    .node b { font-family: var(--display); font-weight: 600; font-size: 18px; line-height: 1.25; }
+    .node--end { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-fill); }
+    .node--end small { color: var(--on-accent); opacity: 0.7; }
+    .link-line { height: 2px; background: var(--ink-30); transform: scaleX(0); transform-origin: left; transition: transform 0.6s var(--ease); }
+    .route.in .link-line { transform: scaleX(1); }
+    .route.in .link-line:nth-of-type(2) { transition-delay: 0.25s; }
+    .route .node { opacity: 0; transition: opacity 0.6s var(--ease); }
+    .route.in .node { opacity: 1; }
+    .route.in .node:nth-child(3) { transition-delay: 0.3s; }
+    .route.in .node:nth-child(5) { transition-delay: 0.6s; }
 
-    /* ══ HERO ══ */
-    .cs-hero { padding: clamp(48px, 9vw, 72px) clamp(20px, 6vw, 60px) 0; text-align: center; }
-    .cs-hero-eyebrow { margin-bottom: clamp(20px, 4vw, 28px); }
-    .cs-pill {
-      display: inline-block; background: var(--lime-300); color: var(--ink-green-soft);
-      border-radius: 100px; padding: 9px 20px;
-      font-family: var(--display); font-size: 13px; font-weight: 600;
-    }
-    .cs-hero-title {
-      font-family: var(--display); font-weight: 600; font-size: 40px;
-      line-height: 1.08; letter-spacing: -0.02em; color: var(--text);
-      max-width: 1100px; margin: 0 auto; text-wrap: balance;
-    }
-    .cs-hero-title .accent { color: var(--mint); }
-    .cs-hero-lead {
-      font-size: clamp(15px, 1.6vw, 16px); color: var(--text-60); line-height: 1.7;
-      max-width: 620px; margin: clamp(20px, 4vw, 28px) auto 24px; text-wrap: pretty;
-    }
+    /* Benchmarking — two stakeholder goals, pulling apart */
+    .tension { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: clamp(12px, 2vw, 24px); margin-top: clamp(32px, 5vh, 48px); }
+    .side { border: 1px solid var(--rule); border-radius: var(--radius); padding: clamp(20px, 2.4vw, 28px); background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+    .side small { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-50); }
+    .side b { font-family: var(--display); font-weight: 600; font-size: clamp(20px, 2vw, 26px); }
+    .side span { font-size: 15px; color: var(--ink-70); }
+    .tension-vs { font-family: var(--display); font-weight: 600; font-size: 18px; color: var(--ink-50); width: 52px; height: 52px; border-radius: 50%; border: 1.5px solid var(--ink-30); display: grid; place-items: center; }
 
-    /* ══ META + STATS BAND ══
-       No heading — the hairlines carry the structure. Sits close under the hero. */
-    .cs-band {
-      margin-top: clamp(28px, 4vw, 56px);
-      padding: clamp(12px, 1.6vw, 20px) var(--gutter) clamp(56px, 8vw, 80px);
-    }
-    .cs-meta-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
-      gap: clamp(24px, 3vw, 36px);
-      padding: clamp(24px, 3vw, 32px) 0;
-      border-top: 1px solid var(--hairline);
-      border-bottom: 1px solid var(--hairline);
-    }
-    .cs-meta-item { display: flex; flex-direction: column; gap: 8px; }
-    .cs-meta-label { font-size: 13px; font-weight: 400; color: var(--text-45); }
-    .cs-meta-value { font-family: var(--display); font-weight: 600; font-size: 17px; line-height: 1.3; color: var(--text); }
+    /* Benchmarking — the mirror table: same strengths, one gap */
+    .matrix-wrap { margin-top: clamp(32px, 5vh, 48px); overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--card); }
+    .matrix { width: 100%; border-collapse: collapse; min-width: 560px; }
+    .matrix th, .matrix td { padding: 16px 18px; text-align: center; border-bottom: 1px solid var(--rule); }
+    .matrix tbody tr:last-child th, .matrix tbody tr:last-child td { border-bottom: none; }
+    .matrix thead th { font-family: var(--display); font-weight: 600; font-size: 16px; }
+    .matrix tbody th { text-align: left; font-weight: 500; font-size: 15px; }
+    .matrix td { font-size: 18px; color: var(--ink-70); }
+    .matrix .is-re { background: var(--paper-2); }
+    .matrix thead .is-re { background: var(--accent-fill); color: var(--on-accent); }
+    .matrix .gap-row th { font-family: var(--display); font-weight: 600; }
+    .matrix .is-miss { color: var(--ink); font-weight: 600; }
+    .matrix .is-miss span { display: block; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-50); margin-top: 2px; }
+    .js .matrix tbody tr { opacity: 0; transform: translateY(6px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); transition-delay: calc(0.3s + var(--r) * 0.18s); }
+    .js .matrix-wrap.in tbody tr { opacity: 1; transform: none; }
+    .matrix-note { font-size: 15px; color: var(--ink-70); margin-top: 16px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    h3.then { margin-top: clamp(48px, 7vh, 72px); }
 
-    .cs-stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-      gap: clamp(32px, 4vw, 48px);
-      margin-top: clamp(48px, 7vw, 72px);
-    }
-    .cs-stat { display: flex; flex-direction: column; gap: 10px; }
-    /* In the band each stat sits in a track far wider than its content, so
-       left-aligning strands the figure at the edge of its third. Centre the
-       pair within the track; inline/compact stats stay left-aligned. */
-    .cs-band .cs-stat { align-items: center; text-align: center; }
-    .cs-stat-value {
-      font-family: var(--display); font-weight: 600;
-      font-size: clamp(34px, 4.6vw, 52px); line-height: 1; letter-spacing: -0.02em;
-      color: var(--lime-300);
-    }
-    .cs-stat-value.plain { color: var(--text); }   /* white, for variety in a row */
-    .cs-stat-caption { font-size: 13px; line-height: 1.5; color: var(--text-60); }
+    /* 08 — one catalogue, four shop windows */
+    .channels { margin-top: clamp(40px, 6vh, 64px); display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; position: relative; max-width: 820px; }
+    .market { text-align: center; padding: 18px; border: 1px solid var(--rule); border-radius: var(--radius); font-family: var(--display); font-weight: 600; font-size: 18px; background: var(--card); position: relative; }
+    .market::after { content: ''; position: absolute; left: 50%; top: 100%; width: 1.5px; height: 24px; background: var(--ink-30); transform: scaleY(0); transform-origin: top; transition: transform 0.6s var(--ease) 0.3s; }
+    .channels.in .market::after { transform: scaleY(1); }
+    .bus { grid-column: 1 / -1; height: 1.5px; background: var(--ink-30); margin: 8px calc(100% / 6) 0; transform: scaleX(0); transition: transform 0.7s var(--ease) 0.7s; }
+    .channels.in .bus { transform: scaleX(1); }
+    .home { grid-column: 1 / -1; justify-self: center; position: relative; padding: 18px 28px; border-radius: var(--radius); background: var(--accent-fill); color: var(--on-accent); font-family: var(--display); font-weight: 600; font-size: 20px; text-align: center; margin-top: 8px; }
+    .home::before { content: ''; position: absolute; left: 50%; bottom: 100%; width: 1.5px; height: 24px; background: var(--ink-30); }
+    .home small { display: block; font-family: var(--body); font-weight: 400; font-size: 12px; opacity: 0.7; margin-top: 4px; }
 
-    /* ══ PAGE BODY ══ */
-    .cs-page { padding: 0 var(--gutter) clamp(72px, 10vw, 120px); }
+    /* 11 — desktop screenshot beside a phone that scrolls the whole mobile homepage */
+    .phone-scroll { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .phone { --sw: 250px; width: calc(var(--sw) + 18px); background: #0c0d0c; border-radius: 40px; padding: 9px; box-shadow: 0 0 0 2px rgba(0,0,0,0.12), 0 32px 80px var(--shadow); }
+    .phone-screen { position: relative; width: var(--sw); height: calc(var(--sw) * 19.5 / 9); border-radius: 31px; overflow: hidden; background: #fff; }
+    .phone-island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 32%; height: 24px; background: #000; border-radius: 20px; z-index: 1; }
+    .phone-screen img { width: 100%; height: auto; display: block; }
+    /* One slow pass down the page and back. The image is ~28 screens tall. */
+    @keyframes page-scroll {
+      0%, 4% { transform: translateY(0); }
+      48%, 52% { transform: translateY(calc(-100% + var(--sw) * 19.5 / 9)); }
+      96%, 100% { transform: translateY(0); }
+    }
+    .phone-scroll.in .phone-screen img { animation: page-scroll 70s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+    .phone-screen:hover img, .phone-screen:focus img { animation-play-state: paused; }
+    .phone-screen:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 4px; }
 
-    .cs-section { padding: var(--rhythm) 0; border-top: 1px solid var(--hairline); }
-    .cs-section:first-child { border-top: none; }
-    /* Runs straight on from the section above it — no rule, no top padding. */
-    .cs-section--flush { padding: 0 0 var(--rhythm); border-top: none; }
+    /* 10 — closing: launch status */
+    .aside { font-family: var(--display); font-size: var(--t-lead); color: var(--ink-70); margin-top: 20px; max-width: 52ch; }
 
-    .cs-eyebrow { font-family: var(--display); font-size: 14px; font-weight: 600; color: var(--text-60); margin-bottom: 16px; }
-    /* The second eyebrow in a brief/response pair sits between two blocks. */
-    .cs-eyebrow--between { margin: 32px 0 16px; }
-    .cs-heading {
-      font-family: var(--display); font-weight: 600; font-size: 32px;
-      line-height: 1.1; letter-spacing: -0.015em; color: var(--text);
-      margin-bottom: 20px; text-wrap: pretty;
-    }
-    /* Pull quote, dilemma question, "Closing thoughts" all share this level. */
-    .cs-accent-heading {
-      font-family: var(--display); font-weight: 600; font-size: 24px;
-      line-height: 1.2; letter-spacing: -0.01em; color: var(--lime-300);
-      text-wrap: pretty;
-    }
-    .cs-lead {
-      font-family: var(--display); font-size: clamp(17px, 2.2vw, 22px);
-      line-height: 1.5; color: var(--text-75); max-width: 780px; text-wrap: pretty;
-    }
-    .cs-lead p + p { margin-top: 16px; }
+    .live-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 14px 22px; min-height: 48px; border-radius: 999px; background: var(--accent-fill); color: var(--on-accent); text-decoration: none; font-weight: 500; font-size: 15px; transition: transform 0.3s var(--ease); }
+    .live-link:hover { transform: translateY(-2px); }
+    .live-link:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 3px; }
 
-    /* ══ IMPACT PILLS ══ */
-    .cs-pill-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
-    .cs-pill-outline {
-      display: inline-flex; align-items: center;
-      border: 1.5px solid var(--lime-300); border-radius: 999px;
-      padding: 10px 22px; min-height: 44px;      /* touch target */
-      font-family: var(--display); font-weight: 600; font-size: 15px;
-      letter-spacing: 0.02em; color: var(--text); background: transparent;
-      transition: background 0.2s, color 0.2s;
-    }
-    .cs-pill-outline:hover { background: var(--lime-300); color: var(--ink-green); }
+    /* Two questions */
+    .questions { list-style: none; display: flex; flex-direction: column; gap: clamp(20px, 3vh, 28px); margin-top: clamp(32px, 5vh, 56px); max-width: 920px; }
+    .questions li { font-family: var(--display); font-weight: 400; font-size: clamp(20px, 2vw, 28px); line-height: 1.35; display: grid; grid-template-columns: 48px 1fr; padding-top: clamp(20px, 3vh, 28px); border-top: 1px solid var(--rule); text-wrap: pretty; }
+    .questions li span { font-weight: 600; font-size: 14px; color: var(--ink-50); padding-top: 0.5em; }
 
-    /* ══ BULLETS ══ */
-    .cs-bullets { list-style: none; padding: 0; margin-top: 24px; display: flex; flex-direction: column; gap: 16px; max-width: 780px; }
-    .cs-bullets li { font-size: 16px; line-height: 1.7; color: var(--text-60); padding-left: 20px; position: relative; }
-    .cs-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--hairline); }
+    /* PLP card iterations on a disruption scale */
+    .iter-scale { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px; margin-top: clamp(32px, 5vh, 48px); font-size: var(--t-small); color: var(--ink-50); }
+    .iter-scale i { height: 2px; background: linear-gradient(90deg, var(--ink-30), var(--ink)); position: relative; }
+    .iter-scale i::after { content: ''; position: absolute; right: -2px; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-left: 9px solid var(--ink); border-right: 0; }
+    .iters { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); align-items: start; gap: clamp(12px, 1.8vw, 24px); margin-top: 20px; }
+    .iter { display: flex; flex-direction: column; gap: 10px; }
+    .iter .shot { padding: 8px; }
+    .iter .shot img { aspect-ratio: 360 / 732; object-fit: contain; object-position: top; background: #fff; }
+    .iter.is-pick .shot { border: 1.5px solid var(--ink); }
+    .iter-name { font-size: 14px; color: var(--ink-70); }
+    .iter-name b { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 2px; }
 
-    /* ══ NUMBERED GROUP STACK ══
-       Rows, not cards: the item count varies per case study and the body copy
-       can run several lines. Rows absorb both; card grids did not. */
-    .cs-groups { display: flex; flex-direction: column; margin-top: 40px; border-bottom: 1px solid var(--hairline); }
-    .cs-group {
-      display: grid; grid-template-columns: auto 1fr;
-      column-gap: clamp(20px, 4vw, 44px); row-gap: 6px; align-items: baseline;
-      padding: clamp(22px, 3vw, 30px) 0;
-      border-top: 1px solid var(--hairline);
-    }
-    .cs-group-num {
-      font-family: var(--display); font-weight: 600;
-      font-size: clamp(30px, 5vw, 44px); line-height: 1; letter-spacing: -0.02em;
-      color: var(--hairline);
-    }
-    .cs-group-body { display: flex; flex-direction: column; gap: 8px; }
-    .cs-group-name {
-      font-family: var(--display); font-weight: 600;
-      font-size: clamp(19px, 2.4vw, 24px); line-height: 1.2; letter-spacing: -0.01em;
-      color: var(--lime-300);
-    }
-    .cs-group-text { font-size: 16px; line-height: 1.65; color: var(--text-60); max-width: 640px; text-wrap: pretty; }
+    /* Imagery: before and after phones */
+    .imagery { display: flex; align-items: center; justify-content: center; gap: clamp(20px, 5vw, 80px); margin-top: clamp(40px, 6vh, 64px); }
+    .imagery figure { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+    .imagery .phone-screen img { height: 100%; object-fit: cover; object-position: top; }
 
-    /* ══ PULL QUOTE ══
-       No border, no quote glyph — the quotation marks live in the copy. */
-    .cs-quote {
-      font-family: var(--display); font-weight: 600; font-size: 24px;
-      color: var(--lime-300); line-height: 1.2; letter-spacing: -0.01em;
-      margin: 28px 0; max-width: 720px; border: none; padding: 0; text-wrap: pretty;
-    }
+    /* Question 1 — riders as helmets, parked in four lanes (one helmet = 5%) */
+    .lanes { list-style: none; display: flex; flex-direction: column; margin-top: clamp(32px, 5vh, 48px); }
+    .lane { display: grid; grid-template-columns: 80px minmax(0, 1.2fr) minmax(0, 1fr); align-items: center; gap: clamp(12px, 2vw, 28px); padding: 16px 0; border-top: 1px dashed var(--rule); }
+    .lane:last-child { border-bottom: 1px dashed var(--rule); }
+    .lane-pct { font-family: var(--display); font-weight: 600; font-size: clamp(28px, 2.8vw, 40px); letter-spacing: -0.02em; color: var(--accent-ink); }
+    .lane-helms { display: flex; flex-wrap: wrap; gap: 6px; }
+    .helm { width: clamp(30px, 3vw, 42px); height: auto; aspect-ratio: 32 / 28; color: var(--ink); }
+    .js .helm { opacity: 0; transform: translateX(-24px); transition: opacity 0.4s var(--ease), transform 0.5s var(--ease); transition-delay: calc(0.2s + var(--h) * 60ms); }
+    .js .lane.in .helm { opacity: 1; transform: none; }
+    .lane-label { font-size: 14px; color: var(--ink-70); }
+    .lane-label b { display: block; font-family: var(--display); font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 2px; }
 
-    /* ══ DESIGN DILEMMAS ══ */
-    .cs-dilemma { margin-top: clamp(48px, 7vw, 72px); }
-    .cs-dilemma-label { font-family: var(--display); font-size: 14px; font-weight: 600; color: var(--text-60); margin-bottom: 8px; }
-    .cs-dilemma-question { max-width: 800px; }
-    /* A concept well used on its own, rather than inside a .cs-compare grid,
-       still needs the 32px the grid would have supplied. */
-    .cs-dilemma > .cs-concept { margin-top: 32px; }
+    /* Question 1 — how riders pick between two jackets */
+    .deciders { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(12px, 2vw, 24px); margin-top: 24px; }
+    .decider { border: 1px solid var(--rule); border-radius: var(--radius); padding: clamp(18px, 2.2vw, 26px); background: var(--card); display: flex; flex-direction: column; gap: 8px; }
+    .decider span { font-family: var(--display); font-weight: 600; font-size: 13px; color: var(--ink-50); }
+    .decider b { font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.25; }
+    .decider p { font-size: 14px; color: var(--ink-70); }
+    .decider.is-key { background: var(--accent-fill); color: var(--on-accent); border-color: var(--accent-fill); }
+    .decider.is-key span, .decider.is-key p { color: var(--on-accent); opacity: 0.75; }
+    .insight { margin-top: clamp(28px, 4vh, 40px); padding-left: 20px; border-left: 3px solid var(--accent-ink); font-family: var(--display); font-size: var(--t-lead); line-height: 1.5; color: var(--ink-70); max-width: 62ch; }
+    .insight b { color: var(--ink); font-weight: 600; }
 
-    /* Two cards side by side on desktop, stacked below ~700px. The
-       min(300px,100%) wrapper is load-bearing: a bare minmax(300px,1fr)
-       overflows a 320px viewport by 20px, because auto-fit cannot shrink a
-       track below its floor. Do not drop it. */
-    .cs-compare {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-      gap: clamp(20px, 3vw, 32px);
-      margin-top: 32px;
-    }
-    /* One rectangle, no border — a border plus an inner frame reads as two
-       nested rectangles. */
-    .cs-concept {
-      margin: 0; background: var(--well); border-radius: var(--radius);
-      padding: clamp(16px, 2.4vw, 22px);
-      display: flex; flex-direction: column; gap: 16px;
-    }
-    .cs-concept-head { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
-    .cs-concept-pill {
-      background: var(--lime-300); color: var(--ink-green); border-radius: 999px;
-      padding: 7px 16px; font-family: var(--display); font-weight: 600;
-      font-size: 14px; line-height: 1.2;
-    }
-    /* No fixed aspect ratio and no crop — real screenshots vary in proportion
-       because they are design elements arranged for their own padding. */
-    .cs-concept-media {
-      width: 100%; min-height: clamp(170px, 22vw, 280px);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-60); font-size: clamp(13px, 1.6vw, 15px); text-align: center;
-    }
-    .cs-concept-media img { max-width: 100%; height: auto; display: block; }
-    .cs-concept-media.empty { border: 1.5px dashed var(--hairline); border-radius: var(--radius); }
+    /* The store: the scrolling phone on its own, bigger */
+    .store-split { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: clamp(32px, 6vw, 96px); align-items: center; }
+    .store-solo { display: flex; justify-content: center; }
+    .store-solo .phone { --sw: clamp(260px, 24vw, 320px); }
+    .imagery-desk { margin-top: clamp(40px, 6vh, 64px); }
 
-    .cs-points { display: flex; flex-direction: column; gap: 12px; }
-    .cs-point { display: flex; gap: 12px; font-size: 15px; line-height: 1.55; color: var(--text-75); }
-    .cs-point::before { content: '✓'; flex: 0 0 auto; color: var(--lime-300); font-size: 16px; line-height: 1.5; }
-    .cs-point.against::before { content: '✗'; color: var(--flag-red); }
-
-    .cs-approach { list-style: none; padding: 0; margin-top: 28px; display: flex; flex-direction: column; gap: 20px; max-width: 720px; }
-    .cs-approach li { font-size: 17px; line-height: 1.6; color: var(--text-60); }
-    .cs-approach strong { color: var(--text); font-weight: 600; }
-
-    .cs-takeaway {
-      background: var(--card); border: 1px solid var(--hairline); border-radius: var(--radius);
-      padding: 20px 24px; margin-top: 32px; max-width: 640px;
+    @media (max-width: 900px) {
+      .tension-vs { justify-self: center; }
+      .deciders { grid-template-columns: 1fr; }
+      .lane { grid-template-columns: 64px 1fr; }
+      .lane-label { grid-column: 2; }
+      .iters { display: flex; grid-template-columns: none; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px; }
+      .iters::-webkit-scrollbar { display: none; }
+      .iter { flex: 0 0 72%; scroll-snap-align: center; }
+      .iters + .tiles-dots { display: flex; }
+      /* Phones: all five columns fit, brand names shortened, Royal Enfield stays visible */
+      .matrix { min-width: 0; table-layout: fixed; }
+      .matrix th, .matrix td { padding: 12px 4px; font-size: 13px; }
+      .matrix thead th { font-size: 11px; line-height: 1.25; }
+      .matrix tbody th { width: 34%; padding-left: 12px; font-size: 13px; }
+      .matrix td { font-size: 15px; }
+      .matrix .is-miss span { font-size: 9px; }
+      .matrix-wrap { overflow-x: visible; }
+      .store-split { grid-template-columns: 1fr; }
+      .store-solo { margin-top: 8px; }
+      .tension, .shoppers, .tradeoffs, .figures { grid-template-columns: 1fr; }
+        .route { grid-template-columns: 1fr; }
+      .link-line { width: 2px; height: 20px; justify-self: start; margin-left: 24px; transform: scaleY(0); transform-origin: top; }
+      .route.in .link-line { transform: scaleY(1); }
     }
-    .cs-takeaway-label { font-size: 13px; font-weight: 400; color: var(--text-60); margin-bottom: 8px; }
-    .cs-takeaway-text { font-size: 14px; color: var(--text); line-height: 1.65; }
-
-    /* ══ CLOSING THOUGHTS ══ */
-    .cs-closing { padding: 0 0 40px; }
-    .cs-thoughts {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-      gap: 20px; margin-top: 40px;
+    @media (max-width: 600px) {
+      .strip--vision { grid-template-columns: 1fr 1fr; align-items: stretch; }
+      .strip--vision figure:not(.strip-phone) img { flex: none; height: auto; aspect-ratio: 4 / 5; }
+      .strip--vision .strip-phone { grid-column: 1 / -1; align-items: center; margin-top: 16px; }
+      .strip--vision .strip-phone .strip-label { text-align: center; }
+      .strip-label b { font-size: 16px; }
+      .ranks { gap: 8px; }
+      .ranks li + li::before { display: none; }
+      .phone.phone--sm { --sw: 150px; }
+      /* Who shops here: riders swipe, non-riders sit compact beside a small photo */
+      .riders { display: flex; grid-template-columns: none; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 4px; }
+      .riders::-webkit-scrollbar { display: none; }
+      .riders .shopper { flex: 0 0 78%; scroll-snap-align: center; }
+      .riders .shopper img { aspect-ratio: 16 / 10; }
+      .riders + .tiles-dots { display: flex; }
+      .shopper--wide { grid-template-columns: 112px 1fr; align-items: stretch; }
+      .shopper--wide .shopper-wide-img { height: 100%; aspect-ratio: auto; }
+      .shopper--wide .shopper-body { padding: 16px; gap: 10px; }
+      .shopper--wide .shopper-body li { font-size: 14px; }
+      .imagery { gap: 12px; }
+      .imagery .swap-arrow { display: none; }
+      .imagery .phone.phone--sm { --sw: calc((100vw - 2 * var(--gutter) - 12px) / 2 - 18px); }
+      .imagery .strip-label b { font-size: 15px; }
+      .channels { gap: 8px; }
+      .market { font-size: 15px; padding: 14px 6px; }
     }
-    .cs-thought { background: var(--card); border: 1px solid var(--hairline); border-radius: var(--radius); padding: 24px 20px; }
-    .cs-thought p { font-size: 15px; color: var(--text); line-height: 1.65; }
-
-    /* ══ FOOTER ══ */
-    .cs-footer { padding-top: 40px; }
-    .cs-back {
-      display: inline-flex; align-items: center; gap: 6px; font-size: 13px;
-      color: var(--text-60); text-decoration: none;
-      border-bottom: 1px solid var(--hairline); padding-bottom: 2px;
-      transition: color 0.15s, border-color 0.15s;
+    @media (prefers-reduced-motion: reduce) {
+      /* no auto-scroll: let people scroll the phone themselves */
+      .phone-scroll.in .phone-screen img { animation: none; }
+      .phone-screen { overflow-y: auto; }
+      .js .helm, .js .matrix tbody tr, .meter span, .dotgrid i, .ranks li, .link-line, .route .node, .market::after, .bus { transition: none; }
     }
-    .cs-back:hover { color: var(--text); border-bottom-color: var(--lime-300); }
-  
-    /* ── Royal Enfield only ── */
-    .cs-lead--tight { margin-top: 20px; }
   </style>
 </head>
 <body>
+  <script>document.documentElement.classList.add('js');</script>
 
-  <nav class="cs-nav">
-    <span class="cs-wordmark">Shrea George</span>
+  <nav class="nav" aria-label="Case study">
+    <a class="nav-mark" href="index.html">Shrea George</a>
+    <span class="nav-now" aria-hidden="true"><b id="now-num">00</b> &nbsp;<span id="now-name">Royal Enfield</span></span>
+    <span class="progress" id="progress"></span>
   </nav>
 
-  <header class="cs-hero">
-    <p class="cs-hero-eyebrow"><span class="cs-pill">Case 04 &middot; Royal Enfield &middot; E-commerce UX</span></p>
-    <h1 class="cs-hero-title">What convinces a rider to buy a <span class="accent">&#8377;30,000</span> riding jacket online?</h1>
-    <p class="cs-hero-lead">From safety certifications to real-world reviews, we uncovered the factors that turn consideration into purchase.</p>
+  <!-- ══ HERO ══ -->
+  <header class="hero" data-chapter="00" data-name="Royal Enfield">
+    <div>
+      <p class="hero-tag" data-reveal>Case 04 &middot; Royal Enfield &middot; E-commerce UX</p>
+      <h1 data-reveal style="--i:1">Royal Enfield had the story and the loyal riders.<br> <span class="soft">Its online store showed neither.</span></h1>
+    </div>
+    <div class="hero-foot" data-reveal style="--i:2">
+      <p class="hero-lead">Royal Enfield wanted an apparel store that felt like the brand. Our team of three redesigned how people find their way through it, built around who they are, and rethought who the store was really up against.</p>
+      <dl class="meta">
+        <div><dt>Team</dt><dd>3 designers</dd></div>
+        <div><dt>Started</dt><dd>Aug 2024</dd></div>
+        <div><dt>Scope</dt><dd>Navigation, personas, benchmarking</dd></div>
+        <div><dt>Approach</dt><dd>Storytelling and rider psychology</dd></div>
+      </dl>
+    </div>
   </header>
 
-  <!-- No stats row: the work is under NDA and has no publishable outcome figures. -->
-  <div class="cs-band">
-    <div class="cs-meta-row">
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Role</span>
-        <span class="cs-meta-value">IC Role</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Timeline</span>
-        <span class="cs-meta-value">Aug 2024 &ndash; Present</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Disciplines</span>
-        <span class="cs-meta-value">Brand &amp; Product Design &middot; Information Architecture &middot; Competitive Benchmarking &middot; Storytelling</span>
-      </div>
-      <div class="cs-meta-item">
-        <span class="cs-meta-label">Responsibilities</span>
-        <span class="cs-meta-value">Navigation Redesign &middot; Persona Mapping &middot; Competitive Reframing &middot; Copywriting Direction</span>
-      </div>
-    </div>
-  </div>
+  <main>
 
-  <div class="cs-page">
-
-    <section class="cs-section">
-      <p class="cs-eyebrow">My impact</p>
-      <h2 class="cs-heading">What was my impact?</h2>
-      <div class="cs-pill-row">
-        <span class="cs-pill-outline">Persona based navigation</span>
-        <span class="cs-pill-outline">Iterative design for concepts backed with reasoning</span>
-        <span class="cs-pill-outline">Right copy for the right user</span>
-      </div>
-    </section>
-
-    <section class="cs-section">
-      <h2 class="cs-heading">Design challenges</h2>
-      <div class="cs-groups">
-        <div class="cs-group">
-          <span class="cs-group-num">01</span>
-          <div class="cs-group-body">
-            <strong class="cs-group-name">Who is this for?</strong>
-            <p class="cs-group-text">Royal Enfield targeted bikers and non-bikers too, we had to get the personas right. So it was on us to understand the users, their shopping ecosystem and map it out to the client.</p>
-          </div>
-        </div>
-        <div class="cs-group">
-          <span class="cs-group-num">02</span>
-          <div class="cs-group-body">
-            <strong class="cs-group-name">Merch v/s E-commerce</strong>
-            <p class="cs-group-text">After choosing the E-commerce route, we had to curate experiences for the different personas, without breaking the classy reputation of the brand.</p>
-          </div>
-        </div>
-        <div class="cs-group">
-          <span class="cs-group-num">03</span>
-          <div class="cs-group-body">
-            <strong class="cs-group-name">RE website v/s RE Amazon store</strong>
-            <p class="cs-group-text">Royal Enfield has many other channels that users shop from: Amazon, Flipkart, Myntra, etc. Why will users come to the Royal Enfield website? Are we our own enemy?</p>
-          </div>
+    <!-- ══ 01 THE BRIEF ══ -->
+    <section class="chapter" data-chapter="01" data-name="The brief">
+      <div class="marker"><span class="marker-num">01</span><span class="marker-name">The brief</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>The brief</p>
+        <h2 data-reveal style="--i:1">Tell the story of Royal Enfield&rsquo;s apparel.</h2>
+        <p class="lead" data-reveal style="--i:2">The brief was a rebrand of Royal Enfield&rsquo;s online apparel store. For its riders, riding isn&rsquo;t a hobby, it&rsquo;s a <strong>lifestyle</strong>, and it comes with a <strong>brotherhood</strong>. The online store had to show both, without losing any of the class the brand is known for.</p>
+        <div class="strip strip--vision">
+          <figure data-reveal style="--i:1">
+            <img loading="lazy" decoding="async" src="re-hero-5.jpeg" alt="Inside a Royal Enfield store: motorcycles, helmets and apparel on display">
+            <figcaption class="strip-label"><b>The store</b>The brand, up close</figcaption>
+          </figure>
+          <figure data-reveal style="--i:2">
+            <img loading="lazy" decoding="async" src="re-hero-6.webp" alt="Two riders with their Royal Enfields on a mountain road">
+            <figcaption class="strip-label"><b>The culture</b>Riding as a way of life</figcaption>
+          </figure>
+          <figure class="strip-phone" data-reveal style="--i:3">
+            <div class="phone phone--sm"><div class="phone-screen"><div class="phone-island"></div><img loading="lazy" decoding="async" src="re-before-mobile.jpg" alt="The old Royal Enfield mobile store: a discount banner, search bar, category tiles for riding boots and shoes, and shop-for-adventure and touring ride banners"></div></div>
+            <figcaption class="strip-label"><b>The website</b>Where the story got lost</figcaption>
+          </figure>
         </div>
       </div>
     </section>
 
-    <section class="cs-section">
-      <p class="cs-accent-heading">This project is under NDA, till it goes live.</p>
-      <div class="cs-lead cs-lead--tight">
-        <p>But, does it help when I can tell you that the clients invited my team to Motoverse and they kept tickets for us???<br>(we were too busy to go, haha *cries in corporate*)</p>
+    <!-- ══ 02 LOSING TO ITSELF ══ -->
+    <section class="chapter" data-chapter="02" data-name="Where things stood">
+      <div class="marker"><span class="marker-num">02</span><span class="marker-name">Where things stood</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>Where things stood</p>
+        <h2 data-reveal style="--i:1">The brand&rsquo;s own store was losing to itself on marketplaces.</h2>
+        <p class="lead" data-reveal style="--i:1">Most of Royal Enfield&rsquo;s online apparel sales came through third-party marketplaces, not the brand&rsquo;s own store. Marketplaces even outranked <strong>royalenfield.store</strong> in search results.</p>
+        <ol class="ranks" data-reveal style="--i:2" aria-label="Search results for a Royal Enfield riding jacket, in order: amazon.in, flipkart.com, myntra.com, then royalenfield.store">
+          <li style="--i:0"><span>#1</span>amazon.in</li>
+          <li style="--i:1"><span>#2</span>flipkart.com</li>
+          <li style="--i:2"><span>#3</span>myntra.com</li>
+          <li class="is-store" style="--i:3"><span>#4</span>royalenfield.store</li>
+        </ol>
+        <p class="caption">Searching &ldquo;royal enfield riding jacket&rdquo;. Illustrative.</p>
+        <h3 class="then" data-reveal>On a marketplace, it&rsquo;s just another listing.</h3>
+        <p class="lead" data-reveal style="--i:1">Marketplaces win on reviews and comparison. The brand store is the only place that can explain the product well.</p>
+        <div class="tradeoffs">
+          <div class="tradeoff" data-reveal style="--i:2">
+            <p class="tradeoff-head"><b>Marketplace</b><span>Amazon, Flipkart, Myntra</span></p>
+            <ul>
+              <li class="pro">See reviews and comments from other buyers</li>
+              <li class="pro">Compare brands side by side</li>
+              <li class="pro">Familiar checkout, with saved addresses and payments</li>
+              <li class="pro">Frequent sales and offers</li>
+              <li class="con">Can&rsquo;t fully understand the product</li>
+              <li class="con">No brand story, just another listing</li>
+            </ul>
+          </div>
+          <div class="tradeoff is-store" data-reveal style="--i:3">
+            <p class="tradeoff-head"><b>Brand store</b><span>royalenfield.store</span></p>
+            <ul>
+              <li class="pro">Full understanding of the product</li>
+              <li class="pro">The story and culture behind the gear</li>
+              <li class="pro">Know the science and tests behind your product</li>
+              <li class="pro">Exclusive collaborations with luxury brands not sold in India</li>
+              <li class="con">Fewer reviews to lean on</li>
+              <li class="con">No easy way to compare with other brands</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
-    <footer class="cs-footer">
-      <a href="index.html" class="cs-back">&#8592; Back to all case files</a>
-    </footer>
+    <!-- ══ 03 THE NUMBERS ══ -->
+    <section class="chapter" data-chapter="03" data-name="The numbers">
+      <div class="marker"><span class="marker-num">03</span><span class="marker-name">The numbers</span></div>
+      <div class="body">
+        <h2 data-reveal>Even on its own store, people looked but didn&rsquo;t buy.</h2>
+        <p class="lead" data-reveal style="--i:1">The store&rsquo;s analytics told the rest of the story.</p>
+        <div class="figures">
+          <div class="figure figure--lead" data-reveal style="--i:2">
+            <div class="dotgrid" data-dots="100" data-on="96" role="img" aria-label="96 out of 100 product views ended without an add to cart"></div>
+            <div>
+              <p class="figure-num">96%</p>
+              <p class="figure-cap">of product views ended without an add to cart. People were interested, just not convinced.</p>
+            </div>
+          </div>
+          <div class="figure" data-reveal style="--i:3">
+            <p class="figure-num">85%</p>
+            <div class="meter" role="img" aria-label="85% of visitors were on mobile"><span style="--w:85%"></span></div>
+            <p class="figure-cap">of visitors shopped on their phones, where pages took close to 20 seconds to load.</p>
+          </div>
+          <div class="figure" data-reveal style="--i:4">
+            <p class="figure-num figure-num--word">Nearly half</p>
+            <div class="meter" role="img" aria-label="Nearly half of sales came from riding gear"><span style="--w:47%"></span></div>
+            <p class="figure-cap">of all sales came from riding gear, the one category a rider can&rsquo;t compromise on.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  </div>
+    <!-- ══ 04 STAKEHOLDERS ══ -->
+    <section class="chapter" data-chapter="04" data-name="Stakeholders">
+      <div class="marker"><span class="marker-num">04</span><span class="marker-name">Stakeholders</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>Different stakeholder needs</p>
+        <h2 data-reveal style="--i:1">Push deals, and still look premium?</h2>
+        <p class="lead" data-reveal style="--i:2">Our stakeholders wanted different things from the same store, and both had a point.</p>
+        <div class="tension">
+          <div class="side" data-reveal style="--i:2"><small>One stakeholder</small><b>Show deals and discounts</b><span>Offers move stock and bring people in.</span></div>
+          <span class="tension-vs" data-reveal style="--i:3" aria-hidden="true">vs</span>
+          <div class="side" data-reveal style="--i:4"><small>Another stakeholder</small><b>Look premium</b><span>Discounts everywhere cheapen the brand.</span></div>
+        </div>
+      </div>
+    </section>
 
+    <!-- ══ 05 WHO SHOPS HERE ══ -->
+    <section class="chapter" data-chapter="05" data-name="Who shops here">
+      <div class="marker"><span class="marker-num">05</span><span class="marker-name">Who shops here</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>Who is this for?</p>
+        <h2 data-reveal style="--i:1">Not everyone who buys Royal Enfield rides one.</h2>
+        <p class="lead" data-reveal style="--i:2">The store had to serve bikers and non-bikers alike. Getting the personas right meant understanding each group and how they already shop, then mapping it out for the client.</p>
+        <div class="riders" data-swipe>
+          <div class="shopper" data-reveal style="--i:1">
+            <img loading="lazy" decoding="async" src="re-rider-city.jpg" alt="A rider in a light helmet and casual jacket riding through a city street">
+            <div class="shopper-body">
+              <p class="shopper-type">Rider</p>
+              <h3>City</h3>
+              <ul><li>Short, everyday rides</li><li>Light gear that still works off the bike</li></ul>
+            </div>
+          </div>
+          <div class="shopper" data-reveal style="--i:2">
+            <img loading="lazy" decoding="async" src="re-rider-touring.jpg" alt="A rider in a quilted riding jacket standing beside his motorcycle" style="object-position: 50% 0%">
+            <div class="shopper-body">
+              <p class="shopper-type">Rider</p>
+              <h3>Touring</h3>
+              <ul><li>Long days on the highway</li><li>Comfort and weather protection</li></ul>
+            </div>
+          </div>
+          <div class="shopper" data-reveal style="--i:3">
+            <img loading="lazy" decoding="async" src="re-rider-adventure.jpg" alt="A rider in an adventure helmet and full gear on a Royal Enfield Himalayan, snow-capped mountains behind" style="object-position: 45% 30%">
+            <div class="shopper-body">
+              <p class="shopper-type">Rider</p>
+              <h3>Adventure</h3>
+              <ul><li>On and off the road</li><li>Tough, protective gear built to take a fall</li></ul>
+            </div>
+          </div>
+        </div>
+        <div class="shopper shopper--wide" data-reveal>
+          <img loading="lazy" decoding="async" class="shopper-wide-img" src="re-nonrider.jpg" alt="A man in a Royal Enfield graphic t-shirt and chinos carrying firewood through a forest">
+          <div class="shopper-body">
+            <p class="shopper-type">Doesn&rsquo;t ride</p>
+            <h3>Non-riders</h3>
+            <ul><li>Buying into the brand and its look</li><li>Shopping casual wear, not technical gear</li><li>Comparing it with every other apparel brand</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 06 BENCHMARKING ══ -->
+    <section class="chapter" data-chapter="06" data-name="Benchmarking">
+      <div class="marker"><span class="marker-num">06</span><span class="marker-name">Benchmarking</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>Benchmarking</p>
+        <h2 data-reveal style="--i:1">We looked at brands that already have what Royal Enfield has.</h2>
+        <p class="lead" data-reveal style="--i:2">Patagonia, Columbia and The North Face all make highly technical apparel, with strong brand stories and fiercely loyal users. So does Royal Enfield. The difference is that theirs show up on their websites.</p>
+        <div class="matrix-wrap" data-reveal style="--i:2">
+          <table class="matrix">
+            <thead>
+              <tr><th scope="col"><span class="sr">Quality</span></th><th scope="col">Patagonia</th><th scope="col">Columbia</th><th scope="col">The North&nbsp;Face</th><th scope="col" class="is-re">Royal Enfield</th></tr>
+            </thead>
+            <tbody>
+              <tr style="--r:0"><th scope="row">Technical apparel</th><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td class="is-re">&#10003;</td></tr>
+              <tr style="--r:1"><th scope="row">A strong brand story</th><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td class="is-re">&#10003;</td></tr>
+              <tr style="--r:2"><th scope="row">Loyal users</th><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td class="is-re">&#10003;</td></tr>
+              <tr style="--r:3" class="gap-row"><th scope="row">All of it, on their website</th><td>&#10003;</td><td>&#10003;</td><td>&#10003;</td><td class="is-re is-miss">&#10005;<span>Not yet</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="matrix-note" data-reveal>Each one showed us how a website can carry the story and the community, and still sell technical gear.</p>
+      </div>
+    </section>
+
+    <!-- ══ 07 TWO QUESTIONS ══ -->
+    <section class="chapter chapter--quiet" data-chapter="07" data-name="Two questions">
+      <div class="marker"><span class="marker-num">07</span><span class="marker-name">Two questions</span></div>
+      <div class="body">
+        <h2 data-reveal>All of it came down to two questions.</h2>
+        <ol class="questions">
+          <li data-reveal style="--i:1"><span>01</span>How does a rider decide on a &#8377;30,000 jacket in a store, and how do we give them that online?</li>
+          <li data-reveal style="--i:2"><span>02</span>Why would someone shopping on Amazon buy from the Royal Enfield store instead?</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ══ 08 OFFLINE VS ONLINE ══ -->
+    <section class="chapter" data-chapter="08" data-name="Question 1">
+      <div class="marker"><span class="marker-num">08</span><span class="marker-name">Question 1</span></div>
+      <div class="body">
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+          <symbol id="helmet" viewBox="0 0 32 28"><path d="M3 20.5C3 10.8 9.6 3 18.2 3 25 3 29 8.4 29 15v5.5c0 1.4-1.1 2.5-2.5 2.5H11.8c-1.3 0-2.5-.6-3.3-1.6L6.6 19H3z" fill="currentColor"/><path d="M15 11.5h12.3c.9 0 1.7.8 1.7 1.7V16H17.5a2.5 2.5 0 0 1-2.5-2.5z" fill="var(--paper)" opacity=".85"/></symbol>
+        </svg>
+        <p class="kicker" data-reveal>Question 1 &middot; Offline vs online</p>
+        <h2 data-reveal style="--i:1">So I asked riders how they actually buy their gear.</h2>
+        <p class="lead" data-reveal style="--i:2">Each helmet is one in twenty of the riders I spoke to.</p>
+        <ol class="lanes" aria-label="How riders buy riding gear: 35% on Amazon after checking reviews, 30% try offline then buy online, 20% buy online without visiting a store, 15% only offline">
+          <li class="lane" data-reveal>
+            <p class="lane-pct">35%</p>
+            <div class="lane-helms" aria-hidden="true"><svg class="helm" style="--h:0"><use href="#helmet"/></svg><svg class="helm" style="--h:1"><use href="#helmet"/></svg><svg class="helm" style="--h:2"><use href="#helmet"/></svg><svg class="helm" style="--h:3"><use href="#helmet"/></svg><svg class="helm" style="--h:4"><use href="#helmet"/></svg><svg class="helm" style="--h:5"><use href="#helmet"/></svg><svg class="helm" style="--h:6"><use href="#helmet"/></svg></div>
+            <p class="lane-label"><b>Amazon, after the reviews</b>Buy on a marketplace once other buyers vouch for it</p>
+          </li>
+          <li class="lane" data-reveal>
+            <p class="lane-pct">30%</p>
+            <div class="lane-helms" aria-hidden="true"><svg class="helm" style="--h:7"><use href="#helmet"/></svg><svg class="helm" style="--h:8"><use href="#helmet"/></svg><svg class="helm" style="--h:9"><use href="#helmet"/></svg><svg class="helm" style="--h:10"><use href="#helmet"/></svg><svg class="helm" style="--h:11"><use href="#helmet"/></svg><svg class="helm" style="--h:12"><use href="#helmet"/></svg></div>
+            <p class="lane-label"><b>Try offline, buy online</b>Check or try it on in a store, then order online</p>
+          </li>
+          <li class="lane" data-reveal>
+            <p class="lane-pct">20%</p>
+            <div class="lane-helms" aria-hidden="true"><svg class="helm" style="--h:13"><use href="#helmet"/></svg><svg class="helm" style="--h:14"><use href="#helmet"/></svg><svg class="helm" style="--h:15"><use href="#helmet"/></svg><svg class="helm" style="--h:16"><use href="#helmet"/></svg></div>
+            <p class="lane-label"><b>Online, no store visit</b>Buy without ever shopping offline</p>
+          </li>
+          <li class="lane" data-reveal>
+            <p class="lane-pct">15%</p>
+            <div class="lane-helms" aria-hidden="true"><svg class="helm" style="--h:17"><use href="#helmet"/></svg><svg class="helm" style="--h:18"><use href="#helmet"/></svg><svg class="helm" style="--h:19"><use href="#helmet"/></svg></div>
+            <p class="lane-label"><b>Offline only</b>Only buy what they can touch</p>
+          </li>
+        </ol>
+        <h3 class="then" data-reveal>And when it&rsquo;s down to two jackets, how do they pick?</h3>
+        <div class="deciders">
+          <div class="decider" data-reveal style="--i:1"><span>A</span><b>The shopkeeper&rsquo;s recommendation</b><p>Only works in a store.</p></div>
+          <div class="decider" data-reveal style="--i:2"><span>B</span><b>An influencer they trust</b><p>Found on social media, not on the store.</p></div>
+          <div class="decider is-key" data-reveal style="--i:3"><span>C</span><b>Safety certifications</b><p>Hard proof the jacket will protect them.</p></div>
+        </div>
+        <p class="insight" data-reveal><b>No marketplace shows certifications.</b> The one thing that makes the decision easier for riders was missing everywhere they shopped. So the Royal Enfield store puts it up front.</p>
+      </div>
+    </section>
+
+    <!-- ══ 09 THE STORE ══ -->
+    <section class="chapter" data-chapter="09" data-name="The store">
+      <div class="marker"><span class="marker-num">09</span><span class="marker-name">The store</span></div>
+      <div class="body">
+        <div class="store-split">
+          <div>
+          <h2 data-reveal>Then we built the store around those answers.</h2>
+          <p class="lead" data-reveal style="--i:1">Certifications, collaborations and the story behind the gear, all on the page. And with 85% of visitors on their phones, every page started at phone size.</p>
+          </div>
+          <div class="store-solo">
+            <figure class="phone-scroll" data-reveal style="--i:2">
+              <div class="phone">
+                <div class="phone-screen" tabindex="0" aria-label="The Royal Enfield mobile homepage, scrolling from top to bottom">
+                  <div class="phone-island"></div>
+                  <img loading="lazy" decoding="async" src="re-mobile-home.jpg" alt="The full Royal Enfield mobile homepage: riding gear hero, new arrivals, collaborations, top sellers, purpose-built gear, shop by lifestyle, a ride-type quiz, collectibles, make it yours, steal the style, voices of RE, campaigns, blogs and footer">
+                </div>
+              </div>
+              <figcaption class="caption">Mobile homepage, top to bottom. Hover to pause.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ 10 AMAZON VS THE STORE ══ -->
+    <section class="chapter" data-chapter="10" data-name="Question 2">
+      <div class="marker"><span class="marker-num">10</span><span class="marker-name">Question 2</span></div>
+      <div class="body">
+        <p class="kicker" data-reveal>Question 2 &middot; Amazon vs the store</p>
+        <h2 data-reveal style="--i:1">Give riders what Amazon can&rsquo;t.</h2>
+        <p class="lead" data-reveal style="--i:2">Let riders interact with their gear.</p>
+        <div class="others" data-reveal>
+          <span class="others-label">So the store had to offer</span>
+          <span class="chip">Full understanding of the product</span>
+          <span class="chip">Certifications and testing</span>
+          <span class="chip">Exclusive collaborations</span>
+          <span class="chip">A way to compare products</span>
+        </div>
+        <figure class="shot space" data-reveal>
+          <img loading="lazy" decoding="async" src="re-know-your-gear.jpg" alt="The Know your gear section of a product page: tabs for protection, SealPro, comfort, construct, fit, ImpactX, features and certifications, above a riding jacket with callouts for titanium shoulder sliders and elbow and shoulder protection">
+          <figcaption class="caption">&ldquo;Know your gear&rdquo; on the product page: every protection feature, test and certification, explained on the jacket itself.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ══ 11 PLP CARDS ══ -->
+    <section class="chapter" data-chapter="11" data-name="Product cards">
+      <div class="marker"><span class="marker-num">11</span><span class="marker-name">Product cards</span></div>
+      <div class="body">
+        <h2 data-reveal>Putting it on the product card.</h2>
+        <p class="lead" data-reveal style="--i:1">We tried three versions of the product listing card, each carrying less than the last. The one with the least information was the one we recommended: the photo does the selling, and only what a rider needs to decide stays.</p>
+        <div class="iter-scale" data-reveal style="--i:2" aria-hidden="true"><span>Most information</span><i></i><span>Least information</span></div>
+        <ol class="iters" data-swipe>
+          <li class="iter" data-reveal style="--i:1">
+            <div class="shot"><img loading="lazy" decoding="async" src="re-plp-1.png" alt="Version 1 product grid: jackets with price, star ratings, colour swatches, certification and discount tags"></div>
+            <p class="iter-name"><b>Version 1</b>Ratings, swatches, certifications</p>
+          </li>
+          <li class="iter" data-reveal style="--i:2">
+            <div class="shot"><img loading="lazy" decoding="async" src="re-plp-2.png" alt="Version 2 product grid: jackets with price, struck-through original price, top-seller and discount tags, swatches and certifications"></div>
+            <p class="iter-name"><b>Version 2</b>Tags, original price, swatches</p>
+          </li>
+          <li class="iter is-pick" data-reveal style="--i:3">
+            <div class="shot"><img loading="lazy" decoding="async" src="re-plp-3.png" alt="Version 3 product grid: large photos with only price, certifications and a quick-add button"></div>
+            <p class="iter-name"><b>Version 3 <span class="verdict verdict--yes">Recommended</span></b>Price, certifications, quick add</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ══ 12 IMAGERY ══ -->
+    <section class="chapter" data-chapter="12" data-name="Imagery">
+      <div class="marker"><span class="marker-num">12</span><span class="marker-name">Imagery</span></div>
+      <div class="body">
+        <h2 data-reveal>Images do most of the talking.</h2>
+        <p class="lead" data-reveal style="--i:1">On a product page, the photo sells before any copy does. So we asked Royal Enfield to move to premium imagery that matches the brand.</p>
+        <div class="imagery">
+          <figure data-reveal style="--i:2">
+            <div class="phone phone--sm"><div class="phone-screen"><div class="phone-island"></div><img loading="lazy" decoding="async" src="re-before-mobile.jpg" alt="The old store's imagery: banners and product photos of mixed style and quality"></div></div>
+            <figcaption class="strip-label"><b>Before</b>Mixed, catalogue-style photos</figcaption>
+          </figure>
+          <span class="swap-arrow" aria-hidden="true">&rarr;</span>
+          <figure data-reveal style="--i:3">
+            <div class="phone phone--sm"><div class="phone-screen"><div class="phone-island"></div><img loading="lazy" decoding="async" src="re-mobile-home.jpg" alt="The new store's imagery: a moody, full-bleed photo of a rider in riding gear"></div></div>
+            <figcaption class="strip-label"><b>After</b>Premium, story-led photography</figcaption>
+          </figure>
+        </div>
+        <figure class="shot imagery-desk" data-reveal>
+          <img loading="lazy" decoding="async" src="card-re-site.png" alt="The Royal Enfield apparel store homepage on desktop, with navigation for new arrivals, men, women, helmets, riding, apparel, collectibles and sale">
+          <figcaption class="caption">The new desktop homepage: one full-bleed photo carries the brand.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ══ 13 CONCLUSION ══ -->
+    <section class="chapter chapter--quiet" data-chapter="13" data-name="Conclusion">
+      <div class="marker"><span class="marker-num">13</span><span class="marker-name">Conclusion</span></div>
+      <div class="body">
+        <h2 data-reveal>Different stakeholders. One middle ground.</h2>
+        <p class="lead" data-reveal style="--i:1">Deals or premium was never going to be settled by picking a side. We got to a middle ground by thinking it through with our stakeholders, as one team.</p>
+        <p class="aside" data-reveal style="--i:2">As of today, the redesign is partially live, with the rest rolling out.</p>
+        <a class="live-link" data-reveal style="--i:3" href="https://store.royalenfield.com" target="_blank" rel="noopener">Visit store.royalenfield.com <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="end">
+    <a href="icici.html"><span>&larr; Previous case</span>ICICI Bank</a>
+    <a href="index.html" style="text-align:right"><span>Back &rarr;</span>All case files</a>
+  </footer>
+
+  <script src="case-study.js"></script>
 </body>
 </html>
