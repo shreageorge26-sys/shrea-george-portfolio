@@ -6,31 +6,32 @@
   <title>Shrea George — Playground</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Alumni+Sans:wght@500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
-      font-weight: 600; font-style: normal; font-display: swap;
+      font-family: 'Alte Haas Grotesk';
+      src: url('fonts/alte-haas-grotesk-regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
     }
     @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
-      font-weight: 400; font-style: normal; font-display: swap;
+      font-family: 'Alte Haas Grotesk';
+      src: url('fonts/alte-haas-grotesk-bold.ttf') format('truetype');
+      font-weight: 700; font-style: normal; font-display: swap;
     }
 
     :root {
-      --bg: #162916;
+      --bg: #0E1D0E;
       --card: #ffffff;
       --border: rgba(14,15,12,0.12);
       --text: #0E0F0C;
       --muted: #6A6C6A;
       --accent: #cbe870;
       --accent-dark: #163300;
-      --serif: 'Instrument Serif', serif;
-      --sans: 'Inter', sans-serif;
+      /* same face as the homepage */
+      --serif: 'Alte Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      --sans: 'Alte Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
     }
 
     html, body {
@@ -137,7 +138,7 @@
     }
 
     .hero-headline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 88px;
       font-weight: 600;
       font-style: normal;
@@ -147,7 +148,7 @@
     }
 
     .hero-tagline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-weight: 400;
       font-size: 20px;
       line-height: 1.5;
@@ -217,6 +218,77 @@
       text-decoration: none;
     }
     .art-card img { width: 100%; height: auto; display: block; border-radius: 16px; }
+    /* article cards — same build as the homepage's ICICI case card:
+       laid out at Figma size (557x447) and scaled to 75%; gradient, soft
+       cloud bottom-right, "✦ Article 0X" label, white headline */
+    .art-card.art-fig-card {
+      width: 418px; height: 270px;
+      border-radius: 0; box-shadow: none; background: none;
+      transform: rotate(var(--rot));
+      transform-origin: top center;
+    }
+    a.art-fig-card { cursor: none; transition: transform 0.28s cubic-bezier(0.22,0.61,0.36,1); }
+    a.art-fig-card:hover, a.art-fig-card:focus-visible { transform: rotate(var(--rot)) scale(1.06); z-index: 6; }
+    a.art-fig-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      a.art-fig-card { transition: none; }
+      a.art-fig-card:hover, a.art-fig-card:focus-visible { transform: rotate(var(--rot)); }
+    }
+    .art-fig-card > .art-fig {
+      position: absolute; top: 0; left: 0;
+      width: 557.127px; height: 360px;
+      border-radius: 24px;
+      overflow: hidden;
+      transform: scale(0.75);
+      transform-origin: top left;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 11px 32px rgba(0,0,0,0.24), 0 43px 85px rgba(0,0,0,0.29);
+    }
+    .art-elaichi-card .art-fig { background: #5E6B2E; }   /* olive */
+    .art-elaichi-card .art-fig::before {
+      /* the cardamom pattern from the original card, in white */
+      content: '';
+      position: absolute; inset: 0;
+      background: url('article-elaichi-pattern.png') 0 0 / 133px 125px repeat;
+      opacity: 0.35;
+    }
+    .art-maggi-card .art-fig { background: #EA3793; }   /* hot pink, from the "Things I do for fun" frame */
+    /* the fork of noodles, top-right, as on the original card */
+    .art-fig-card .art-fig-fork {
+      position: absolute;
+      top: 22px; right: 0;
+      width: 260px; height: auto;
+      z-index: 1;
+      filter: drop-shadow(0 10px 18px rgba(120,0,60,0.35));
+    }
+    .art-maggi-card .art-fig-body { top: auto; bottom: 44px; transform: none; }
+    .art-fig-body { z-index: 1; }
+    .art-fig-cloud {
+      position: absolute;
+      left: calc(50% + 117.88px); top: calc(50% + 124.31px);
+      width: 606.029px; height: 606.029px;
+      transform: translate(-50%, -50%);
+    }
+    .art-fig-body {
+      position: absolute;
+      left: 50px; right: 50px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 24px;
+      color: #FFFFFF;
+    }
+    .art-fig-label {
+      display: flex; align-items: center; gap: 10.865px;
+      font-family: 'Alumni Sans', var(--sans);
+      font-size: 33.952px; font-weight: 500;
+      line-height: 1.2; letter-spacing: -0.679px;
+      white-space: nowrap;
+    }
+    .art-fig-label img { display: block; width: 27.161px; height: 32.594px; }
+    .art-fig-title {
+      font-family: var(--sans);
+      font-size: 40px; font-weight: 700;
+      line-height: 1.2; letter-spacing: -0.8px;
+    }
 
     .card {
       position: absolute;
@@ -556,7 +628,7 @@
       border: 1.5px solid #ADDD8D;
       border-radius: 100px;
       padding: 10px 20px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 14px;
       font-weight: 600;
       color: #1f3a1c;
@@ -621,7 +693,7 @@
       object-fit: cover;
     }
     .polaroid-cap {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-weight: 600;
       font-size: 16px;
       line-height: 1.35;
@@ -665,111 +737,66 @@
       border-radius: 50%;
     }
 
-    /* ── TOOL DOCK ── */
+    /* ── TOOL DOCK — from nav-dock.svg: a white capsule of 54px circles ── */
     .tool-dock {
       position: fixed;
       top: 50%;
       left: 32px;
       transform: translateY(-50%);
       z-index: 900;
-      background: #ffffff;
-      border-radius: 28px;
-      padding: 12px 10px;
+      width: 74px;
+      padding: 10px;
+      box-sizing: border-box;
+      background: #FFFFFF;
+      border-radius: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       box-shadow: 2px 4px 20px rgba(0,0,0,0.12);
       pointer-events: all;
       cursor: default;
     }
-
-    .tool-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
+    .tool-item { position: relative; display: block; line-height: 0; text-decoration: none; }
+    .tool-item > svg {
+      width: 54px; height: 54px; display: block;
+      border-radius: 50%;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-
-    .tool-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      flex-shrink: 0;
-      overflow: hidden;
-      transition: box-shadow 0.15s, transform 0.15s;
-    }
-
-    .tool-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .tool-item:hover .tool-icon {
-      transform: scale(1.06);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-    }
-
-    /* On phones the dock becomes a bottom bar; as a left rail it covers the board. */
-    @media (max-width: 768px) {
-      .tool-dock {
-        top: auto;
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        flex-direction: row;
-        border-radius: 22px;
-        padding: 8px 10px;
-        gap: 6px;
-      }
-      .tool-icon { width: 40px; height: 40px; border-radius: 10px; }
-      .tool-tip { display: none; }
-    }
-
-    .tool-item.active .tool-icon {
-      box-shadow: 0 0 0 3px var(--accent);
-      transform: scale(1.04);
-    }
-
-    .tool-icon-placeholder {
-      width: 100%;
-      height: 100%;
-      background: #e8e4dc;
-      border: 1.5px dashed #c8c2b6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      font-weight: 600;
-      color: #9a948a;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    .tool-item:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32px;
-      height: 1px;
-      background: #e8e4dc;
-    }
-
+    .tool-item:hover > svg { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
+    .tool-item.active > svg { box-shadow: 0 0 0 3px var(--accent); }
+    .tool-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 50%; }
     .tool-tip {
       position: absolute;
-      left: calc(100% + 14px);
+      left: calc(100% + 18px);
+      top: 50%;
+      transform: translateY(-50%);
       background: #1a1208;
       color: #fff;
+      font-family: var(--sans);
       font-size: 13px;
       font-weight: 500;
+      line-height: 1;
       white-space: nowrap;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.15s;
     }
+    .tool-item:hover .tool-tip, .tool-item:focus-visible .tool-tip { opacity: 1; }
+    /* phones: a bottom bar instead of a left rail */
+    @media (max-width: 768px) {
+      .tool-dock {
+        top: auto; bottom: 18px; left: 50%;
+        transform: translateX(-50%);
+        width: auto; flex-direction: row;
+        padding: 8px; gap: 8px;
+      }
+      .tool-item > svg { width: 44px; height: 44px; }
+      .tool-tip { display: none; }
+    }
 
-    .tool-item:hover .tool-tip { opacity: 1; }
 
     /* ── CASE STUDY CARD (hover reveal) ── */
     .cs-card {
@@ -807,7 +834,7 @@
       color: #1f3a1c;
       border-radius: 100px;
       padding: 7px 16px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 12px;
       line-height: 16px;
       font-weight: 600;
@@ -881,14 +908,14 @@
 
     .cs-card:hover .cs-card-hover { opacity: 1; }
 
-    /* Rebond across all board cards */
+    /* one face across all board cards */
     .cs-card-num, .cs-card-name, .cs-card-hover-text,
     .sc-num, .sc-num-label, .sc-quote, .sc-tag, .stamp {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
     }
 
     .cs-card-hover-text {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 17px;
       line-height: 1.5;
       color: rgba(255,255,255,0.82);
@@ -925,6 +952,183 @@
       align-items: center;
       gap: 8px;
     }
+
+    /* the playground card is one link; a "View playground" pill follows
+       the pointer instead of a button inside it */
+    .demo-card {
+      display: block;
+      text-decoration: none;
+      cursor: none;
+      transform: rotate(var(--rot));
+      transform-origin: top center;
+      transition: transform 0.28s cubic-bezier(0.22,0.61,0.36,1);
+    }
+    .demo-card:hover,
+    .demo-card:focus-visible { transform: rotate(var(--rot)) scale(1.06); z-index: 6; }
+    .demo-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      .demo-card { transition: none; }
+      .demo-card:hover, .demo-card:focus-visible { transform: rotate(var(--rot)); }
+    }
+
+    /* "live in 4 days" — an orange zigzag-edged burst */
+    .zig-card {
+      position: absolute;
+      z-index: 2;
+      width: 170px;
+      height: 170px;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)) drop-shadow(0 24px 40px rgba(0,0,0,0.25));
+    }
+    .zig-card > .pin { top: 4px; }
+    .zig-shape {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #F7892A;
+      clip-path: polygon(7.0% 7.0%, 14.2% 0.0%, 21.3% 7.0%, 28.5% 0.0%, 35.7% 7.0%, 42.8% 0.0%, 50.0% 7.0%, 57.2% 0.0%, 64.3% 7.0%, 71.5% 0.0%, 78.7% 7.0%, 85.8% 0.0%, 93.0% 7.0%, 100.0% 14.2%, 93.0% 21.3%, 100.0% 28.5%, 93.0% 35.7%, 100.0% 42.8%, 93.0% 50.0%, 100.0% 57.2%, 93.0% 64.3%, 100.0% 71.5%, 93.0% 78.7%, 100.0% 85.8%, 93.0% 93.0%, 85.8% 100.0%, 78.7% 93.0%, 71.5% 100.0%, 64.3% 93.0%, 57.2% 100.0%, 50.0% 93.0%, 42.8% 100.0%, 35.7% 93.0%, 28.5% 100.0%, 21.3% 93.0%, 14.2% 100.0%, 7.0% 93.0%, 0.0% 85.8%, 7.0% 78.7%, 0.0% 71.5%, 7.0% 64.3%, 0.0% 57.2%, 7.0% 50.0%, 0.0% 42.8%, 7.0% 35.7%, 0.0% 28.5%, 7.0% 21.3%, 0.0% 14.2%);
+    }
+    .zig-shape p {
+      font-family: var(--sans);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      transform: rotate(-2deg);
+    }
+
+    /* ── award card: navy, copy top-left, the two trophies standing in
+       the bottom-right corner among a few white stars ── */
+    .award-card {
+      position: absolute;
+      z-index: 2;
+      width: 300px;
+      height: 345px;
+      border-radius: 8px;
+      background: #142645;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22);
+      pointer-events: all;
+    }
+    /* clips the trophies to the card without hiding the pin above it */
+    .award-clip { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+    .award-trophy { position: absolute; height: auto; display: block; }
+    .award-star { position: absolute; height: auto; display: block; fill: #E4E6EC; }
+    .award-event {
+      position: absolute;
+      left: 22px; top: 22px;
+      font-family: 'Alumni Sans', var(--sans);
+      font-size: 25.5px;   /* the case cards' 33.952px label at their 75% scale */
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.51px;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+    .award-title {
+      position: absolute;
+      left: 22px; top: 62px;
+      width: 270px;
+      font-family: var(--sans);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+    .award-behind {
+      position: absolute;
+      z-index: 1;
+      width: 210px;
+      border-radius: 14px;
+      box-shadow: 0 24px 56px rgba(0,0,0,0.4);
+    }
+
+    .coming-soon-badge {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      display: none;
+      pointer-events: none;
+      background: #ffffff;
+      color: var(--accent-dark);
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: -0.01em;
+      border-radius: 100px;
+      padding: 10px 20px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+    }
+
+    .coming-soon-badge.is-view {
+      background: var(--accent);
+      color: var(--accent-dark);
+    }
+
+    /* d.MBA certificate — dark green, scalloped all round. The outer box
+       keeps the pin and a shadow that follows the scallops; the inner
+       layer is cut by a solid core plus a ring of circles. */
+    .cert-card {
+      position: absolute;
+      width: 450px;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)) drop-shadow(0 24px 40px rgba(0,0,0,0.25));
+    }
+    .cert-card > .pin { top: 2px; z-index: 3; }
+    .cert-scallop {
+      --d: 30px;   /* one scallop */
+      padding: 34px;
+      background: #213D26;
+      -webkit-mask:
+        linear-gradient(#000 0 0) center / calc(100% - var(--d)) calc(100% - var(--d)) no-repeat,
+        radial-gradient(circle closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / var(--d) var(--d) round;
+              mask:
+        linear-gradient(#000 0 0) center / calc(100% - var(--d)) calc(100% - var(--d)) no-repeat,
+        radial-gradient(circle closest-side, #000 calc(100% - 0.5px), #0000) 0 0 / var(--d) var(--d) round;
+    }
+    .cert-scallop img { display: block; width: 100%; height: auto; border-radius: 4px; }
+
+    .life-card {
+      position: absolute;
+      z-index: 3;   /* sits over the photos */
+      width: 450px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 12px 28px rgba(0,0,0,0.28), 0 32px 60px rgba(0,0,0,0.22);
+    }
+    .life-card img { display: block; width: 100%; height: auto; border-radius: inherit; }
+    .life-card > .pin { top: -6px; }
+
+    /* phone mockup: dark bezel, rounded screen */
+    .phone-mock {
+      position: absolute;
+      z-index: 2;
+      width: 260px;
+      padding: 9px;
+      border-radius: 38px;
+      background: #1E1E1E;
+      box-shadow: inset 0 0 0 1.5px #474747, 0 10px 24px rgba(0,0,0,0.3), 0 32px 64px rgba(0,0,0,0.3);
+    }
+    .phone-mock video { display: block; width: 100%; height: auto; border-radius: 30px; background: #000; }
+    .phone-mock > .pin { top: -6px; }
+
+    /* photos from outside work: just the picture, pinned */
+    .polaroid-pic {
+      position: absolute;
+      z-index: 2;
+      width: 290px;
+      margin: 0;
+      padding: 0;
+      background: none;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 12px 28px rgba(0,0,0,0.28), 0 32px 60px rgba(0,0,0,0.22);
+    }
+    .polaroid-pic img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: inherit; }
+    .polaroid-pic > .pin { top: -6px; }
+
+    /* cards sit above the threads, as on the homepage */
+    .card, .art-card, .sc, .zig-card, .award-card, .cert-card { z-index: 2; }
+    .award-behind { z-index: 1; }
   </style>
 </head>
 <body>
@@ -935,115 +1139,150 @@
 
   <div class="drag-hint" id="dragHint">→ Drag to explore</div>
 
-  <!-- TOOL DOCK -->
-  <div class="tool-dock">
-    <a class="tool-item" href="/">
-      <div class="tool-icon">
-        <img src="dock-mywork.png" alt="My Work" style="transform:scale(1.35);">
-      </div>
-      <span class="tool-tip">My Work</span>
+  <!-- TOOL DOCK — from nav-dock.svg (Figma "Frame 1948757475"), plus LinkedIn in the same style -->
+  <nav class="tool-dock" aria-label="Site">
+    <a class="tool-item" href="/" aria-label="Home">
+      <svg viewBox="10 10 54 54" fill="none" aria-hidden="true"><rect x="10" y="10" width="54" height="54" rx="27" fill="#D54274"/><path d="M30 34.6L37 29L44 34.6V43.4C44 43.8243 43.8361 44.2313 43.5444 44.5314C43.2527 44.8314 42.857 45 42.4444 45H31.5556C31.143 45 30.7473 44.8314 30.4556 44.5314C30.1639 44.2313 30 43.8243 30 43.4V34.6Z" fill="white"/></svg>
+      <span class="tool-tip">Home</span>
     </a>
-    <a class="tool-item active" href="/playground.html">
-      <div class="tool-icon">
-        <img src="dock-playground.png" alt="Playground">
-      </div>
-      <span class="tool-tip">Playground</span>
-    </a>
-    <a class="tool-item" href="/resume.pdf" target="_blank">
-      <div class="tool-icon">
-        <img src="dock-resume.png" alt="Resume">
-      </div>
+    <a class="tool-item" href="/resume.pdf" target="_blank" aria-label="Resume">
+      <svg viewBox="10 138 54 54" fill="none" aria-hidden="true"><rect x="10" y="138" width="54" height="54" rx="27" fill="#3A28AB"/><path d="M37.75 157.5H32.5C32.1022 157.5 31.7206 157.658 31.4393 157.939C31.158 158.221 31 158.602 31 159V171C31 171.398 31.158 171.779 31.4393 172.061C31.7206 172.342 32.1022 172.5 32.5 172.5H41.5C41.8978 172.5 42.2794 172.342 42.5607 172.061C42.842 171.779 43 171.398 43 171V162.75L37.75 157.5Z" fill="white"/>
+<path d="M37.75 157.5V162.75H43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#3A28AB"/></svg>
       <span class="tool-tip">Resume</span>
     </a>
-    <div class="tool-item" aria-disabled="true">
-      <div class="tool-icon">
-        <img src="dock-sg.png" alt="About Me">
-      </div>
-      <span class="tool-tip">About Me (coming soon)</span>
-    </div>
-    <a class="tool-item" href="mailto:shreageorge@gmail.com">
-      <div class="tool-icon">
-        <img src="dock-contact.png" alt="Contact">
-      </div>
+    <a class="tool-item" href="mailto:shreageorge@gmail.com" aria-label="Contact">
+      <svg viewBox="10 202 54 54" fill="none" aria-hidden="true"><rect x="10" y="202" width="54" height="54" rx="27" fill="#375D5A"/><g clip-path="url(#clip0_988_1729)">
+<path d="M29 222.75H45C46.1 222.75 47 223.523 47 224.469V234.781C47 235.727 46.1 236.5 45 236.5H29C27.9 236.5 27 235.727 27 234.781V224.469C27 223.523 27.9 222.75 29 222.75Z" fill="white" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
+<path d="M45.75 224L37 230.25L28.25 224" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
+</g><defs>
+<clipPath id="clip0_988_1729">
+<rect width="20" height="20" fill="white" transform="translate(27 219)"/>
+</clipPath>
+</defs></svg>
       <span class="tool-tip">Contact</span>
     </a>
-    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">
-      <div class="tool-icon">
-        <img src="dock-linkedin.png" alt="LinkedIn">
-      </div>
+    <a class="tool-item active" href="/playground.html" aria-label="Playground">
+      <svg viewBox="10 266 54 54" fill="none" aria-hidden="true"><rect x="10" y="266" width="54" height="54" rx="27" fill="#B22F9F"/><path d="M33.9429 289.943L28.5 293L33.9429 296.057L37 301.5L40.0571 296.057L45.5 293L40.0571 289.943L37 284.5L33.9429 289.943Z" fill="white"/></svg>
+      <span class="tool-tip">Playground</span>
+    </a>
+    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 54 54" aria-hidden="true"><rect width="54" height="54" rx="27" fill="#0A66C2"/><g transform="translate(17 17) scale(0.84)" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></g></svg>
       <span class="tool-tip">LinkedIn</span>
     </a>
-  </div>
+  </nav>
 
   <!-- INFINITE CANVAS -->
   <div id="canvas">
 
-    <!-- ══ STRING LAYER (no strings yet) ══ -->
-    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:1;" overflow="visible">
+    <!-- ══ STRING LAYER ══ -->
+    <svg id="strings" style="position:absolute;top:0;left:0;width:3600px;height:2400px;pointer-events:none;z-index:0;" overflow="visible">
     </svg>
 
     <!-- ══ CENTRE HERO ══ -->
     <div class="hero-center">
-      <h1 class="hero-headline">Loose ends &<br>side quests</h1>
-      <p class="hero-tagline">Half-finished experiments, hand-tracking demos, and things I built just to see if I could.</p>
+      <h1 class="hero-headline">My silly corner<br>of the internet</h1>
+      <p class="hero-tagline">I&rsquo;m just having fun here.</p>
       <div class="currently-tag" style="position:static; width:fit-content; margin:16px auto 0;">
         Pinned here for now · more coming soon
       </div>
     </div>
 
-    <!-- ══ AWARD POLAROID CLUSTER (close to hero) ══ -->
-    <img class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:596px; left:934px; width:152px; transform:rotate(4deg);">
-    <img class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:800px; left:935px; width:143px; transform:rotate(-7deg);">
-    <div style="position:absolute; top:578px; left:719px; width:257px; transform:rotate(-3deg);">
+    <!-- ══ AWARD CARD (left of the hero, same card as the homepage) — from Figma node 981:1565,
+         with the hackathon photo tucked behind it ══ -->
+    <div class="award-card" data-pin="award" style="top:330px; left:770px; transform:rotate(-3deg);">
       <div class="pin"></div>
-      <img src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" style="width:100%; display:block; border-radius:14px; box-shadow:0 24px 56px rgba(0,0,0,0.4);">
+      <div class="award-clip">
+        <svg class="award-star" style="left:286px; top:134px; width:11px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:216px; top:150px; width:11px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:237px; top:158px; width:7px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:116px; top:176px; width:19px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:108px; top:203px; width:14px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:135px; top:304px; width:28px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <img class="award-trophy" src="award-trophy-left.png" alt="" style="left:140px; top:158px; width:80px;">
+        <img class="award-trophy" src="award-trophy-right.png" alt="" style="left:232px; top:160px; width:80px;">
+      </div>
+      <p class="award-event">FYNDNA Hackathon</p>
+      <p class="award-title">Promoters &amp; Peoples choice award winner</p>
     </div>
 
+
     <!-- ══ GIF / HAND TRACKER CARD ══ -->
-    <div class="card" style="top:698px; left:1922px; width:288px; transform:rotate(1.5deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
+    <a class="card demo-card" data-pin="demo" href="/hand-tracker.html" aria-label="Try the hand-tracking demo" style="top:1370px; left:1390px; width:288px; --rot:1.5deg; overflow:visible; background-color:#3B2A4E; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:multiply;">
       <div class="pin"></div>
       <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
         <video src="hand-tracker.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
       </div>
-      <p style="font-family:'Rebond Grotesque', var(--sans); font-weight:900; font-size:18px; color:#1f3a1c; padding:8px; margin:0; letter-spacing:-0.02em;">draw in the air - made with Claude code</p>
-    </div>
+      <p style="font-family:var(--sans); font-weight:700; font-size:18px; color:#FFFFFF; padding:8px; margin:0; letter-spacing:-0.02em;">draw in the air - made with Claude code</p>
+    </a>
 
     <!-- ══ DESIGN CERTIFICATION ══ -->
-    <div class="card" style="top:1072px; left:1938px; width:450px; transform:rotate(-2deg); overflow:visible;">
+    <div class="cert-card" data-pin="cert" style="top:1130px; left:880px; transform:rotate(-2deg);">
       <div class="pin"></div>
-      <p class="card-label" style="font-family:'Rebond Grotesque', var(--sans); font-size:14px; letter-spacing:0.08em; text-transform:uppercase; color:#999; margin-bottom:8px;">Design Certification</p>
-      <div style="width:100%; aspect-ratio:3/4; overflow:hidden; border-radius:6px;">
-        <img src="dmba-certificate.jpeg" alt="Shrea George, d.MBA, 2026" style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;">
+      <div class="cert-scallop">
+        <img src="dmba-certificate.jpeg" alt="Shrea George, d.MBA design certification, 2026">
       </div>
     </div>
 
     <!-- ══ ARTICLE 01 — Humour in UX ══ -->
-    <div class="art-card" style="top:1072px; left:750px; width:360px; transform:rotate(-1.5deg);">
+    <a class="art-card art-fig-card art-elaichi-card" href="https://zeuxinnovation.com/articles/humour-in-ux" target="_blank" rel="noopener" aria-label="Read the article: Humour in UX, the Elaichi in your Chai" data-pin="elaichi" style="top:390px; left:2050px; --rot:-1.5deg;">
       <div class="pin"></div>
-      <img src="article-elaichi.png" alt="Article — Humour in UX, the Elaichi in your Chai. UX Psychology, Behaviour &amp; Persuasion.">
-    </div>
+      <div class="art-fig">
+        <div class="art-fig-body">
+          <p class="art-fig-label"><img src="card-star-white.svg" alt=""> Article 01</p>
+          <h3 class="art-fig-title">Humour in UX, the Elaichi in your Chai</h3>
+        </div>
+      </div>
+    </a>
 
     <!-- ══ ARTICLE 02 — Maggi Meets GPay ══ -->
-    <div class="art-card" style="top:520px; left:1685px; width:360px; transform:rotate(2deg);">
+    <a class="art-card art-fig-card art-maggi-card" href="https://www.zeuxinnovation.com/articles/maggi-meets-gpay/" target="_blank" rel="noopener" aria-label="Read the article: Maggi Meets GPay" data-pin="maggi" style="top:330px; left:1560px; --rot:2deg;">
       <div class="pin"></div>
-      <img src="article-maggi.png" alt="Article — Maggi Meets GPay. Product.">
-    </div>
+      <div class="art-fig">
+        <img class="art-fig-fork" src="article-maggi-fork.png" alt="">
+        <img class="art-fig-cloud" src="card-icici-cloud.svg" alt="">
+        <div class="art-fig-body">
+          <p class="art-fig-label"><img src="card-star-white.svg" alt=""> Article 02</p>
+          <h3 class="art-fig-title">Maggi Meets GPay</h3>
+        </div>
+      </div>
+    </a>
 
     <!-- ══ STATEMENT CARDS (placeholder) ══ -->
-    <div class="sc sc-light" style="top:1092px; left:1617px; width:238px; transform:rotate(-2deg);">
-      <div class="pin"></div>
-      <span class="sc-star">✦</span>
-      <p class="sc-quote" style="font-family:'Rebond Grotesque', var(--sans); font-style:normal;">"Good design is an opportunity to make the world a better place."</p>
-    </div>
 
-    <div class="sc sc-accent" style="top:1258px; left:1394px; width:173px; transform:rotate(2deg);">
+
+
+    <!-- ══ LIFE OUTSIDE WORK — photos, with their green title card ══ -->
+    <div class="life-card" data-pin="life" style="top:950px; left:300px; transform:rotate(-3deg);">
       <div class="pin"></div>
-      <span class="sc-tag">Tinkering</span>
-      <p class="sc-num">5+</p>
-      <p class="sc-num-label">side experiments, more on the way</p>
+      <img src="fun-love-life.png" alt="I love life &amp; being out and about">
+    </div>
+    <figure class="polaroid-pic" data-pin="pdance" style="top:640px; left:60px; transform:rotate(-4deg);">
+      <div class="pin"></div>
+      <img loading="lazy" decoding="async" src="fun-dance.jpg" alt="Dancing with friends on a night out">
+    </figure>
+    <figure class="polaroid-pic" data-pin="pclay" style="top:630px; left:375px; transform:rotate(3deg);">
+      <div class="pin"></div>
+      <img loading="lazy" decoding="async" src="fun-clay.jpg" alt="Clay-covered hands at a pottery workshop with a friend">
+    </figure>
+    <figure class="polaroid-pic" data-pin="pxmas" style="top:1060px; left:70px; transform:rotate(2deg);">
+      <div class="pin"></div>
+      <img loading="lazy" decoding="async" src="fun-christmas.jpg" alt="Hosting Christmas with a tray of avocado toasts">
+    </figure>
+    <figure class="polaroid-pic" data-pin="ptub" style="top:1075px; left:380px; transform:rotate(-3deg);">
+      <div class="pin"></div>
+      <img loading="lazy" decoding="async" src="fun-bathtub.jpg" alt="Laughing in a bathtub at an art installation">
+    </figure>
+
+    <!-- ══ SURE ONBOARDING — screen recording in a phone ══ -->
+    <div class="phone-mock" data-pin="sure" style="top:1170px; left:1760px; transform:rotate(3deg);">
+      <div class="pin"></div>
+      <video src="sure-onboarding.mp4" poster="sure-onboarding-poster.jpg" autoplay loop muted playsinline preload="metadata" aria-label="Screen recording of the Sure onboarding flow"></video>
     </div>
 
   </div><!-- /canvas -->
+
+  <div class="coming-soon-badge is-view" id="tryDemoBadge">Try it live →</div>
+  <div class="coming-soon-badge is-view" id="viewArticleBadge">View article →</div>
 
   <script>
     const canvas = document.getElementById('canvas');
@@ -1132,6 +1371,75 @@
 
     // Hide hint after 4s
     setTimeout(() => hint.classList.add('hidden'), 4000);
+
+    // ── Cursor tags — the pointer is hidden over a board card and a pill
+    //    saying what the card does rides along instead ──
+    function cursorTag(selector, badge) {
+      if (!badge) return;
+      document.querySelectorAll(selector).forEach(card => {
+        card.addEventListener('mouseenter', () => { badge.style.display = 'block'; });
+        card.addEventListener('mousemove', e => {
+          badge.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+        });
+        card.addEventListener('mouseleave', () => { badge.style.display = 'none'; });
+      });
+    }
+    cursorTag('.demo-card', document.getElementById('tryDemoBadge'));
+    cursorTag('.art-fig-card', document.getElementById('viewArticleBadge'));
+
+    // ── Board strings — drawn at runtime from the real pin positions, so a
+    //    thread always lands on the pins no matter how the cards are sized
+    //    or moved. Rotation is included because getBoundingClientRect sees
+    //    the pin where it visually sits. ──
+    (function () {
+      const svg = document.getElementById('strings');
+      const canvas = document.getElementById('canvas');
+      if (!svg || !canvas) return;
+
+      const links = [
+        ['life',    'pdance'],
+        ['pdance',  'pclay'],
+        ['maggi',   'elaichi'],
+        ['demo',    'sure'],
+      ];
+
+      function pinAt(name, cr, sc) {
+        const host = canvas.querySelector('[data-pin="' + name + '"]');
+        const dot = host && host.querySelector('.pin');
+        if (!dot) return null;
+        const dr = dot.getBoundingClientRect();
+        return { x: (dr.left + dr.width / 2 - cr.left) / sc,
+                 y: (dr.top + dr.height / 2 - cr.top) / sc };
+      }
+
+      function draw() {
+        const cr = canvas.getBoundingClientRect();
+        // the canvas is display:none on mobile — no board, nothing to thread
+        if (!cr.width) return;
+        const sc = cr.width / 3600;
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        links.forEach(function (pair) {
+          const a = pinAt(pair[0], cr, sc), b = pinAt(pair[1], cr, sc);
+          if (!a || !b) return;
+          const sag = Math.hypot(b.x - a.x, b.y - a.y) * 0.14;   // gravity on the thread
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          path.setAttribute('d', 'M ' + a.x.toFixed(1) + ',' + a.y.toFixed(1) +
+                                 ' Q ' + ((a.x + b.x) / 2).toFixed(1) + ',' + ((a.y + b.y) / 2 + sag).toFixed(1) +
+                                 ' ' + b.x.toFixed(1) + ',' + b.y.toFixed(1));
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', '#7ee8a2');
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('stroke-opacity', '0.6');
+          svg.appendChild(path);
+        });
+      }
+
+      draw();
+      window.addEventListener('load', draw);
+      window.addEventListener('resize', draw);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+    })();
+
   </script>
 
 </body>

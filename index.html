@@ -6,31 +6,44 @@
   <title>Shrea George — Product Designer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Caveat:wght@600;700&family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@400&family=Averia+Serif+Libre:wght@400;700&family=Alumni+Sans:wght@500&family=Archivo+Black&family=Fraunces:opsz,wght@9..144,700&family=Inter:wght@300;400;500;600&family=Caveat:wght@600;700&family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+
     @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-semibold.otf') format('opentype');
-      font-weight: 600; font-style: normal; font-display: swap;
+      font-family: 'Brunson';
+      src: url('fonts/brunson.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
     }
     @font-face {
-      font-family: 'Rebond Grotesque';
-      src: url('fonts/rebond-grotesque-regular.otf') format('opentype');
+      font-family: 'Brunson Rough';
+      src: url('fonts/brunson-rough.ttf') format('truetype');
       font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Alte Haas Grotesk';
+      src: url('fonts/alte-haas-grotesk-regular.ttf') format('truetype');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+    @font-face {
+      font-family: 'Alte Haas Grotesk';
+      src: url('fonts/alte-haas-grotesk-bold.ttf') format('truetype');
+      font-weight: 700; font-style: normal; font-display: swap;
     }
 
     :root {
-      --bg: #162916;
+      --bg: #0E1D0E;
       --card: #ffffff;
       --border: rgba(14,15,12,0.12);
       --text: #0E0F0C;
       --muted: #6A6C6A;
       --accent: #cbe870;
       --accent-dark: #163300;
-      --serif: 'Instrument Serif', serif;
-      --sans: 'Inter', sans-serif;
+      /* trial: Alte Haas Grotesk on everything. Was Instrument Serif /
+         Inter, with Rebond Grotesque for display text. */
+      --serif: 'Alte Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      --sans: 'Alte Haas Grotesk', 'Helvetica Neue', Arial, sans-serif;
     }
 
     html, body {
@@ -138,7 +151,7 @@
     }
 
     .hero-headline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 88px;
       font-weight: 600;
       font-style: normal;
@@ -148,7 +161,7 @@
     }
 
     .hero-tagline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-weight: 400;
       font-size: 20px;
       line-height: 1.5;
@@ -544,7 +557,7 @@
       border: 1.5px solid #ADDD8D;
       border-radius: 100px;
       padding: 10px 20px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 14px;
       font-weight: 600;
       color: #1f3a1c;
@@ -552,6 +565,44 @@
       white-space: nowrap;
       transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
+    /* skills — white pills on lime, three coloured marks in between.
+       From the Figma frame "Frame 1948757468" at 0.4 of its size. */
+    .pill-card {
+      width: 527px;
+      background: #DCEC7E;
+      border-radius: 10px;
+      padding: 49px 38px;
+      box-sizing: border-box;
+    }
+    .pill-rows { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .pill-rows li { display: flex; align-items: center; gap: 7px; }
+    .pill {
+      width: 199px;
+      height: 36px;
+      flex: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: #FFFFFF;
+      color: #111;
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+    .pill-short { width: 168px; }
+    .pill-dot {
+      width: 36px; height: 36px; flex: none;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 18px;
+      background: var(--d);
+    }
+    .pill-dot-tall { width: 22px; border-radius: 11px; }
+    .pill-dot svg { width: 16px; height: 16px; fill: #FFFFFF; }
+    .pill-dot-tall svg { width: 12px; height: 19px; }
+
     .skills-card .skill-pill {
       opacity: 0.7;
     }
@@ -609,7 +660,7 @@
       object-fit: cover;
     }
     .polaroid-cap {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-weight: 600;
       font-size: 16px;
       line-height: 1.35;
@@ -653,114 +704,220 @@
       border-radius: 50%;
     }
 
-    /* ── TOOL DOCK ── */
+    /* ── TOOL DOCK — from nav-dock.svg: a white capsule of 54px circles ── */
     .tool-dock {
       position: fixed;
       top: 50%;
       left: 32px;
       transform: translateY(-50%);
       z-index: 900;
-      background: #ffffff;
-      border-radius: 28px;
-      padding: 12px 10px;
+      width: 74px;
+      padding: 10px;
+      box-sizing: border-box;
+      background: #FFFFFF;
+      border-radius: 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       box-shadow: 2px 4px 20px rgba(0,0,0,0.12);
       pointer-events: all;
       cursor: default;
     }
-
-    .tool-item {
-      position: relative;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
+    .tool-item { position: relative; display: block; line-height: 0; text-decoration: none; }
+    .tool-item > svg {
+      width: 54px; height: 54px; display: block;
+      border-radius: 50%;
+      transition: transform 0.15s, box-shadow 0.15s;
     }
-
-    .tool-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      flex-shrink: 0;
-      overflow: hidden;
-      transition: box-shadow 0.15s, transform 0.15s;
-    }
-
-    .tool-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-    .tool-item:hover .tool-icon {
-      transform: scale(1.06);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-    }
-
-    /* On phones the dock becomes a bottom bar. As a left rail it covers the
-       hero, because the whole board is only ~390px wide there. */
-    @media (max-width: 768px) {
-      .tool-dock {
-        top: auto;
-        bottom: 18px;
-        left: 50%;
-        transform: translateX(-50%);
-        flex-direction: row;
-        border-radius: 22px;
-        padding: 8px 10px;
-        gap: 6px;
-      }
-      .tool-icon { width: 40px; height: 40px; border-radius: 10px; }
-      .tool-tip { display: none; }
-    }
-
-    .tool-item.active .tool-icon {
-      box-shadow: 0 0 0 3px var(--accent);
-      transform: scale(1.04);
-    }
-
-    .tool-icon-placeholder {
-      width: 100%;
-      height: 100%;
-      background: #e8e4dc;
-      border: 1.5px dashed #c8c2b6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 9px;
-      font-weight: 600;
-      color: #9a948a;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    .tool-item:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      bottom: -3px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 32px;
-      height: 1px;
-      background: #e8e4dc;
-    }
-
+    .tool-item:hover > svg { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
+    .tool-item.active > svg { box-shadow: 0 0 0 3px var(--accent); }
+    .tool-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 50%; }
     .tool-tip {
       position: absolute;
-      left: calc(100% + 14px);
+      left: calc(100% + 18px);
+      top: 50%;
+      transform: translateY(-50%);
       background: #1a1208;
       color: #fff;
+      font-family: var(--sans);
       font-size: 13px;
       font-weight: 500;
+      line-height: 1;
       white-space: nowrap;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 8px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.15s;
     }
+    .tool-item:hover .tool-tip, .tool-item:focus-visible .tool-tip { opacity: 1; }
+    /* phones: a bottom bar instead of a left rail */
+    @media (max-width: 768px) {
+      .tool-dock {
+        top: auto; bottom: 18px; left: 50%;
+        transform: translateX(-50%);
+        width: auto; flex-direction: row;
+        padding: 8px; gap: 8px;
+      }
+      .tool-item > svg { width: 44px; height: 44px; }
+      .tool-tip { display: none; }
+    }
 
-    .tool-item:hover .tool-tip { opacity: 1; }
 
     .sc, .scatter-photo { z-index: 2; }
+
+    /* the playground card is one link; a "View playground" pill follows
+       the pointer instead of a button inside it */
+    .playground-card {
+      display: block;
+      text-decoration: none;
+      cursor: none;
+      transform: rotate(var(--rot));
+      transform-origin: top center;
+      transition: transform 0.28s cubic-bezier(0.22,0.61,0.36,1);
+    }
+    .playground-card:hover,
+    .playground-card:focus-visible { transform: rotate(var(--rot)) scale(1.06); z-index: 6; }
+    .playground-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      .playground-card { transition: none; }
+      .playground-card:hover, .playground-card:focus-visible { transform: rotate(var(--rot)); }
+    }
+
+    /* "live in 4 days" — an orange zigzag-edged burst */
+    .zig-card {
+      position: absolute;
+      z-index: 2;
+      width: 170px;
+      height: 170px;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)) drop-shadow(0 24px 40px rgba(0,0,0,0.25));
+    }
+    .zig-card > .pin { top: 4px; }
+    .zig-shape {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #F7892A;
+      clip-path: polygon(7.0% 7.0%, 14.2% 0.0%, 21.3% 7.0%, 28.5% 0.0%, 35.7% 7.0%, 42.8% 0.0%, 50.0% 7.0%, 57.2% 0.0%, 64.3% 7.0%, 71.5% 0.0%, 78.7% 7.0%, 85.8% 0.0%, 93.0% 7.0%, 100.0% 14.2%, 93.0% 21.3%, 100.0% 28.5%, 93.0% 35.7%, 100.0% 42.8%, 93.0% 50.0%, 100.0% 57.2%, 93.0% 64.3%, 100.0% 71.5%, 93.0% 78.7%, 100.0% 85.8%, 93.0% 93.0%, 85.8% 100.0%, 78.7% 93.0%, 71.5% 100.0%, 64.3% 93.0%, 57.2% 100.0%, 50.0% 93.0%, 42.8% 100.0%, 35.7% 93.0%, 28.5% 100.0%, 21.3% 93.0%, 14.2% 100.0%, 7.0% 93.0%, 0.0% 85.8%, 7.0% 78.7%, 0.0% 71.5%, 7.0% 64.3%, 0.0% 57.2%, 7.0% 50.0%, 0.0% 42.8%, 7.0% 35.7%, 0.0% 28.5%, 7.0% 21.3%, 0.0% 14.2%);
+    }
+    .zig-shape p {
+      font-family: var(--sans);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      transform: rotate(-2deg);
+    }
+
+    /* ── creativity licence: the resume link. The pointer becomes a
+       "View my resume" pill, the same way case cards show theirs ── */
+    .licence-card {
+      position: absolute;
+      z-index: 2;
+      width: 340px;
+      display: block;
+      cursor: none;
+      pointer-events: all;
+      --rot: 0deg;
+      transform: rotate(var(--rot));
+      transform-origin: top center;
+      transition: transform 0.28s cubic-bezier(0.22,0.61,0.36,1);
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)) drop-shadow(0 24px 40px rgba(0,0,0,0.25));
+    }
+    .licence-card img { display: block; width: 100%; height: auto; }
+    /* resume circle: the ring and its text are one SVG, the photo sits
+       in the middle */
+    .licence-card.resume-circle { width: 270px; height: 270px; }
+    .resume-circle > svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+    .resume-circle > img {
+      position: absolute;
+      left: 46px; top: 46px;
+      width: 178px; height: 178px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    /* the ring's words travel round it, one lap every 24s */
+    .resume-ring-spin {
+      transform-origin: 135px 135px;
+      animation: resumeSpin 24s linear infinite;
+    }
+    @keyframes resumeSpin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .resume-ring-spin { animation: none; } }
+    .resume-ring-text {
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 700;
+      fill: #5B2468;
+    }
+    .resume-circle > .pin { top: -6px; z-index: 3; }
+    .licence-card > .pin { top: -4px; }
+    .licence-card:hover,
+    .licence-card:focus-visible { transform: rotate(var(--rot)) scale(1.08); z-index: 6; }
+    .licence-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+    @media (prefers-reduced-motion: reduce) {
+      .licence-card { transition: none; }
+      .licence-card:hover, .licence-card:focus-visible { transform: rotate(var(--rot)); }
+    }
+
+    /* phone mockup: dark bezel, rounded screen */
+    .phone-mock {
+      position: absolute;
+      z-index: 1;
+      width: 250px;
+      padding: 8px;
+      border-radius: 34px;
+      background: #2B2B2B;
+      box-shadow: inset 0 0 0 1.5px #4A4A4A, 0 10px 24px rgba(0,0,0,0.3), 0 32px 64px rgba(0,0,0,0.3);
+      pointer-events: none;
+    }
+    .phone-mock img { display: block; width: 100%; height: auto; border-radius: 26px; }
+
+    /* ── award card: navy, copy top-left, the two trophies standing in
+       the bottom-right corner among a few white stars ── */
+    .award-card {
+      position: absolute;
+      z-index: 2;
+      width: 300px;
+      height: 345px;
+      border-radius: 8px;
+      background: #142645;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18), 0 32px 64px rgba(0,0,0,0.22);
+      pointer-events: all;
+    }
+    /* clips the trophies to the card without hiding the pin above it */
+    .award-clip { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+    .award-trophy { position: absolute; height: auto; display: block; }
+    .award-star { position: absolute; height: auto; display: block; fill: #E4E6EC; }
+    .award-event {
+      position: absolute;
+      left: 22px; top: 22px;
+      font-family: 'Alumni Sans', var(--sans);
+      font-size: 25.5px;   /* the case cards' 33.952px label at their 75% scale */
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.51px;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+    .award-title {
+      position: absolute;
+      left: 22px; top: 62px;
+      width: 270px;
+      font-family: var(--sans);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+    .award-behind {
+      position: absolute;
+      z-index: 1;
+      width: 210px;
+      border-radius: 14px;
+      box-shadow: 0 24px 56px rgba(0,0,0,0.4);
+    }
 
     /* ── CASE STUDY CARD (hover reveal) ── */
     .cs-card {
@@ -786,7 +943,7 @@
       pointer-events: none;
       background: #ffffff;
       color: var(--accent-dark);
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-weight: 600;
       font-size: 13px;
       letter-spacing: -0.01em;
@@ -825,7 +982,7 @@
       color: #1f3a1c;
       border-radius: 100px;
       padding: 7px 16px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 12px;
       line-height: 16px;
       font-weight: 600;
@@ -899,14 +1056,14 @@
 
     .cs-card:hover .cs-card-hover { opacity: 1; }
 
-    /* Rebond across all board cards */
+    /* one face across all board cards */
     .cs-card-num, .cs-card-name, .cs-card-hover-text,
     .sc-num, .sc-num-label, .sc-quote, .sc-tag, .stamp {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
     }
 
     .cs-card-hover-text {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 17px;
       line-height: 1.5;
       color: rgba(255,255,255,0.82);
@@ -944,7 +1101,7 @@
       color: #1f1f1f;
       border-radius: 200px;
       padding: 9px 30px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.02em;
@@ -957,7 +1114,7 @@
       color: #fff;
     }
     .fy-metric-num {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 46px;
       font-weight: 700;
       line-height: 46px;
@@ -965,7 +1122,7 @@
       white-space: nowrap;
     }
     .fy-metric-text {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 19px;
       font-weight: 400;
       line-height: 26px;
@@ -1045,21 +1202,20 @@
     /* ══════════════════════════════════════════════════════════
        MOBILE — vertical investigative board (shown ≤768px)
        ══════════════════════════════════════════════════════════ */
-    /* ══ CASE STUDY TEMPLATE CARD ══
-       From Figma "Shrea portfolio" node 2001-7302. Spec given by design:
-       number 80px · subtext 24px · chip 16px · chip fill = white @ 4%
-       · 60px between the chip row and the text block. */
+    /* ══ CASE STUDY CARD ══
+       From Figma "Untitled" node 951:155381, built at 75% so four fit
+       around the hero: one sentence of title, then client and date.
+       Text only for now, each card on one flat colour. */
     .tpl-card {
       position: absolute;
       z-index: 2;
-      width: 460px;
-      background: #0F1A2B;
-      border-radius: 16px;
-      padding: 22px;
+      width: 459px;
+      background: #2358BB;
+      border-radius: 6px;
+      padding: 30px;
       box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      gap: 28px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.18),
                   0 32px 64px rgba(0,0,0,0.22), 0 48px 80px rgba(0,0,0,0.10);
       text-decoration: none;
@@ -1121,13 +1277,174 @@
       .tpl-card:hover::before, .tpl-card:focus-visible::before { animation: none; }
     }
 
+    .tpl-card > :not(.pin) { position: relative; z-index: 1; }
+
+    .tpl-title {
+      font-family: 'Instrument Sans', var(--sans);
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: #FFFFFF;
+      text-wrap: pretty;
+    }
+    .tpl-meta {
+      margin-top: 18px;
+      font-family: 'Instrument Sans', var(--sans);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── Case cards, from Figma "Untitled" node 955:155396. Each card is
+       laid out at its Figma size inside .tpl-fig and the whole thing is
+       scaled to 75%, so every measurement below is a Figma pixel. ── */
+    .tpl-card.tpl-fig-card {
+      padding: 0;
+      background: none;
+      box-shadow: none;
+      display: block;
+      min-height: 0;
+    }
+    .tpl-card.tpl-fig-card::before { display: none; }
+    .tpl-fig-card > .tpl-fig {
+      position: absolute;
+      top: 0; left: 0;
+      transform: scale(0.75);
+      transform-origin: top left;
+    }
+    .tpl-case {
+      display: flex;
+      align-items: center;
+      gap: 10.865px;
+      font-family: 'Alumni Sans', var(--sans);
+      font-size: 33.952px;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: -0.679px;
+      white-space: nowrap;
+    }
+    .tpl-case img { display: block; width: 27.161px; height: 32.594px; }
+
+    /* Case 01 FYNDNA — blue stamp, white Brunson headline */
+    .tpl-card.tpl-fyndna { width: 439px; height: 323px; filter: drop-shadow(0 8px 18px rgba(0,0,0,0.35)) drop-shadow(0 24px 40px rgba(0,0,0,0.25)); }
+    .tpl-fyndna > .pin { top: 0; }
+    .tpl-fyndna .tpl-fig { width: 585.327px; height: 430.507px; }
+    .tpl-fyndna-shape {
+      position: absolute;
+      left: 50%; top: calc(50% - 4.07px);
+      width: 560.881px; height: 389.765px;
+      transform: translate(-50%, -50%);
+    }
+    .tpl-fyndna-body {
+      position: absolute;
+      left: 52px; top: 69.26px;
+      width: 492px; height: 285.194px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      color: #F6F6FE;
+    }
+    .tpl-fyndna-title {
+      font-family: 'Brunson', 'Impact', sans-serif;
+      font-size: 54.323px;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.03em;
+    }
+
+    /* Case 02 ICICI — orange-to-red, a pale cloud bottom-right, centred
+       headline in the Royal Enfield card's face, left-aligned; the ICICI logo tile tucked behind on the left */
+    .tpl-card.tpl-icici { width: 418px; height: 335px; }
+    .tpl-icici .tpl-fig {
+      width: 557.127px; height: 447px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: linear-gradient(122.79deg, #FF6E00 5.37%, #EA2222 106.92%);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 11px 32px rgba(0,0,0,0.24), 0 43px 85px rgba(0,0,0,0.29);
+    }
+    .tpl-icici-cloud {
+      position: absolute;
+      left: calc(50% + 117.88px); top: calc(50% + 124.31px);
+      width: 606.029px; height: 606.029px;
+      transform: translate(-50%, -50%);
+    }
+    /* left-aligned, same 50px inset as the Royal Enfield card */
+    .tpl-icici-body {
+      position: absolute;
+      left: 50px; right: 50px; top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      color: #FFFFFF;
+    }
+    /* same face as the Royal Enfield headline */
+    .tpl-icici-title {
+      width: 404.053px;
+      font-family: var(--sans);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.8px;
+      text-align: left;
+    }
+    .tpl-logo-tile {
+      position: absolute;
+      z-index: 1;
+      width: 200px; height: 200px;
+      border-radius: 6px;
+      background: #FFE9E9 url('card-icici-logo.png') center / cover no-repeat;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      transform: rotate(-8.59deg);
+      pointer-events: none;
+    }
+
+    /* Case 03 Royal Enfield — red gradient, headline in the hero's face,
+       the RE keychain hanging off the bottom-right corner */
+    .tpl-card.tpl-re { width: 463px; height: 321px; }
+    .tpl-re .tpl-fig {
+      width: 617px;
+      padding: 60px 50px;
+      box-sizing: border-box;
+      border-radius: 24px;   /* matches the ICICI card */
+      background: linear-gradient(157.93deg, #D0112B 7.76%, #6A0916 89.55%);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 11px 32px rgba(0,0,0,0.24), 0 43px 85px rgba(0,0,0,0.29);
+    }
+    .tpl-re-body {
+      height: 308px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      color: #FFFFFF;
+    }
+    .tpl-re .tpl-case { gap: 8px; }
+    .tpl-re-title {
+      font-family: var(--sans);
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.8px;
+    }
+    .tpl-card > .tpl-keychain {
+      position: absolute;
+      z-index: 2;
+      width: 194px;
+      height: auto;
+      transform: rotate(36.46deg);
+      pointer-events: none;
+    }
+
     .tpl-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .tpl-chip {
       background: rgba(255,255,255,0.04);
       color: #E9ECF1;
       border-radius: 200px;
       padding: 11px 20px;
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 13px;
       font-weight: 400;
       line-height: 1;
@@ -1139,7 +1456,7 @@
     .tpl-metric { display: flex; align-items: center; gap: 10px; }
     .tpl-star { width: 38px; height: 38px; flex: 0 0 38px; display: block; }
     .tpl-num {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 52px;
       font-weight: 700;
       line-height: 1;
@@ -1147,7 +1464,7 @@
       color: #F2F4F7;
     }
     .tpl-sub {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 16px;
       font-weight: 400;
       line-height: 1.3;
@@ -1171,7 +1488,7 @@
     .tpl-card > .tpl-body { position: relative; z-index: 1; }
 
     .tpl-lead {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 16px;
       font-weight: 400;
       line-height: 1.3;
@@ -1221,7 +1538,7 @@
     /* TerraPay — question card: one paragraph, the figure bold inline */
     .tpl-terrapay { --tpl-glow: 130,190,255; background: #1B3D68; }
     .tpl-ask {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: 22px;
       font-weight: 400;
       line-height: 1.35;
@@ -1335,7 +1652,7 @@
     }
 
     .m-menu-link {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: clamp(28px, 9vw, 38px);
       font-weight: 600;
       color: #ffffff;
@@ -1379,7 +1696,7 @@
 
     .m-hero { text-align: center; padding: 4px 8vw 4px; }
     .m-headline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: clamp(32px, 10vw, 44px);
       font-weight: 600;
       line-height: 1.08;
@@ -1387,7 +1704,7 @@
       letter-spacing: -0.02em;
     }
     .m-tagline {
-      font-family: 'Rebond Grotesque', var(--sans);
+      font-family: var(--sans);
       font-size: clamp(14px, 4vw, 16px);
       line-height: 1.5;
       color: rgba(255,255,255,0.6);
@@ -1473,7 +1790,7 @@
 
     /* claude code card */
     .m-claude { border-radius: 16px; background: #1a1a1a; padding: clamp(18px, 5vw, 22px); }
-    .m-claude-label { font-family: 'Rebond Grotesque', var(--sans); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-align: center; margin-bottom: 14px; }
+    .m-claude-label { font-family: var(--sans); font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.85); text-align: center; margin-bottom: 14px; }
     .m-claude-img { width: 100%; display: block; border-radius: 8px; }
 
     /* awards */
@@ -1539,7 +1856,7 @@
         <section class="m-hero">
           <h1 class="m-headline">Your strategic<br>partner in crime</h1>
           <p class="m-tagline">Four years of solving UX crimes in fintech, media, and e-commerce spaces, welcome to my investigative board.</p>
-          <div class="m-currently">Currently at <strong>Lollypop Design</strong> · deployed at <strong>FYNDNA</strong></div>
+          <div class="m-currently">Currently at <strong>Lollypop Design</strong> · Senior Product Designer</div>
         </section>
 
         <!-- ══ CASE 01 — FYNDNA ══ -->
@@ -1696,48 +2013,42 @@
 
   <div class="drag-hint" id="dragHint">→ Drag to explore</div>
 
-  <!-- TOOL DOCK -->
-  <div class="tool-dock">
-    <a class="tool-item active" href="#" onclick="scrollToWork()">
-      <div class="tool-icon">
-        <img src="dock-mywork.png" alt="My Work" style="transform:scale(1.35);">
-      </div>
-      <span class="tool-tip">My Work</span>
+  <!-- TOOL DOCK — from nav-dock.svg (Figma "Frame 1948757475"), plus LinkedIn in the same style -->
+  <nav class="tool-dock" aria-label="Site">
+    <a class="tool-item active" href="#" onclick="boardHome(); return false;" aria-label="Home">
+      <svg viewBox="10 10 54 54" fill="none" aria-hidden="true"><rect x="10" y="10" width="54" height="54" rx="27" fill="#D54274"/><path d="M30 34.6L37 29L44 34.6V43.4C44 43.8243 43.8361 44.2313 43.5444 44.5314C43.2527 44.8314 42.857 45 42.4444 45H31.5556C31.143 45 30.7473 44.8314 30.4556 44.5314C30.1639 44.2313 30 43.8243 30 43.4V34.6Z" fill="white"/></svg>
+      <span class="tool-tip">Home</span>
     </a>
-    <a class="tool-item" href="/playground.html">
-      <div class="tool-icon">
-        <img src="dock-playground.png" alt="Playground">
-      </div>
-      <span class="tool-tip">Playground</span>
-    </a>
-    <a class="tool-item" href="/resume.pdf" target="_blank">
-      <div class="tool-icon">
-        <img src="dock-resume.png" alt="Resume">
-      </div>
+    <a class="tool-item" href="/resume.pdf" target="_blank" aria-label="Resume">
+      <svg viewBox="10 138 54 54" fill="none" aria-hidden="true"><rect x="10" y="138" width="54" height="54" rx="27" fill="#3A28AB"/><path d="M37.75 157.5H32.5C32.1022 157.5 31.7206 157.658 31.4393 157.939C31.158 158.221 31 158.602 31 159V171C31 171.398 31.158 171.779 31.4393 172.061C31.7206 172.342 32.1022 172.5 32.5 172.5H41.5C41.8978 172.5 42.2794 172.342 42.5607 172.061C42.842 171.779 43 171.398 43 171V162.75L37.75 157.5Z" fill="white"/>
+<path d="M37.75 157.5V162.75H43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#3A28AB"/></svg>
       <span class="tool-tip">Resume</span>
     </a>
-    <div class="tool-item" aria-disabled="true">
-      <div class="tool-icon">
-        <img src="dock-sg.png" alt="About Me">
-      </div>
-      <span class="tool-tip">About Me (coming soon)</span>
-    </div>
-    <a class="tool-item" href="mailto:shreageorge@gmail.com">
-      <div class="tool-icon">
-        <img src="dock-contact.png" alt="Contact">
-      </div>
+    <a class="tool-item" href="mailto:shreageorge@gmail.com" aria-label="Contact">
+      <svg viewBox="10 202 54 54" fill="none" aria-hidden="true"><rect x="10" y="202" width="54" height="54" rx="27" fill="#375D5A"/><g clip-path="url(#clip0_988_1729)">
+<path d="M29 222.75H45C46.1 222.75 47 223.523 47 224.469V234.781C47 235.727 46.1 236.5 45 236.5H29C27.9 236.5 27 235.727 27 234.781V224.469C27 223.523 27.9 222.75 29 222.75Z" fill="white" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
+<path d="M45.75 224L37 230.25L28.25 224" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
+</g><defs>
+<clipPath id="clip0_988_1729">
+<rect width="20" height="20" fill="white" transform="translate(27 219)"/>
+</clipPath>
+</defs></svg>
       <span class="tool-tip">Contact</span>
     </a>
-    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener">
-      <div class="tool-icon">
-        <img src="dock-linkedin.png" alt="LinkedIn">
-      </div>
+    <a class="tool-item" href="/playground.html" aria-label="Playground">
+      <svg viewBox="10 266 54 54" fill="none" aria-hidden="true"><rect x="10" y="266" width="54" height="54" rx="27" fill="#B22F9F"/><path d="M33.9429 289.943L28.5 293L33.9429 296.057L37 301.5L40.0571 296.057L45.5 293L40.0571 289.943L37 284.5L33.9429 289.943Z" fill="white"/></svg>
+      <span class="tool-tip">Playground</span>
+    </a>
+    <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener" aria-label="LinkedIn">
+      <svg viewBox="0 0 54 54" aria-hidden="true"><rect width="54" height="54" rx="27" fill="#0A66C2"/><g transform="translate(17 17) scale(0.84)" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></g></svg>
       <span class="tool-tip">LinkedIn</span>
     </a>
-  </div>
+  </nav>
 
   <div class="coming-soon-badge" id="comingSoonBadge">Coming soon!</div>
   <div class="coming-soon-badge is-view" id="viewCaseBadge">View case study →</div>
+  <div class="coming-soon-badge is-view" id="viewResumeBadge">View my resume →</div>
+  <div class="coming-soon-badge is-view" id="viewPlaygroundBadge">View playground →</div>
 
   <!-- INFINITE CANVAS -->
   <div id="canvas">
@@ -1750,144 +2061,134 @@
 
     <!-- ══ CENTRE HERO ══ -->
     <div class="hero-center">
+      <div class="currently-tag" style="position:static; width:fit-content; margin:0 auto 18px; font-size:14px; padding:7px 18px;">
+        Currently at <strong>Lollypop Design</strong> · Senior Product Designer
+      </div>
       <h1 class="hero-headline">Your strategic<br>partner in crime</h1>
       <p class="hero-tagline">Four years of solving UX crimes in fintech, media, and e-commerce spaces, welcome to my investigative board.</p>
-      <div class="currently-tag" style="position:static; width:fit-content; margin:16px auto 0;">
-        Currently at <strong>Lollypop Design</strong> · deployed at <strong>FYNDNA</strong>
-      </div>
     </div>
 
     <!-- ══ CASE STUDY 01 — FYNDNA ══ -->
-    <a href="/fyndna.html" class="tpl-card" data-pin="fyndna" style="top:672px; left:600px; --rot:-2deg;">
+    <a href="/fyndna.html" class="tpl-card tpl-fig-card tpl-fyndna" data-pin="fyndna" style="top:600px; left:560px; --rot:-7.91deg;">
       <div class="pin"></div>
-      <div class="tpl-chips">
-          <span class="tpl-chip">Banking</span>
-          <span class="tpl-chip">System thinking</span>
-          <span class="tpl-chip">Project Lead</span>
-      </div>
-      <div class="tpl-body">
-        <div class="tpl-metric">
-          <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
-          <span class="tpl-num">10%</span>
+      <div class="tpl-fig">
+        <img class="tpl-fyndna-shape" src="card-fyndna-stamp.svg" alt="">
+        <div class="tpl-fyndna-body">
+          <p class="tpl-case"><img src="card-star-white.svg" alt=""> Case 01 | FYNDNA</p>
+          <h3 class="tpl-fyndna-title">8 steps to 4, to close a risk for bank document verification</h3>
         </div>
-        <p class="tpl-sub">improved risk identification in bank documents</p>
       </div>
     </a>
 
     <!-- ══ CASE STUDY 02 — TerraPay (coming soon) ══ -->
-    <div class="tpl-card tpl-card-soon tpl-terrapay" data-pin="terrapay" style="top:1180px; left:600px; --rot:1.5deg;">
+    <!-- TerraPay hidden until its case study is ready
+    <div class="tpl-card tpl-card-soon tpl-terrapay tpl-lined" data-pin="terrapay" style="top:1110px; left:490px; - -rot:1.5deg;">
       <div class="pin"></div>
-      <div class="tpl-chips">
-          <span class="tpl-chip">Fintech</span>
-          <span class="tpl-chip">UX Research &amp; Design</span>
-      </div>
-      <div class="tpl-body">
-        <p class="tpl-ask">How do <strong>5M+ users</strong> trust this platform to send money across borders daily?</p>
-      </div>
+      <h3 class="tpl-lined-title">5M+ people send money across borders on it. How do they trust it?</h3>
+      <p class="tpl-meta">TerraPay | Coming soon</p>
     </div>
+    -->
 
-    <!-- ══ CASE STUDY 03 — ICICI ══ -->
-    <a href="/icici.html" class="tpl-card tpl-warm tpl-icici" data-pin="icici" style="top:672px; left:1810px; --rot:-1deg;">
-      <div class="tpl-media"><img loading="lazy" decoding="async" src="card-icici-app.png" alt="" onerror="this.style.display='none'"></div>
+    <!-- ICICI logo tile, tucked behind the Case 02 card -->
+    <div class="tpl-logo-tile" style="left:1881px; top:615px;"></div>
+
+    <!-- ══ CASE 02 — ICICI ══ -->
+    <a href="/icici.html" class="tpl-card tpl-fig-card tpl-icici" data-pin="icici" style="top:560px; left:2050px; --rot:5.8deg;">
       <div class="pin"></div>
-      <div class="tpl-chips">
-          <span class="tpl-chip">Banking</span>
-          <span class="tpl-chip">UX Research</span>
-      </div>
-      <div class="tpl-body">
-        <div class="tpl-metric">
-          <svg class="tpl-star" viewBox="0 0 100 100" aria-hidden="true"><polygon points="50.00,0.00 52.00,41.23 71.69,4.95 55.61,42.96 89.09,18.83 58.11,46.10 98.75,38.87 59.00,50.00 98.75,61.13 58.11,53.90 89.09,81.17 55.61,57.04 71.69,95.05 52.00,58.77 50.00,100.00 48.00,58.77 28.31,95.05 44.39,57.04 10.91,81.17 41.89,53.90 1.25,61.13 41.00,50.00 1.25,38.87 41.89,46.10 10.91,18.83 44.39,42.96 28.31,4.95 48.00,41.23" fill="url(#starGrad)"/></svg>
-          <span class="tpl-num">2.5M+</span>
+      <div class="tpl-fig">
+        <img class="tpl-icici-cloud" src="card-icici-cloud.svg" alt="">
+        <div class="tpl-icici-body">
+          <p class="tpl-case"><img src="card-star-white.svg" alt=""> Case 02 | ICICI Bank</p>
+          <h3 class="tpl-icici-title">24 user interviews uncover why 71% customers never used their UPI</h3>
         </div>
-        <p class="tpl-sub">affected by this pivot plan by created studying users&rsquo; payment behaviour</p>
       </div>
     </a>
 
-    <!-- ══ CASE STUDY 04 — Royal Enfield ══ -->
-    <a href="/royal-enfield.html" class="tpl-card tpl-warm tpl-re" data-pin="re" style="top:1200px; left:1900px; --rot:2deg;">
-      <div class="tpl-media"><img loading="lazy" decoding="async" src="card-re-site.png" alt="" onerror="this.style.display='none'"></div>
+    <!-- Royal Enfield phone mockup — the jackets grid from the case study,
+         tucked under the bottom-left of the Case 03 card -->
+    <div class="phone-mock" style="top:1360px; left:1930px;">
+      <img src="re-plp-3.png" alt="Royal Enfield jackets product grid on mobile">
+    </div>
+
+    <!-- ══ CASE 03 — Royal Enfield ══ -->
+    <a href="/royal-enfield.html" class="tpl-card tpl-fig-card tpl-re" data-pin="re" style="top:1110px; left:2010px; --rot:-3.23deg;">
       <div class="pin"></div>
-      <div class="tpl-chips">
-          <span class="tpl-chip">E-Commerce</span>
-          <span class="tpl-chip">UX Design</span>
+      <div class="tpl-fig">
+        <div class="tpl-re-body">
+          <p class="tpl-case"><img src="card-star-white.svg" alt=""> Case 03 | Royal Enfield</p>
+          <h3 class="tpl-re-title">How do 3.3M+ riders choose to buy a Rs.30,000 jacket online?</h3>
+        </div>
       </div>
-      <div class="tpl-body">
-        <p class="tpl-lead">How do</p>
-        <span class="tpl-num">3.3M+ riders</span>
-        <p class="tpl-sub">trust that they can buy a &#8377;30,000 jacket online?</p>
-      </div>
+      <img class="tpl-keychain" src="card-re-keychain.png" alt="" style="left:364px; top:100px;">
     </a>
 
     <!-- ══ STATEMENT CARDS ══ -->
 
-    <!-- Quote card — light -->
-    <div class="sc sc-light" data-pin="quote" style="top:990px; left:432px; width:264px; transform:rotate(-2deg);">
-      <div class="pin"></div>
-      <span class="sc-star">✦</span>
-      <p class="sc-quote">"Constraints are just problems waiting for a better question."</p>
-    </div>
 
-    <!-- Stat card — 24 interviews -->
-    <div class="sc sc-accent" data-pin="stat24" style="top:840px; left:2292px; width:192px; transform:rotate(-2deg);">
-      <div class="pin"></div>
-      <span class="sc-tag">Research</span>
-      <p class="sc-num">24</p>
-      <p class="sc-num-label">user interviews · ICICI Bank</p>
-    </div>
 
 
     <!-- Skills pill card -->
-    <div class="sc sc-dark skills-card" data-pin="skills" style="top:1152px; left:1150px; width:240px; transform:rotate(-1.5deg); padding:20px 16px;">
+    <div class="sc pill-card" data-pin="skills" style="top:1212px; left:1160px; transform:rotate(-1.5deg);">
       <div class="pin"></div>
-      <div style="display:flex; flex-direction:column; gap:8px;">
-        <span class="skill-pill">Product Design</span>
-        <span class="skill-pill">UX Research</span>
-        <span class="skill-pill">Design Systems</span>
-        <span class="skill-pill">Interaction Design</span>
-        <span class="skill-pill">AI Workflows</span>
-        <span class="skill-pill">Figma MCP</span>
-      </div>
+      <ul class="pill-rows" aria-label="Skills">
+        <li><span class="pill">AI Workflows</span><span class="pill-dot" style="--d:#2358BB" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="12 4 20 10 17 19 7 19 4 10"/></svg></span><span class="pill">Product Design</span></li>
+        <li><span class="pill-dot pill-dot-tall" style="--d:#5EA36A" aria-hidden="true"><svg viewBox="0 0 24 24"><polygon points="12 2 17 12 12 22 7 12"/></svg></span><span class="pill">UX Research</span><span class="pill pill-short">Design Systems</span></li>
+        <li><span class="pill">Figma MCP</span><span class="pill">Visual Design</span><span class="pill-dot" style="--d:#C83A9C" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a3.2 3.2 0 0 1 3 2.1 3.2 3.2 0 0 1 4.2 1.7 3.2 3.2 0 0 1 .7 4.2 3.2 3.2 0 0 1 0 4 3.2 3.2 0 0 1-.7 4.2 3.2 3.2 0 0 1-4.2 1.7 3.2 3.2 0 0 1-6 0 3.2 3.2 0 0 1-4.2-1.7 3.2 3.2 0 0 1-.7-4.2 3.2 3.2 0 0 1 0-4 3.2 3.2 0 0 1 .7-4.2A3.2 3.2 0 0 1 9 5.1 3.2 3.2 0 0 1 12 3z"/></svg></span></li>
+      </ul>
     </div>
 
-    <!-- Stat card — 8+ collaborations, next to skills pill card -->
-    <div class="sc sc-dark" data-pin="collab" style="top:1152px; left:1420px; width:208px; transform:rotate(2deg); background:#5E1942;">
+    <!-- Resume circle — photo in a lavender ring of repeating text; opens the resume -->
+    <a class="licence-card resume-circle" data-pin="collab" href="/resume.pdf" target="_blank" aria-label="View my resume" style="top:1180px; left:760px; --rot:0deg;">
       <div class="pin"></div>
-      <p class="sc-num">8+</p>
-      <p class="sc-num-label">collaborations</p>
-      <a href="/resume.pdf" target="_blank" class="skill-pill" style="pointer-events:all; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; width:100%; box-sizing:border-box; background:#D1E680; border-color:#D1E680;">View my resume →</a>
-    </div>
+      <svg viewBox="0 0 270 270" aria-hidden="true">
+        <defs><path id="resumeRing" d="M135,135 m-110,0 a110,110 0 1,1 220,0 a110,110 0 1,1 -220,0"/></defs>
+        <circle cx="135" cy="135" r="135" fill="#EBC8F8"/>
+        <g class="resume-ring-spin">
+          <text class="resume-ring-text"><textPath href="#resumeRing" textLength="690" lengthAdjust="spacing">view my resume &#10022; view my resume &#10022; view my resume &#10022;</textPath></text>
+        </g>
+      </svg>
+      <img src="resume-photo.jpg" alt="Shrea George">
+    </a>
 
     <!-- Stat — 4 days -->
-    <div class="sc sc-light" data-pin="stat4" style="top:888px; left:2448px; width:192px; transform:rotate(3deg);">
+    <div class="zig-card" data-pin="stat4" style="top:700px; left:2405px; transform:rotate(-4deg);">
       <div class="pin"></div>
-      <span class="sc-tag">Impact</span>
-      <p class="sc-num" style="font-size:52px;">4</p>
-      <p class="sc-num-label">days to live product changes</p>
+      <div class="zig-shape"><p>live in<br>4 days</p></div>
     </div>
 
     <!-- ══ PLAYGROUND TEASER ══ -->
-    <div class="card" style="top:266px; left:1656px; width:288px; transform:rotate(-1deg); overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
+    <a class="card playground-card" href="/playground.html" aria-label="View playground" style="top:266px; left:1656px; width:288px; --rot:-1deg; overflow:visible; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:normal;">
       <div class="pin"></div>
       <div class="card-pin" style="display:none;"></div>
       <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
         <video src="hand-tracker.mp4" poster="hand-tracker-poster.jpg" loop muted playsinline preload="none" data-autoplay style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
       </div>
-      <a href="/playground.html" class="skill-pill" style="pointer-events:all; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:6px; text-decoration:none; width:100%; box-sizing:border-box;">Playground →</a>
-    </div>
+    </a>
 
     <!-- ══ CLAUDE CODE BADGE — next to playground teaser ══ -->
     <div class="card" style="top:266px; left:1976px; width:300px; transform:rotate(2deg); background:#1a1a1a;">
       <div class="pin"></div>
-      <p style="font-family:'Rebond Grotesque', var(--sans); font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-align:center; margin:0 0 12px;">This portfolio was made with</p>
+      <p style="font-family:var(--sans); font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-align:center; margin:0 0 12px;">This portfolio was made with</p>
       <img loading="lazy" decoding="async" src="claude-code-card.jpg" alt="Built with Claude Code" style="width:100%; display:block; border-radius:6px;">
     </div>
 
-    <!-- ══ AWARD POLAROID CLUSTER (next to FYNDNA card) ══ -->
-    <img loading="lazy" decoding="async" class="scatter-photo" src="award-cert.jpg" alt="HackDNA Promoter's Choice certificate & trophy" style="top:512px; left:428px; width:156px; transform:rotate(4deg);">
-    <img loading="lazy" decoding="async" class="scatter-photo" src="award-trophy.jpg" alt="HackDNA People's Choice trophy" style="top:772px; left:434px; width:146px; transform:rotate(-7deg);">
-    <div style="position:absolute; top:500px; left:166px; width:264px; transform:rotate(-3deg);">
+    <!-- ══ AWARD CARD (below the FYNDNA card, where the quote card was) — from Figma node 981:1565,
+         with the hackathon photo tucked behind it ══ -->
+    <img loading="lazy" decoding="async" class="award-behind" src="award-polaroid.png" alt="Shrea holding the Promoters Choice trophy at the FYNDNA hackathon" style="top:892px; left:206px; transform:rotate(-9deg);">
+    <div class="award-card" data-pin="award" style="top:960px; left:360px; transform:rotate(-3deg);">
       <div class="pin"></div>
-      <img loading="lazy" decoding="async" src="award-polaroid.png" alt="Promoters Choice & Best team awards at Fyndna hackathon" style="width:100%; display:block; border-radius:14px; box-shadow:0 24px 56px rgba(0,0,0,0.4);">
+      <div class="award-clip">
+        <svg class="award-star" style="left:286px; top:134px; width:11px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:216px; top:150px; width:11px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:237px; top:158px; width:7px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:116px; top:176px; width:19px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:108px; top:203px; width:14px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <svg class="award-star" style="left:135px; top:304px; width:28px;" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <img class="award-trophy" src="award-trophy-left.png" alt="" style="left:140px; top:158px; width:80px;">
+        <img class="award-trophy" src="award-trophy-right.png" alt="" style="left:232px; top:160px; width:80px;">
+      </div>
+      <p class="award-event">FYNDNA Hackathon</p>
+      <p class="award-title">Promoters &amp; Peoples choice award winner</p>
     </div>
 
   </div><!-- /canvas -->
@@ -1914,6 +2215,24 @@
       canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
     }
     applyTransform();
+
+    // Dock: Home glides back to the hero; My Work zooms out so all three
+    // case cards (canvas x ~400-2700, y ~550-1500) fit on screen.
+    function glideTo(nx, ny, ns) {
+      canvas.style.transition = 'transform 0.6s cubic-bezier(0.22,0.61,0.36,1)';
+      tx = nx; ty = ny; scale = ns;
+      applyTransform();
+      setTimeout(() => { canvas.style.transition = ''; window.dispatchEvent(new Event('resize')); }, 620);
+    }
+    function boardHome() {
+      const s = Math.max(0.30, Math.min(0.75, viewW() / 760));
+      glideTo(viewW() / 2 - 1440 * s, viewH() / 2 - 960 * s, s);
+    }
+    function boardWork() {
+      const s = Math.max(0.2, Math.min(0.75, (viewW() - 200) / 2700, (viewH() - 80) / 1050));
+      glideTo(viewW() / 2 - 1450 * s + 60, viewH() / 2 - 1030 * s, s);
+    }
+    if (location.hash === '#work') setTimeout(boardWork, 300);
 
     // Drag to pan
     let dragging = false, startMouseX, startMouseY, startTx, startTy;
@@ -2006,6 +2325,8 @@
     }
     cursorTag('.cs-card-soon, .tpl-card-soon', document.getElementById('comingSoonBadge'));
     cursorTag('a.tpl-card', document.getElementById('viewCaseBadge'));
+    cursorTag('.licence-card', document.getElementById('viewResumeBadge'));
+    cursorTag('.playground-card', document.getElementById('viewPlaygroundBadge'));
 
     // ── Videos load nothing until a copy scrolls or pans into view, and pause
     //    again when it leaves. The copy inside the hidden .m-shell never
@@ -2036,11 +2357,9 @@
 
       const links = [
         ['fyndna', 'icici'],
-        ['fyndna', 'quote'],
-        ['icici',  'stat24'],
-        ['stat24', 'stat4'],
+        ['fyndna', 'award'],
+        ['icici',  'stat4'],
         ['stat4',  're'],
-        ['quote',  'terrapay'],
         ['skills', 'collab'],
       ];
 
