@@ -765,7 +765,9 @@
     }
     .tool-item:hover > svg { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
     /* the current page's circle gets a dark green ring */
-    .tool-item.active > svg { box-shadow: 0 0 0 2.5px #1F5C38; }
+    /* the svg's own background is the ring colour too, so the circle's
+       anti-aliased edge blends into green instead of leaving a white seam */
+    .tool-item.active > svg { background: #1F5C38; box-shadow: 0 0 0 2.5px #1F5C38; }
     .tool-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 50%; }
     .tool-tip {
       position: absolute;
