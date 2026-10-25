@@ -764,7 +764,8 @@
       transition: transform 0.15s, box-shadow 0.15s;
     }
     .tool-item:hover > svg { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.18); }
-    .tool-item.active > svg { box-shadow: 0 0 0 3px var(--accent); }
+    /* the current page's circle gets a dark green ring */
+    .tool-item.active > svg { box-shadow: 0 0 0 2.5px #1F5C38; }
     .tool-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 50%; }
     .tool-tip {
       position: absolute;
@@ -1129,6 +1130,9 @@
     /* cards sit above the threads, as on the homepage */
     .card, .art-card, .sc, .zig-card, .award-card, .cert-card { z-index: 2; }
     .award-behind { z-index: 1; }
+    /* playing video gets its own compositor layer, so its frames don't
+       force the whole board to repaint while it is panned */
+    #canvas video { will-change: transform; }
   </style>
 </head>
 <body>
@@ -1142,19 +1146,19 @@
   <!-- TOOL DOCK — from nav-dock.svg (Figma "Frame 1948757475"), plus LinkedIn in the same style -->
   <nav class="tool-dock" aria-label="Site">
     <a class="tool-item" href="/" aria-label="Home">
-      <svg viewBox="10 10 54 54" fill="none" aria-hidden="true"><rect x="10" y="10" width="54" height="54" rx="27" fill="#D54274"/><path d="M30 34.6L37 29L44 34.6V43.4C44 43.8243 43.8361 44.2313 43.5444 44.5314C43.2527 44.8314 42.857 45 42.4444 45H31.5556C31.143 45 30.7473 44.8314 30.4556 44.5314C30.1639 44.2313 30 43.8243 30 43.4V34.6Z" fill="white"/></svg>
+      <svg viewBox="10 10 54 54" fill="none" aria-hidden="true"><rect x="10" y="10" width="54" height="54" rx="27" fill="#D54274"/><g transform="translate(37 37) scale(1.4) translate(-37 -37)"><path d="M30 34.6L37 29L44 34.6V43.4C44 43.8243 43.8361 44.2313 43.5444 44.5314C43.2527 44.8314 42.857 45 42.4444 45H31.5556C31.143 45 30.7473 44.8314 30.4556 44.5314C30.1639 44.2313 30 43.8243 30 43.4V34.6Z" fill="white"/></g></svg>
       <span class="tool-tip">Home</span>
     </a>
     <a class="tool-item" href="/resume.pdf" target="_blank" aria-label="Resume">
-      <svg viewBox="10 138 54 54" fill="none" aria-hidden="true"><rect x="10" y="138" width="54" height="54" rx="27" fill="#3A28AB"/><path d="M37.75 157.5H32.5C32.1022 157.5 31.7206 157.658 31.4393 157.939C31.158 158.221 31 158.602 31 159V171C31 171.398 31.158 171.779 31.4393 172.061C31.7206 172.342 32.1022 172.5 32.5 172.5H41.5C41.8978 172.5 42.2794 172.342 42.5607 172.061C42.842 171.779 43 171.398 43 171V162.75L37.75 157.5Z" fill="white"/>
-<path d="M37.75 157.5V162.75H43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#3A28AB"/></svg>
+      <svg viewBox="10 138 54 54" fill="none" aria-hidden="true"><rect x="10" y="138" width="54" height="54" rx="27" fill="#3A28AB"/><g transform="translate(37 165) scale(1.4) translate(-37 -165)"><path d="M37.75 157.5H32.5C32.1022 157.5 31.7206 157.658 31.4393 157.939C31.158 158.221 31 158.602 31 159V171C31 171.398 31.158 171.779 31.4393 172.061C31.7206 172.342 32.1022 172.5 32.5 172.5H41.5C41.8978 172.5 42.2794 172.342 42.5607 172.061C42.842 171.779 43 171.398 43 171V162.75L37.75 157.5Z" fill="white"/>
+<path d="M37.75 157.5V162.75H43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="#3A28AB"/></g></svg>
       <span class="tool-tip">Resume</span>
     </a>
     <a class="tool-item" href="mailto:shreageorge@gmail.com" aria-label="Contact">
-      <svg viewBox="10 202 54 54" fill="none" aria-hidden="true"><rect x="10" y="202" width="54" height="54" rx="27" fill="#375D5A"/><g clip-path="url(#clip0_988_1729)">
+      <svg viewBox="10 202 54 54" fill="none" aria-hidden="true"><rect x="10" y="202" width="54" height="54" rx="27" fill="#375D5A"/><g transform="translate(37 229) scale(1.4) translate(-37 -229)"><g clip-path="url(#clip0_988_1729)">
 <path d="M29 222.75H45C46.1 222.75 47 223.523 47 224.469V234.781C47 235.727 46.1 236.5 45 236.5H29C27.9 236.5 27 235.727 27 234.781V224.469C27 223.523 27.9 222.75 29 222.75Z" fill="white" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
 <path d="M45.75 224L37 230.25L28.25 224" stroke-width="1.875" stroke-linecap="round" stroke-linejoin="round" stroke="#375D5A"/>
-</g><defs>
+</g></g><defs>
 <clipPath id="clip0_988_1729">
 <rect width="20" height="20" fill="white" transform="translate(27 219)"/>
 </clipPath>
@@ -1162,11 +1166,11 @@
       <span class="tool-tip">Contact</span>
     </a>
     <a class="tool-item active" href="/playground.html" aria-label="Playground">
-      <svg viewBox="10 266 54 54" fill="none" aria-hidden="true"><rect x="10" y="266" width="54" height="54" rx="27" fill="#B22F9F"/><path d="M33.9429 289.943L28.5 293L33.9429 296.057L37 301.5L40.0571 296.057L45.5 293L40.0571 289.943L37 284.5L33.9429 289.943Z" fill="white"/></svg>
+      <svg viewBox="10 266 54 54" fill="none" aria-hidden="true"><rect x="10" y="266" width="54" height="54" rx="27" fill="#B22F9F"/><g transform="translate(37 293) scale(1.4) translate(-37 -293)"><path d="M33.9429 289.943L28.5 293L33.9429 296.057L37 301.5L40.0571 296.057L45.5 293L40.0571 289.943L37 284.5L33.9429 289.943Z" fill="white"/></g></svg>
       <span class="tool-tip">Playground</span>
     </a>
     <a class="tool-item" href="https://www.linkedin.com/in/shrea" target="_blank" rel="noopener" aria-label="LinkedIn">
-      <svg viewBox="0 0 54 54" aria-hidden="true"><rect width="54" height="54" rx="27" fill="#0A66C2"/><g transform="translate(17 17) scale(0.84)" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></g></svg>
+      <svg viewBox="0 0 54 54" aria-hidden="true"><rect width="54" height="54" rx="27" fill="#0A66C2"/><g transform="translate(13.6 14.1) scale(1.12)" fill="white"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></g></svg>
       <span class="tool-tip">LinkedIn</span>
     </a>
   </nav>
@@ -1210,7 +1214,7 @@
     <a class="card demo-card" data-pin="demo" href="/hand-tracker.html" aria-label="Try the hand-tracking demo" style="top:1370px; left:1390px; width:288px; --rot:1.5deg; overflow:visible; background-color:#3B2A4E; background-image:url('playground-card-bg.jpg'); background-size:cover; background-blend-mode:multiply;">
       <div class="pin"></div>
       <div style="width:100%; aspect-ratio:1/1; overflow:hidden; border-radius:6px;">
-        <video src="hand-tracker.mp4" autoplay loop muted playsinline style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
+        <video src="hand-tracker.mp4" poster="hand-tracker-poster.jpg" loop muted playsinline preload="none" data-autoplay style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
       </div>
       <p style="font-family:var(--sans); font-weight:700; font-size:18px; color:#FFFFFF; padding:8px; margin:0; letter-spacing:-0.02em;">draw in the air - made with Claude code</p>
     </a>
@@ -1276,7 +1280,7 @@
     <!-- ══ SURE ONBOARDING — screen recording in a phone ══ -->
     <div class="phone-mock" data-pin="sure" style="top:1170px; left:1760px; transform:rotate(3deg);">
       <div class="pin"></div>
-      <video src="sure-onboarding.mp4" poster="sure-onboarding-poster.jpg" autoplay loop muted playsinline preload="metadata" aria-label="Screen recording of the Sure onboarding flow"></video>
+      <video src="sure-onboarding.mp4" poster="sure-onboarding-poster.jpg" loop muted playsinline preload="none" data-autoplay aria-label="Screen recording of the Sure onboarding flow"></video>
     </div>
 
   </div><!-- /canvas -->
@@ -1327,6 +1331,24 @@
         ty = pendingTy;
         applyTransform();
       });
+      panning();
+    }
+
+    // While the board moves, hold every animation and video still: anything
+    // that changes inside the board makes the browser repaint the whole
+    // board on every frame of the pan. They pick up again 200ms after it stops.
+    let panTimer = null;
+    function panning() {
+      if (!panTimer) {
+        document.body.classList.add('is-panning');
+        canvas.querySelectorAll('video').forEach(v => { if (!v.paused) { v.dataset.wasPlaying = '1'; v.pause(); } });
+      }
+      clearTimeout(panTimer);
+      panTimer = setTimeout(() => {
+        panTimer = null;
+        document.body.classList.remove('is-panning');
+        canvas.querySelectorAll('video[data-was-playing]').forEach(v => { delete v.dataset.wasPlaying; v.play().catch(() => {}); });
+      }, 200);
     }
 
     document.addEventListener('mousemove', e => {
@@ -1384,6 +1406,25 @@
         card.addEventListener('mouseleave', () => { badge.style.display = 'none'; });
       });
     }
+
+    // ── Videos load nothing until a copy scrolls or pans into view, and pause
+    //    again when it leaves. The copy inside the hidden .m-shell never
+    //    intersects, so it never downloads. ──
+    (function () {
+      const vids = document.querySelectorAll('video[data-autoplay]');
+      if (!('IntersectionObserver' in window)) {
+        vids.forEach(v => { v.preload = 'auto'; v.play().catch(() => {}); });
+        return;
+      }
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(({ target: v, isIntersecting }) => {
+          if (isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        });
+      }, { rootMargin: '200px' });
+      vids.forEach(v => io.observe(v));
+    })();
+
     cursorTag('.demo-card', document.getElementById('tryDemoBadge'));
     cursorTag('.art-fig-card', document.getElementById('viewArticleBadge'));
 
