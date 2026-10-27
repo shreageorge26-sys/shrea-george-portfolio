@@ -1836,10 +1836,11 @@
         width: 100%; height: auto;
         transform: none !important;
         display: flex; flex-direction: column; align-items: center;
+        max-width: 440px; margin: 0 auto;   /* a phone-width column at any width under 768px */
         overflow-x: clip;   /* the board objects hang past the edges */
       }
       #canvas > * { position: relative !important; top: auto !important; left: auto !important; }
-      #strings, .tpl-logo-tile,
+      #strings, .tpl-logo-tile, .phone-mock,
       #canvas > .award-behind,
       #canvas > .playground-card, #canvas > .claude-card { display: none !important; }
 
@@ -1890,17 +1891,7 @@
       #canvas .tpl-keychain { left: 290px !important; top: 170px !important; width: 150px; }
       .m-meta-fyndna { order: 4; }
       .m-meta-icici  { order: 7; }
-      .m-meta-re     { order: 10; padding-left: 112px; }   /* clear of the phone beside it */
-      /* the jackets-grid phone tucks out from under the Royal Enfield card's
-         bottom-left, as on the board; its tags sit to the right of it.
-         Zoom scales margins, hence / --z. */
-      #canvas > .phone-mock {
-        --z: 0.42;
-        order: 9; zoom: var(--z); z-index: 1;
-        align-self: flex-start;
-        margin: calc(-70px / var(--z)) 0 calc(-118px / var(--z)) calc(((100vw - 440px * var(--m, 0.65)) / 2 - 8px) / var(--z));
-        transform: rotate(-5deg);
-      }
+      .m-meta-re     { order: 9; }
       /* "live in 4 days" pinned on the ICICI card's right edge, just below
          its top corner, overlapping it a little. Zoom scales margins too,
          so each is divided by --z to land in screen px. */
@@ -1927,7 +1918,7 @@
       .m-read { font-size: 14px; font-weight: 500; color: var(--accent); }
 
       /* extras — a row you swipe */
-      .m-only.m-shelf-wrap { display: block; padding: 0 0 120px; }
+      .m-only.m-shelf-wrap { display: block; max-width: 440px; margin: 0 auto; padding: 0 0 120px; }
       .m-shelf {
         --gut: calc((100% - 440px * var(--m, 0.65)) / 2);
         display: flex; align-items: center; gap: 24px;
