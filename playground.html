@@ -793,7 +793,7 @@
       .tool-dock {
         top: auto; bottom: 18px; left: 50%;
         transform: translateX(-50%);
-        width: auto; flex-direction: row;
+        width: max-content; flex-direction: row;   /* auto would cap it at half the screen, since it starts at left:50% */
         padding: 8px; gap: 8px;
       }
       .tool-item > svg { width: 44px; height: 44px; }
