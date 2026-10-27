@@ -163,12 +163,6 @@
       margin-right: auto;
     }
 
-    /* Mobile board zoom is ~0.51, so canvas type renders about half its CSS
-       size. 78px lands the headline at ~40px on screen at 390px wide. */
-    @media (max-width: 768px) {
-      .hero-headline { font-size: 78px; }
-    }
-
     .hero-sub {
       font-size: 14px;
       font-weight: 500;
@@ -1821,6 +1815,134 @@
     }
 
     body.is-panning .resume-ring-spin { animation-play-state: paused; }
+
+    /* ══ PHONES — a page you scroll, not a board you pan ══
+       Under 768px the board's pieces drop into a quiet column: the hero
+       fills the first screen with a few board objects peeking in at its
+       edges, then the three case cards (desktop art, zoomed down by --m,
+       set from JS) each with its tags and a link, then the extras as a
+       row you swipe (copies made in JS, so the board itself is untouched).
+       .m-only elements exist just for this layout. */
+    .m-only { display: none; }
+    @media (max-width: 768px) {
+      html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
+      body { position: static; cursor: auto; user-select: auto; }
+
+      body > nav:not(.tool-dock) { position: absolute; padding: 20px; }
+      .drag-hint { display: none; }
+
+      #canvas {
+        position: relative;
+        width: 100%; height: auto;
+        transform: none !important;
+        display: flex; flex-direction: column; align-items: center;
+        overflow-x: clip;   /* the board objects hang past the edges */
+      }
+      #canvas > * { position: relative !important; top: auto !important; left: auto !important; }
+      #strings, .tpl-logo-tile,
+      #canvas > .award-behind,
+      #canvas > .playground-card, #canvas > .claude-card { display: none !important; }
+
+      /* hero — the whole first screen */
+      .hero-center {
+        order: 1; width: 100%; min-height: 100svh;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 0 28px 40px; transform: none;
+      }
+      .hero-center .currently-tag { font-size: 12px !important; padding: 6px 14px !important; margin-bottom: 20px !important; flex-wrap: wrap; justify-content: center; max-width: 100%; }
+      .hero-headline { font-size: clamp(32px, 9.4vw, 40px); }
+      .hero-tagline { font-size: 15px; margin-top: 14px; max-width: 34ch; }
+
+      /* board objects at the hero's edges, small and half off screen */
+      #canvas > .pill-card {
+        position: absolute !important; top: 96px !important; left: calc(100% - 284px) !important;
+        transform: rotate(-4deg) scale(0.5) !important; transform-origin: top left;
+      }
+      #canvas > .resume-circle {
+        position: absolute !important; top: max(calc(100svh - 280px), 500px) !important; left: -44px !important;
+        transform: rotate(-8deg) scale(0.6) !important; transform-origin: top left;
+      }
+      #canvas > .award-card {
+        position: absolute !important; top: max(calc(100svh - 296px), 500px) !important; left: calc(100% - 172px) !important;
+        transform: rotate(6deg) scale(0.5) !important; transform-origin: top left;
+      }
+
+      /* section intro: a small label, then one line */
+      .m-intro { display: block !important; width: calc(440px * var(--m, 0.65)); text-align: left; }
+      #canvas > .m-intro { order: 2; margin-bottom: 40px; }
+      .m-label {
+        font-family: 'Alumni Sans', var(--sans);
+        font-size: 18px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+        color: var(--accent);
+      }
+      .m-heading {
+        margin-top: 6px;
+        font-family: var(--sans); font-size: 24px; font-weight: 700; line-height: 1.2;
+        letter-spacing: -0.02em; color: #FFFFFF;
+      }
+      .m-sub { margin-top: 6px; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,0.6); }
+
+      /* the three cases, each followed by its tags and a link */
+      #canvas > .tpl-card { zoom: var(--m, 0.65); }
+      .tpl-fyndna { order: 3; --rot: -2deg !important; }
+      .tpl-icici  { order: 6; --rot: 2deg !important; }
+      .tpl-re     { order: 8; --rot: -1.5deg !important; }
+      #canvas .tpl-keychain { left: 290px !important; top: 170px !important; width: 150px; }
+      .m-meta-fyndna { order: 4; }
+      .m-meta-icici  { order: 7; }
+      .m-meta-re     { order: 10; padding-left: 112px; }   /* clear of the phone beside it */
+      /* the jackets-grid phone tucks out from under the Royal Enfield card's
+         bottom-left, as on the board; its tags sit to the right of it.
+         Zoom scales margins, hence / --z. */
+      #canvas > .phone-mock {
+        --z: 0.42;
+        order: 9; zoom: var(--z); z-index: 1;
+        align-self: flex-start;
+        margin: calc(-70px / var(--z)) 0 calc(-118px / var(--z)) calc(((100vw - 440px * var(--m, 0.65)) / 2 - 8px) / var(--z));
+        transform: rotate(-5deg);
+      }
+      /* "live in 4 days" pinned on the ICICI card's right edge, just below
+         its top corner, overlapping it a little. Zoom scales margins too,
+         so each is divided by --z to land in screen px. */
+      #canvas > .zig-card {
+        --z: 0.58;
+        order: 5; zoom: var(--z); z-index: 3;
+        align-self: flex-end;
+        margin: calc(-36px / var(--z)) 4px calc(-84px / var(--z)) 0;
+        transform: rotate(10deg) !important;
+      }
+      .m-only.m-meta {
+        display: flex; flex-direction: column; align-items: flex-start; gap: 14px;
+        width: calc(440px * var(--m, 0.65));
+        margin: 22px 0 64px;
+        text-decoration: none; text-align: left;
+      }
+      /* the same chip the case study pages use (.chip in case-study.css) */
+      .m-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+      .m-tags span {
+        display: inline-flex; align-items: center; min-height: 32px; padding: 5px 13px;
+        font-size: 13px; font-weight: 400; color: #F2F5EA; background: #20371F;
+        border: 1px solid #F2F5EA; border-radius: 999px;
+      }
+      .m-read { font-size: 14px; font-weight: 500; color: var(--accent); }
+
+      /* extras — a row you swipe */
+      .m-only.m-shelf-wrap { display: block; padding: 0 0 120px; }
+      .m-shelf {
+        --gut: calc((100% - 440px * var(--m, 0.65)) / 2);
+        display: flex; align-items: center; gap: 24px;
+        overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gut);
+        padding: 64px var(--gut) 40px;
+        scrollbar-width: none;
+      }
+      .m-shelf::-webkit-scrollbar { display: none; }
+      .m-shelf > * {
+        position: relative !important; top: auto !important; left: auto !important;
+        flex: none; scroll-snap-align: start;
+      }
+      /* as wide as the case cards above it */
+      .m-shelf > .claude-card { zoom: calc(440 / 300 * var(--m, 0.65)); }
+    }
   </style>
 </head>
 <body>
@@ -2130,6 +2252,24 @@
       <img class="tpl-keychain" src="card-re-keychain.png" alt="" style="left:364px; top:100px;">
     </a>
 
+    <!-- phones only: the cases' intro, and tags + link under each card -->
+    <div class="m-only m-intro">
+      <p class="m-label">Case files</p>
+      <h2 class="m-heading">Three UX crimes, solved.</h2>
+    </div>
+    <a class="m-only m-meta m-meta-fyndna" href="/fyndna.html">
+      <span class="m-tags"><span>Banking</span><span>System thinking</span><span>Project lead</span></span>
+      <span class="m-read">Read case study →</span>
+    </a>
+    <a class="m-only m-meta m-meta-icici" href="/icici.html">
+      <span class="m-tags"><span>Banking</span><span>UX research</span></span>
+      <span class="m-read">Read case study →</span>
+    </a>
+    <a class="m-only m-meta m-meta-re" href="/royal-enfield.html">
+      <span class="m-tags"><span>E-commerce</span><span>UX design</span></span>
+      <span class="m-read">Read case study →</span>
+    </a>
+
     <!-- ══ STATEMENT CARDS ══ -->
 
 
@@ -2174,7 +2314,7 @@
     </a>
 
     <!-- ══ CLAUDE CODE BADGE — next to playground teaser ══ -->
-    <div class="card" style="top:266px; left:1976px; width:300px; transform:rotate(2deg); background:#1a1a1a;">
+    <div class="card claude-card" style="top:266px; left:1976px; width:300px; transform:rotate(2deg); background:#1a1a1a;">
       <div class="pin"></div>
       <p style="font-family:var(--sans); font-size:14px; font-weight:600; color:rgba(255,255,255,0.85); text-align:center; margin:0 0 12px;">This portfolio was made with</p>
       <img loading="lazy" decoding="async" src="claude-code-card.jpg" alt="Built with Claude Code" style="width:100%; display:block; border-radius:6px;">
@@ -2201,6 +2341,11 @@
 
   </div><!-- /canvas -->
 
+  <!-- phones only: the board's extras in a row you swipe, filled from the board in JS -->
+  <section class="m-only m-shelf-wrap">
+    <div class="m-shelf" id="mShelf"></div>
+  </section>
+
   <script>
     const canvas = document.getElementById('canvas');
     const hint = document.getElementById('dragHint');
@@ -2213,6 +2358,21 @@
     // rather than the CSS pixels actually on screen.
     const viewW = () => document.documentElement.clientWidth;
     const viewH = () => document.documentElement.clientHeight;
+
+    // Phones get the board as one scrolling column (see the ≤768px CSS):
+    // no pan or zoom, and --m shrinks each card to fit the screen width.
+    const phone = matchMedia('(max-width: 768px)');
+    function fitPhone() {
+      document.documentElement.style.setProperty('--m', Math.min(0.72, (viewW() - 96) / 450).toFixed(3));
+    }
+    fitPhone();
+    window.addEventListener('resize', fitPhone);
+    // the phone shelf shows copies of these, so the board keeps its own
+    ['.claude-card'].forEach(sel => {
+      const copy = canvas.querySelector(sel).cloneNode(true);
+      copy.removeAttribute('data-pin');
+      document.getElementById('mShelf').appendChild(copy);
+    });
 
     let scale = Math.max(0.30, Math.min(0.75, viewW() / 760));
     const startX = viewW() / 2 - 1440 * scale;
@@ -2233,10 +2393,12 @@
       setTimeout(() => { canvas.style.transition = ''; window.dispatchEvent(new Event('resize')); }, 620);
     }
     function boardHome() {
+      if (phone.matches) { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
       const s = Math.max(0.30, Math.min(0.75, viewW() / 760));
       glideTo(viewW() / 2 - 1440 * s, viewH() / 2 - 960 * s, s);
     }
     function boardWork() {
+      if (phone.matches) { document.querySelector('.tpl-fyndna').scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
       const s = Math.max(0.2, Math.min(0.75, (viewW() - 200) / 2700, (viewH() - 80) / 1050));
       glideTo(viewW() / 2 - 1450 * s + 60, viewH() / 2 - 1030 * s, s);
     }
@@ -2246,7 +2408,7 @@
     let dragging = false, startMouseX, startMouseY, startTx, startTy;
 
     document.addEventListener('mousedown', e => {
-      if (e.target.closest('a, button')) return;
+      if (phone.matches || e.target.closest('a, button')) return;
       dragging = true;
       startMouseX = e.clientX;
       startMouseY = e.clientY;
@@ -2300,6 +2462,7 @@
 
     // Two-finger trackpad pan (wheel events with no zoom)
     document.addEventListener('wheel', e => {
+      if (phone.matches) return;
       e.preventDefault();
       pendingTx -= e.deltaX;
       pendingTy -= e.deltaY;
@@ -2316,6 +2479,7 @@
       }
     });
     document.addEventListener('touchmove', e => {
+      if (phone.matches) return;
       e.preventDefault();
       if (e.touches.length === 1 && lastTouch) {
         pendingTx = startTx + (e.touches[0].clientX - lastTouch.clientX);

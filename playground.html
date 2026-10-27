@@ -160,12 +160,6 @@
       margin-right: auto;
     }
 
-    /* Board zoom is ~0.51 on a phone, so canvas type renders about half its
-       CSS size. 78px lands the headline at ~40px on screen, as on the home page. */
-    @media (max-width: 768px) {
-      .hero-headline { font-size: 78px; }
-    }
-
     .hero-sub {
       font-size: 14px;
       font-weight: 500;
@@ -289,6 +283,9 @@
       font-size: 40px; font-weight: 700;
       line-height: 1.2; letter-spacing: -0.8px;
     }
+    /* phones only — on desktop the pointer's "View article" / "Try it
+       live" pill says it */
+    .art-fig-read, .demo-try { display: none; }
 
     .card {
       position: absolute;
@@ -1135,6 +1132,103 @@
     /* playing video gets its own compositor layer, so its frames don't
        force the whole board to repaint while it is panned */
     #canvas video { will-change: transform; }
+
+    /* ══ PHONES — a page you scroll, not a board you pan ══
+       Same idea as the home page: under 768px the board's pieces drop into
+       a column in reading order. The drawing demo and the phone mockup sit
+       side by side straight after the hero; the articles, photos and
+       certificate follow. Each card keeps its desktop art and is shrunk
+       with zoom; --m (set from JS) fits a ~450px card to the screen. The
+       trophy card is left out — it's already on the home page. */
+    @media (max-width: 768px) {
+      html, body { height: auto; overflow-x: hidden; overflow-y: auto; }
+      body { position: static; cursor: auto; user-select: auto; }
+
+      body > nav:not(.tool-dock) { position: absolute; padding: 20px; }
+      .drag-hint { display: none; }
+
+      #canvas {
+        position: relative;
+        width: 100%; height: auto;
+        transform: none !important;
+        display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+        column-gap: 16px; row-gap: 48px;
+        max-width: 440px; margin: 0 auto;   /* a phone-width column at any width under 768px */
+        padding: 0 16px 140px;   /* clear the dock below */
+        overflow-x: clip;
+      }
+      #canvas > * { position: relative !important; top: auto !important; left: auto !important; }
+      #strings, #canvas > .award-card, #canvas > .award-behind { display: none !important; }
+
+      .hero-center {
+        order: 1; width: 100%; transform: none;
+        padding: 356px 12px 0;   /* the drawing demo sits above the title */
+      }
+      .hero-headline { font-size: clamp(32px, 9.4vw, 40px); }
+      .hero-tagline { font-size: 15px; margin-top: 12px; }
+
+      /* up front: the drawing demo pinned top left, above the title */
+      #canvas > .demo-card {
+        /* scaled with transform, not zoom: browsers disagree on whether
+           zoom also scales top/left, and Safari put these off screen */
+        position: absolute !important; top: 96px !important; left: 22px !important;
+        transform: rotate(-4deg) scale(calc(var(--m, 0.65) * 0.92)) !important;
+        transform-origin: top left;
+      }
+      /* the card is scaled ~0.6, so divide to get 15px on screen */
+      .demo-try {
+        display: block; padding: 0 8px 8px;
+        font-size: calc(15px / (var(--m, 0.65) * 0.92)); font-weight: 500;
+        color: #FFFFFF; text-decoration: underline; text-underline-offset: 0.25em;
+      }
+      /* the phone mockup, small, below the title on the right */
+      #canvas > .phone-mock {
+        order: 2; zoom: 0.42;
+        margin-left: auto;
+        transform: rotate(6deg);
+      }
+
+      /* then an easy scroll down */
+      /* a line break after the phone, so nothing shares its row */
+      #canvas::after { content: ''; order: 3; flex-basis: 100%; height: 0; margin-top: -48px; }
+
+      /* the two articles as a tilted pair: Article 01 up on the left,
+         Article 02 lower right with its top over 01's corner. Lifted with
+         a % translate, which means the same thing with or without zoom. */
+      #canvas > .art-fig-card { --az: calc(var(--m, 0.65) * 0.88); zoom: var(--az); }
+      #canvas > .art-elaichi-card { order: 4; margin-right: auto; transform: translateX(5%) rotate(8deg) !important; }
+      #canvas > .art-maggi-card   {
+        order: 5; margin-left: auto; z-index: 3;
+        transform: translate(-6%, -38%) rotate(-10deg) !important;
+      }
+      /* the card art is at Figma size, scaled 0.75 then zoomed by --az, so
+         divide to get 14px on screen */
+      .art-fig-read {
+        display: block; margin-top: -8px;
+        font-size: calc(14px / (0.75 * var(--az, 0.65))); font-weight: 500;
+        color: #FFFFFF; text-decoration: underline; text-underline-offset: 0.25em;
+      }
+      #canvas > .polaroid-pic     { order: 6; zoom: calc(var(--m, 0.65) * 0.78); }
+      /* the certificate is scaled with transform, not zoom: zoom left
+         slivers under the scallops in some browsers. The negative margins
+         give back the space the scale frees (450 x ~603 at full size). */
+      #canvas > .cert-card {
+        --s: calc(var(--m, 0.65) * 0.95);
+        order: 8;
+        transform: rotate(-2deg) scale(var(--s)) !important; transform-origin: top left;
+        margin: 0 calc(450px * (1 - var(--s)) * -1) calc(603px * (1 - var(--s)) * -1) 0;
+      }
+      /* "I love life" sits small over the middle of the four photos. It
+         flows in below them, then negative margins lift it to their centre:
+         --ph is one photo's height (290px wide, 4:5, zoomed), the card is
+         ~80px tall, rows are 48px apart. Zoom scales margins, hence / --z. */
+      #canvas > .life-card {
+        --z: 0.42;
+        --ph: calc(362.5px * var(--m, 0.65) * 0.78);
+        order: 7; zoom: var(--z);
+        margin: calc((var(--ph) + 132px) / var(--z) * -1) 0 calc((var(--ph) + 4px) / var(--z));
+      }
+    }
   </style>
 </head>
 <body>
@@ -1219,6 +1313,7 @@
         <video src="hand-tracker.mp4" poster="hand-tracker-poster.jpg" loop muted playsinline preload="none" data-autoplay style="width:100%; height:100%; object-fit:cover; object-position:center; display:block;"></video>
       </div>
       <p style="font-family:var(--sans); font-weight:700; font-size:18px; color:#FFFFFF; padding:8px; margin:0; letter-spacing:-0.02em;">draw in the air - made with Claude code</p>
+      <span class="demo-try">Try it live →</span>
     </a>
 
     <!-- ══ DESIGN CERTIFICATION ══ -->
@@ -1236,6 +1331,7 @@
         <div class="art-fig-body">
           <p class="art-fig-label"><img src="card-star-white.svg" alt=""> Article 01</p>
           <h3 class="art-fig-title">Humour in UX, the Elaichi in your Chai</h3>
+          <span class="art-fig-read">Read article →</span>
         </div>
       </div>
     </a>
@@ -1249,6 +1345,7 @@
         <div class="art-fig-body">
           <p class="art-fig-label"><img src="card-star-white.svg" alt=""> Article 02</p>
           <h3 class="art-fig-title">Maggi Meets GPay</h3>
+          <span class="art-fig-read">Read article →</span>
         </div>
       </div>
     </a>
@@ -1305,6 +1402,15 @@
     const startY = viewH() / 2 - 960 * scale;
     let tx = startX, ty = startY;
 
+    // Phones get the board as one scrolling column (see the ≤768px CSS):
+    // no pan or zoom, and --m shrinks each card to fit the screen width.
+    const phone = matchMedia('(max-width: 768px)');
+    function fitPhone() {
+      document.documentElement.style.setProperty('--m', Math.min(0.72, (viewW() - 96) / 450).toFixed(3));
+    }
+    fitPhone();
+    window.addEventListener('resize', fitPhone);
+
     function applyTransform() {
       canvas.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
     }
@@ -1314,7 +1420,7 @@
     let dragging = false, startMouseX, startMouseY, startTx, startTy;
 
     document.addEventListener('mousedown', e => {
-      if (e.target.closest('a, button')) return;
+      if (phone.matches || e.target.closest('a, button')) return;
       dragging = true;
       startMouseX = e.clientX;
       startMouseY = e.clientY;
@@ -1368,6 +1474,7 @@
 
     // Two-finger trackpad pan (wheel events with no zoom)
     document.addEventListener('wheel', e => {
+      if (phone.matches) return;
       e.preventDefault();
       pendingTx -= e.deltaX;
       pendingTy -= e.deltaY;
@@ -1384,6 +1491,7 @@
       }
     });
     document.addEventListener('touchmove', e => {
+      if (phone.matches) return;
       e.preventDefault();
       if (e.touches.length === 1 && lastTouch) {
         pendingTx = startTx + (e.touches[0].clientX - lastTouch.clientX);
