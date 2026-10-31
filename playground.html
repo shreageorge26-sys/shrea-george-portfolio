@@ -1187,6 +1187,13 @@
         margin-left: auto;
         transform: rotate(6deg);
       }
+      /* the stage dance photo shares the phone's row, on the left, about as
+         tall as the phone (~230px); kept out of the photo grid below */
+      #canvas > .polaroid-pic[data-pin="pstage"] {
+        order: 2; zoom: 0.55;
+        margin-left: 15px;
+        transform: rotate(-4deg) !important;
+      }
 
       /* then an easy scroll down */
       /* a line break after the phone, so nothing shares its row */
