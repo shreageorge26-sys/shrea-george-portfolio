@@ -1,0 +1,7 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    { "source": "/fyndna", "destination": "/credit-risk", "permanent": true },
+    { "source": "/fyndna.html", "destination": "/credit-risk", "permanent": true }
+  ]
+}
