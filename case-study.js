@@ -55,21 +55,26 @@ const onScroll = () => {
 };
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-// Pinned string: a sagging thread between the two [data-end] pins, with the
-// [data-tag] hung where the thread bottoms out. Measured live, so it follows
-// the tilted documents at any size.
+// Pinned strings: a sagging thread from each [data-end] pin to the next, in
+// document order, with an optional [data-tag] hung where the first one bottoms
+// out. Measured live, so it follows the tilted cards at any size.
 document.querySelectorAll('[data-thread]').forEach(board => {
-  const path = board.querySelector('svg path');
-  const [a, b] = board.querySelectorAll('[data-end]');
+  const svg = board.querySelector('svg');
+  const ends = [...board.querySelectorAll('[data-end]')];
   const tag = board.querySelector('[data-tag]');
-  if (!path || !a || !b) return;
+  if (!svg || ends.length < 2) return;
+  const paths = ends.slice(1).map(() => svg.appendChild(document.createElementNS('http://www.w3.org/2000/svg', 'path')));
+  svg.querySelectorAll('path').forEach(p => { if (!paths.includes(p)) p.remove(); });
   const draw = () => {
     const r = board.getBoundingClientRect();
     const at = el => { const d = el.getBoundingClientRect(); return { x: d.left + d.width / 2 - r.left, y: d.top + d.height / 2 - r.top }; };
-    const p = at(a), q = at(b);
-    const c = { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 + Math.hypot(q.x - p.x, q.y - p.y) * 0.18 };   // gravity on the thread
-    path.setAttribute('d', `M ${p.x},${p.y} Q ${c.x},${c.y} ${q.x},${q.y}`);
-    if (tag) { tag.style.left = `${(p.x + 2 * c.x + q.x) / 4}px`; tag.style.top = `${(p.y + 2 * c.y + q.y) / 4}px`; }
+    const pts = ends.map(at);
+    paths.forEach((path, i) => {
+      const p = pts[i], q = pts[i + 1];
+      const c = { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 + Math.hypot(q.x - p.x, q.y - p.y) * 0.18 };   // gravity on the thread
+      path.setAttribute('d', `M ${p.x},${p.y} Q ${c.x},${c.y} ${q.x},${q.y}`);
+      if (tag && i === 0) { tag.style.left = `${(p.x + 2 * c.x + q.x) / 4}px`; tag.style.top = `${(p.y + 2 * c.y + q.y) / 4}px`; }
+    });
   };
   draw();
   new ResizeObserver(draw).observe(board);

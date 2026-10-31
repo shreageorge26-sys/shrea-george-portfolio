@@ -161,6 +161,13 @@
     .phone-scroll.in .phone-screen img { animation: page-scroll 70s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
     .phone-screen:hover img, .phone-screen:focus img { animation-play-state: paused; }
     .phone-screen:focus-visible { outline: 2px solid var(--accent-ink); outline-offset: 4px; }
+    /* Hero board: the new mobile homepage, pinned and scrolling on its own */
+    .hero-phone-pin { position: absolute; top: 50%; right: 0; translate: 0 -50%; transform: rotate(var(--r)); z-index: 3; }
+    .hero-phone-pin > .hero-pin { top: -7px; }
+    .phone.phone--hero { --sw: clamp(160px, 14vw, 210px); border-radius: 26px; padding: 7px; }
+    .phone--hero .phone-screen { border-radius: 20px; }
+    .phone--hero .phone-island { top: 6px; height: 14px; }
+    .hero-board .phone-screen img { animation: page-scroll 70s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
 
     /* 10 — closing: launch status */
     .aside { font-family: var(--display); font-size: var(--t-lead); color: var(--ink-70); margin-top: 20px; max-width: 52ch; }
@@ -253,6 +260,9 @@
       .ranks { gap: 8px; }
       .ranks li + li::before { display: none; }
       .phone.phone--sm { --sw: 150px; }
+      .phone.phone--hero { --sw: 132px; border-radius: 20px; padding: 5px; }
+      .phone--hero .phone-screen { border-radius: 15px; }
+      .hero-phone-pin { right: 0; }
       /* Who shops here: riders swipe, non-riders sit compact beside a small photo */
       .riders { display: flex; grid-template-columns: none; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-left: calc(-1 * var(--gutter)); margin-right: calc(-1 * var(--gutter)); padding: 0 var(--gutter) 4px; }
       .riders::-webkit-scrollbar { display: none; }
@@ -273,6 +283,7 @@
     @media (prefers-reduced-motion: reduce) {
       /* no auto-scroll: let people scroll the phone themselves */
       .phone-scroll.in .phone-screen img { animation: none; }
+      .hero-board .phone-screen img { animation: none; }
       .phone-screen { overflow-y: auto; }
       .js .helm, .js .matrix tbody tr, .meter span, .dotgrid i, .ranks li, .link-line, .route .node, .market::after, .bus { transition: none; }
     }
@@ -288,20 +299,20 @@
   </nav>
 
   <!-- ══ HERO ══ -->
-  <header class="hero" data-chapter="00" data-name="Royal Enfield">
+  <header class="hero hero--quiet hero--re" data-chapter="00" data-name="Royal Enfield">
     <div>
       <p class="hero-tag" data-reveal>Case 03 &middot; Royal Enfield &middot; E-commerce UX</p>
-      <h1 data-reveal style="--i:1">How do 3.3M+ riders choose to buy a Rs.30,000 jacket online?</h1>
-      <p class="hero-sub" data-reveal style="--i:1">Royal Enfield had the story and the loyal riders. <span class="soft">Its online store showed neither.</span></p>
+      <h1 data-reveal style="--i:1">Riders loved the brand. <span class="soft">Not its store.</span></h1>
+      <p class="hero-lead" data-reveal style="--i:2">A redesign of Royal Enfield&rsquo;s apparel store, built around who its buyers are and who the store was really up against.</p>
     </div>
-    <div class="hero-foot" data-reveal style="--i:2">
-      <p class="hero-lead">Royal Enfield wanted an apparel store that felt like the brand. Our team of three redesigned how people find their way through it, built around who they are, and rethought who the store was really up against.</p>
-      <dl class="meta">
-        <div><dt>Team</dt><dd>3 designers</dd></div>
-        <div><dt>Started</dt><dd>Aug 2024</dd></div>
-        <div><dt>Scope</dt><dd>Navigation, personas, benchmarking</dd></div>
-        <div><dt>Approach</dt><dd>Storytelling and rider psychology</dd></div>
-      </dl>
+    <div class="hero-board" data-thread data-reveal style="--i:2" role="img" aria-label="Three pinned pieces linked by a string: 85% of visitors shopped on their phones; nearly half of all sales came from riding gear; the redesigned mobile homepage, scrolling on a phone.">
+      <svg class="hero-string" aria-hidden="true"></svg>
+      <div class="hero-stat hero-stat--a" style="--r:-4deg" aria-hidden="true"><span class="hero-pin" data-end></span><b>85%</b><span>of visitors shopped on their phones</span></div>
+      <div class="hero-stat hero-stat--b" style="--r:3deg" aria-hidden="true"><span class="hero-pin" data-end></span><b>Nearly half</b><span>of all sales came from riding gear, the one category a rider can&rsquo;t compromise on</span></div>
+      <div class="hero-phone-pin" style="--r:1.5deg" aria-hidden="true"><span class="hero-pin" data-end></span><div class="phone phone--hero"><div class="phone-screen"><div class="phone-island"></div><img src="re-mobile-home.jpg" alt=""></div></div></div>
+    </div>
+    <div data-reveal style="--i:3">
+      <p class="hero-line">Team of 3 designers<span aria-hidden="true">&middot;</span>Aug 2024<span aria-hidden="true">&middot;</span>Navigation, personas, benchmarking</p>
     </div>
   </header>
 
