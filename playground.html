@@ -1601,6 +1601,12 @@
       draw();
       window.addEventListener('load', draw);
       window.addEventListener('resize', draw);
+      // the article cards ease their transform (hover, or the mobile layout
+      // snapping back after a resize), so a draw mid-ease reads a stale pin;
+      // redraw once each transition lands
+      canvas.addEventListener('transitionend', function (e) {
+        if (e.propertyName === 'transform') draw();
+      });
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
     })();
 
