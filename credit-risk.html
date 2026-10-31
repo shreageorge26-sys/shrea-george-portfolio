@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FYNDNA Case Study &middot; Shrea George</title>
+  <title>Credit Risk Case Study &middot; Shrea George</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -14,25 +14,37 @@
 
   <nav class="nav" aria-label="Case study">
     <a class="nav-mark" href="index.html">Shrea George</a>
-    <span class="nav-now" aria-hidden="true"><b id="now-num">00</b> &nbsp;<span id="now-name">FYNDNA</span></span>
+    <span class="nav-now" aria-hidden="true"><b id="now-num">00</b> &nbsp;<span id="now-name">Credit risk</span></span>
     <span class="progress" id="progress"></span>
   </nav>
 
   <!-- ══ HERO ══ -->
-  <header class="hero" data-chapter="00" data-name="FYNDNA">
+  <header class="hero hero--quiet" data-chapter="00" data-name="Credit risk">
     <div>
-      <p class="hero-tag" data-reveal>Case 01 &middot; FYNDNA &middot; Fraud &amp; document risk</p>
-      <h1 data-reveal style="--i:1">8 steps to 4, to close a risk for bank document verification</h1>
-      <p class="hero-sub" data-reveal style="--i:1">Eight steps to close one risk. <span class="soft">I got it to four.</span></p>
+      <p class="hero-tag" data-reveal>Case 01 &middot; B2B fintech</p>
+      <h1 data-reveal style="--i:1">Eight steps to close one risk. <span class="soft">I got it to four.</span></h1>
+      <p class="hero-lead" data-reveal style="--i:2">A redesign of how bank risk reviewers verify loan documents, built around the one decision they make all day.</p>
     </div>
-    <div class="hero-foot" data-reveal style="--i:2">
-      <p class="hero-lead">Risk reviewers check every document in a loan application for anything that doesn&rsquo;t add up. The flow they were handed was borrowed from a different feature. This is how I redesigned it around the one decision they make all day.</p>
-      <dl class="meta">
-        <div><dt>Role</dt><dd>Lead designer, solo</dd></div>
-        <div><dt>Timeline</dt><dd>Mar &ndash; Apr 2026</dd></div>
-        <div><dt>Worked with</dt><dd>Product, engineering, leadership</dd></div>
-        <div><dt>Inside</dt><dd>An inherited design system</dd></div>
-      </dl>
+    <div class="hero-board" data-thread data-reveal style="--i:2" role="img" aria-label="Example risk: the payslip says Priya Raghavan Iyer, the bank statement says Priya Iyer. A string links the two documents, tagged Name mismatch, Medium.">
+      <svg class="hero-string" aria-hidden="true"><path/></svg>
+      <div class="doc hero-doc hero-doc--a" style="--r:-4deg" aria-hidden="true">
+        <span class="hero-pin" data-end></span>
+        <p class="doc-type">Payslip &middot; Feb</p>
+        <div class="doc-row"><span>Employee</span><span class="doc-name">Priya <mark>Raghavan</mark> Iyer</span></div>
+        <div class="doc-line w80"></div><div class="doc-line w60"></div><div class="doc-line w40"></div>
+      </div>
+      <div class="doc hero-doc hero-doc--b" style="--r:3deg" aria-hidden="true">
+        <span class="hero-pin" data-end></span>
+        <p class="doc-type">Bank statement &middot; Feb</p>
+        <div class="doc-row"><span>Account holder</span><span class="doc-name">Priya Iyer</span></div>
+        <div class="doc-line w60"></div><div class="doc-line w80"></div><div class="doc-line w40"></div>
+      </div>
+      <span class="hero-tag-pinned" aria-hidden="true"><span class="hero-pin"></span>Name mismatch</span>
+      <div class="hero-zig" aria-hidden="true"><span class="hero-pin"></span><div class="hero-zig-shape"><p>medium<br>risk</p></div></div>
+    </div>
+    <div data-reveal style="--i:3">
+      <p class="hero-line">Lead designer<span aria-hidden="true">&middot;</span>Mar&ndash;Apr 2026<span aria-hidden="true">&middot;</span>With product, engineering and leadership</p>
+      <p class="hero-nda">Client details changed under NDA.</p>
     </div>
   </header>
 
@@ -42,7 +54,7 @@
     <section class="chapter" data-chapter="01" data-name="The result">
       <div class="marker"><span class="marker-num">01</span><span class="marker-name">The result</span></div>
       <div class="body">
-        <div class="outcome">
+        <div class="outcome outcome--bleed">
           <div>
             <h2 data-reveal>Half the steps, and fewer missed risks.</h2>
             <div class="stats space">
@@ -52,8 +64,7 @@
             </div>
           </div>
           <figure class="shot" data-reveal style="--i:2">
-            <img src="fyndna-dilemma3-final.png" alt="The final Risk Analysis screen: filters on top, risks grouped under each document, each with a pending or cured status">
-            <figcaption class="caption">The final Risk Analysis screen. Every risk sits under the document it came from.</figcaption>
+            <img src="cr-hero-decisioning.png" alt="The Risk Decisioning screen: borrowers, activities and warnings on the left, risks grouped under each document on the right, each marked cured, cannot cure or pending">
           </figure>
         </div>
       </div>
@@ -64,7 +75,7 @@
       <div class="marker"><span class="marker-num">02</span><span class="marker-name">The setting</span></div>
       <div class="body">
         <h2 data-reveal>Before a bank lends you money, someone reads your paperwork.</h2>
-        <p class="lead" data-reveal style="--i:1">That someone usually works for a Credit Information Company (CIC): a third party the bank pays to judge how risky your documents are. FYNDNA builds the tool they do it in.</p>
+        <p class="lead" data-reveal style="--i:1">That someone usually works for a credit bureau or verification agency: a third party the bank pays to judge how risky your documents are. My client builds the software they do it in.</p>
         <ol class="chain" aria-label="How a loan application reaches the reviewer">
           <li class="link" data-reveal style="--i:2"><div class="link-dot"></div><p class="link-who">You</p><p class="link-what">apply for a loan and upload payslips, statements, ID.</p></li>
           <li class="link" data-reveal style="--i:3"><div class="link-dot"></div><p class="link-who">The bank</p><p class="link-what">sends the application out for a credit check.</p></li>
@@ -83,12 +94,12 @@
         <div class="docs" aria-label="Example: the same applicant's name differs across two documents">
           <div class="doc" data-reveal style="--i:2; --r:-1.5deg">
             <p class="doc-type">Payslip &middot; Feb</p>
-            <div class="doc-row"><span>Employee</span><span class="doc-name">Anish <mark>Verma</mark> Shah</span></div>
+            <div class="doc-row"><span>Employee</span><span class="doc-name">Priya <mark>Raghavan</mark> Iyer</span></div>
             <div class="doc-line w80"></div><div class="doc-line w60"></div><div class="doc-line w40"></div>
           </div>
           <div class="doc" data-reveal style="--i:3; --r:1.2deg">
             <p class="doc-type">Bank statement &middot; Feb</p>
-            <div class="doc-row"><span>Account holder</span><span class="doc-name">Anish Shah</span></div>
+            <div class="doc-row"><span>Account holder</span><span class="doc-name">Priya Iyer</span></div>
             <div class="doc-line w60"></div><div class="doc-line w80"></div><div class="doc-line w40"></div>
           </div>
           <span class="flag" data-reveal style="--i:4">Name mismatch &middot; Medium risk</span>
@@ -97,8 +108,8 @@
           <span class="others-label">Others they see every day</span>
           <span class="chip">Handwritten salary slip</span>
           <span class="chip">Payslip doesn&rsquo;t match bank statement</span>
-          <span class="chip">Possible PDF manipulation</span>
-          <span class="chip">Dual PAN card</span>
+          <span class="chip">Address mismatch</span>
+          <span class="chip">Unreadable document</span>
         </div>
       </div>
     </section>
@@ -107,7 +118,7 @@
     <section class="chapter" data-chapter="04" data-name="The decision">
       <div class="marker"><span class="marker-num">04</span><span class="marker-name">The decision</span></div>
       <div class="body">
-        <h2 data-reveal>Every risk ends in a call.</h2>
+        <h2 data-reveal style="max-width:none">Every risk ends in a&nbsp;decision.</h2>
         <p class="lead" data-reveal style="--i:1">A reviewer rules on each document, and those rulings add up to a verdict on the whole application. Get one wrong and it carries into every step after.</p>
         <div class="ladder">
           <div class="rung" data-reveal style="--i:2">
@@ -126,13 +137,13 @@
     <section class="chapter" data-chapter="05" data-name="Who decides">
       <div class="marker"><span class="marker-num">05</span><span class="marker-name">Who decides</span></div>
       <div class="body">
-        <h2 data-reveal>Four kinds of reviewers make that call.</h2>
+        <h2 data-reveal>Four kinds of decision-makers.</h2>
         <p class="lead" data-reveal style="--i:1">Different jobs, same screen. Each team I worked with spoke for one of them.</p>
         <div class="people">
-          <div class="person" data-reveal style="--i:2"><span class="person-num">01</span><h3>Agency verifiers</h3><p>External agencies who check a customer&rsquo;s CIC/CIBIL records on the bank&rsquo;s behalf.</p></div>
-          <div class="person" data-reveal style="--i:3"><span class="person-num">02</span><h3>Underwriters &amp; credit officers</h3><p>Match CIC/CIBIL data against the bank&rsquo;s risk policy to set eligibility and interest rates.</p></div>
+          <div class="person" data-reveal style="--i:2"><span class="person-num">01</span><h3>Agency verifiers</h3><p>External agencies who verify a customer&rsquo;s credit records on the bank&rsquo;s behalf.</p></div>
+          <div class="person" data-reveal style="--i:3"><span class="person-num">02</span><h3>Underwriters &amp; credit officers</h3><p>Match credit bureau data against the bank&rsquo;s risk policy to set eligibility and interest rates.</p></div>
           <div class="person" data-reveal style="--i:4"><span class="person-num">03</span><h3>Fraud risk analysts</h3><p>Watch credit reports for application fraud, identity theft and compromised profiles.</p></div>
-          <div class="person" data-reveal style="--i:5"><span class="person-num">04</span><h3>Relationship managers</h3><p>Pull a preliminary report, with consent, to surface pre-approved offers in branch.</p></div>
+          <div class="person" data-reveal style="--i:5"><span class="person-num">04</span><h3>Relationship managers</h3><p>Pull a preliminary report, with consent, for customers in branch.</p></div>
         </div>
       </div>
     </section>
@@ -167,17 +178,9 @@
       <div class="body">
         <h2 data-reveal>So I walked it, click by click.</h2>
         <p class="lead" data-reveal style="--i:1">Closing a single risk took eight steps. The redesign does it in four.</p>
-        <div class="flow-media">
-          <figure class="shot" data-reveal>
-            <video preload="metadata" src="fyndna-walkthrough.mov#t=0.1" controls playsinline></video>
-            <figcaption class="caption">The inherited flow, recorded end to end.</figcaption>
-          </figure>
-          <div class="facts" data-reveal style="--i:1">
-            <div class="fact"><b>9&ndash;10</b><span>documents per reviewer, per day</span></div>
-            <div class="fact"><b>3&ndash;4</b><span>risks to resolve in each document</span></div>
-            <div class="fact"><b>8</b><span>steps for every one of those risks</span></div>
-          </div>
-        </div>
+        <figure class="shot space" data-reveal style="--i:2">
+          <video preload="metadata" src="cr-walkthrough.mov#t=0.1" controls playsinline></video>
+        </figure>
       </div>
     </section>
 
@@ -227,52 +230,42 @@
 
     <!-- ══ 11 DILEMMA 1 ══ -->
     <section class="chapter" data-chapter="11" data-name="Dilemma 1">
-      <div class="marker"><span class="marker-num">11</span><span class="marker-name">Dilemma 1 of 3</span></div>
-      <div class="body">
-        <p class="kicker" data-reveal>Where does the work happen?</p>
-        <h2 data-reveal style="--i:1">An overlay, or a page of its own?</h2>
-        <p class="lead" data-reveal style="--i:2">I was asked to reuse the slide-out overlay from another module, for consistency. But reviewers make a call that every later decision depends on. They need the document and its risks in front of them, not a panel over a dashboard.</p>
-        <div class="options">
-          <figure class="option is-out" data-reveal style="--i:1">
-            <div class="option-head"><h3>Overlay</h3><span class="verdict">Dropped</span></div>
-            <div class="shot"><img loading="lazy" decoding="async" src="fyndna-iter-overlay-1.png?v=2" alt="Risk Panel as a slide-out overlay on top of the Risk Decisioning dashboard"></div>
-            <ul><li>Made for open-ended comparison, not one repeated decision.</li><li>Kept the eight-step path to close each risk.</li></ul>
-          </figure>
-          <figure class="option is-in" data-reveal style="--i:2">
-            <div class="option-head"><h3>Its own page</h3><span class="verdict verdict--yes">Chosen</span></div>
-            <div class="shot"><img loading="lazy" decoding="async" src="fyndna-iter-overlay-2.png?v=2" alt="Risk Decisioning as its own page, document viewer on the left and risks on the right"></div>
-            <ul><li>Document on the left, its risks on the right. Decide at a glance, in four steps.</li><li>Jump to the next document without leaving.</li></ul>
-          </figure>
-        </div>
-        <div class="learned" data-reveal><span>What I learned</span><p>Consistency matters, until it costs the person using the screen.</p></div>
-      </div>
-    </section>
-
-    <!-- ══ 12 DILEMMA 2 ══ -->
-    <section class="chapter" data-chapter="12" data-name="Dilemma 2">
-      <div class="marker"><span class="marker-num">12</span><span class="marker-name">Dilemma 2 of 3</span></div>
+      <div class="marker"><span class="marker-num">11</span><span class="marker-name">Dilemma 1 of 2</span></div>
       <div class="body">
         <p class="kicker" data-reveal>What does one risk look like?</p>
         <h2 data-reveal style="--i:1">How much should a risk card say?</h2>
         <p class="lead" data-reveal style="--i:2">A risk is either untouched or resolved, and the card has to make that obvious. I tried hierarchy after hierarchy with the other teams, to learn which details actually mattered.</p>
-        <div class="board" data-reveal>
-          <!-- Column widths are 1 / (sum of each column's h/w), so the uneven
-               cards land on one shared bottom edge with every gap equal. -->
-          <div class="tiles">
-            <div class="tiles-col" style="--f:1.2555">
-              <img loading="lazy" decoding="async" src="fyndna-card-1.png" alt="Full card for bank_statement_jan.pdf: source, code R1013, description Dual PAN Card, with Cannot Cure and Cure buttons">
-              <img loading="lazy" decoding="async" src="fyndna-card-4.png" alt="Compact row: High, R1013, True PDF false, Verification Needed, with Cannot Cure and Cure radio buttons">
-            </div>
-            <div class="tiles-col" style="--f:1.3116">
-              <img loading="lazy" decoding="async" src="fyndna-card-2.png" alt="EPFO name mismatch card comparing the name in EPFO with the name in the application, with Cannot Cure and Cure radio buttons">
-              <img loading="lazy" decoding="async" src="fyndna-card-5.png" alt="Minimal row: Medium, R1012, Potential PDF Manipulation Detected">
-            </div>
-            <div class="tiles-col" style="--f:1.3875">
-              <img loading="lazy" decoding="async" src="fyndna-card-3.png" alt="Hand-written Passbook card marked High, with Raise Verification, Cannot Cure and Cure actions">
-              <img loading="lazy" decoding="async" src="fyndna-card-6.png" alt="R1015 Handwritten Salary Slip card, Pending and High, with Cannot Cure and Cure buttons">
-            </div>
-          </div>
-          <p class="caption">Some of the explorations: full cards, compact rows, radio buttons, always-on buttons.</p>
+        <div class="tries tries--cards" data-swipe data-reveal>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-1.png" alt="Full card for statement_feb.pdf with source, code and description above large Cannot Cure and Cure buttons"></div>
+              <div class="try-head"><h3>Action first</h3></div>
+              <ul><li class="give">The decision is the biggest thing on the card. One glance says cure or not.</li><li>The buttons outweigh the reason for the risk.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-2.png" alt="Name mismatch card comparing the name in the document with the name in the application, with Cannot Cure and Cure radio buttons"></div>
+              <div class="try-head"><h3>Evidence first</h3></div>
+              <ul><li class="give">Both conflicting values side by side, so the reviewer sees why before deciding.</li><li>Only works for risks with two values to compare.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-3.png" alt="Card for bank_statement.pdf with Add Risk and Raise Verification, and a Document Unverified risk inside it"></div>
+              <div class="try-head"><h3>Document first</h3></div>
+              <ul><li class="give">Risks sit under their file, and escalation is one click away.</li><li>The document header takes space on every card.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-4.png" alt="Compact row: High, R1013, Document unverified, with Verify and Cannot Cure and Cure radio buttons"></div>
+              <div class="try-head"><h3>Form first</h3></div>
+              <ul><li class="give">Radio buttons say only one outcome can be picked. This was asked for, to show the choice is exclusive.</li><li>Feels like filling in a form, not making a call.</li></ul>
+            </figure>
+            <figure class="try is-in">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-5.png" alt="Minimal row: Medium, R1012, Document Unverified, with no actions until hovered"></div>
+              <div class="try-head"><h3>Actions on demand</h3><span class="verdict verdict--yes">Chosen</span></div>
+              <ul><li class="give">Key facts first. Cure, Cannot cure and Verify appear on hover, so the risk is read before it&rsquo;s acted on.</li><li class="give">No wall of identical buttons on every card.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-card-6.png" alt="Card with Pending and High tags above Document Unverified, its source, and Cure and Cannot Cure buttons"></div>
+              <div class="try-head"><h3>Status first</h3></div>
+              <ul><li class="give">What&rsquo;s done and what&rsquo;s left, at a glance.</li><li>Status pushes the risk itself down the card.</li></ul>
+            </figure>
         </div>
         <div class="winner winner--sync">
           <h3 class="winner-title" aria-hidden="true">The one that worked</h3>
@@ -292,31 +285,49 @@
       </div>
     </section>
 
-    <!-- ══ 13 DILEMMA 3 ══ -->
-    <section class="chapter" data-chapter="13" data-name="Dilemma 3">
-      <div class="marker"><span class="marker-num">13</span><span class="marker-name">Dilemma 3 of 3</span></div>
+    <!-- ══ 12 DILEMMA 2 ══ -->
+    <section class="chapter" data-chapter="12" data-name="Dilemma 2">
+      <div class="marker"><span class="marker-num">12</span><span class="marker-name">Dilemma 2 of 2</span></div>
       <div class="body">
         <p class="kicker" data-reveal>How do you see the whole application?</p>
         <h2 data-reveal style="--i:1">Sort the dashboard by document, or by risk?</h2>
         <p class="lead" data-reveal style="--i:2">Teams wanted different groupings. I built the options as dashboard widgets and took them back to each team to rank.</p>
-        <div class="board" data-reveal>
-          <!-- Rows, not columns: each card's flex-grow is its aspect ratio, so
-               both cards in a row share one height and fill the width. -->
-          <div class="tiles tiles--rows">
-            <div class="tiles-row">
-              <img loading="lazy" decoding="async" style="--f:2.420" src="fyndna-widget-1.png" alt="Widgets grouped three ways side by side: Document, Data and Cross-Validation">
-              <img loading="lazy" decoding="async" style="--f:2.416" src="fyndna-widget-2.png" alt="Widget grouped by document, with each bank statement's risks listed inside">
-            </div>
-            <div class="tiles-row">
-              <img loading="lazy" decoding="async" style="--f:2.419" src="fyndna-widget-3.png" alt="Widget grouped by data source, EPFO verification marked completed, with Reject and Approve split buttons">
-              <img loading="lazy" decoding="async" style="--f:3.126" src="fyndna-widget-4.png" alt="Document Verification table listing files, risk code, source, risk level and a Take Action button">
-            </div>
-          </div>
-          <p class="caption">Widget options: by document, by data source, by cross-validation, and as a table.</p>
+        <div class="tries tries--wide" data-swipe data-reveal>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-1.png" alt="Verification table with one tab per type, listing files, risk code, source and risk level"></div>
+              <div class="try-head"><h3>Plain table</h3></div>
+              <ul><li class="give">One tab per verification type, one row per file. Familiar.</li><li>Says nothing about what&rsquo;s wrong. Every row looks the same.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-2.png" alt="Verification table where each row has cure and cannot cure buttons plus Verify and Refer"></div>
+              <div class="try-head"><h3>Table with actions</h3></div>
+              <ul><li class="give">Cure or cannot cure right in the row, with Verify and Refer beside them.</li><li>Buttons on every row invite a call before the risk is read.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-3.png" alt="Risks in three columns, Document, Data and Cross-Validation, each grouped and expandable, with filter dropdowns above"></div>
+              <div class="try-head"><h3>Three columns, nested</h3></div>
+              <ul><li class="give">Document, Data and Cross-validation side by side, filters on top.</li><li>Narrow columns. Risks get cut off and scroll inside each box.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-4.png" alt="Risks in three columns, each listing level, risk name and a pending or cured status"></div>
+              <div class="try-head"><h3>Three columns, with status</h3></div>
+              <ul><li class="give">Each risk shows its level and whether it&rsquo;s pending or cured.</li><li>The same document turns up in more than one column.</li></ul>
+            </figure>
+            <figure class="try">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-5.png" alt="Three-column risk view with risk-level filter chips, a party filter, and Reject and Approve buttons at the top"></div>
+              <div class="try-head"><h3>Three columns, with decision</h3></div>
+              <ul><li class="give">Filter by risk level or party. Approve and Reject always in reach.</li><li>Approve sits next to pending risks, which tempts an early call.</li></ul>
+            </figure>
+            <figure class="try is-in">
+              <div class="try-img"><img loading="lazy" decoding="async" src="cr-dash-6.png" alt="A single list grouping each risk under its document, every risk marked pending"></div>
+              <div class="try-head"><h3>By document</h3><span class="verdict verdict--yes">Chosen</span></div>
+              <ul><li class="give">One list. Every risk sits under the file it came from.</li></ul>
+            </figure>
         </div>
+        <p class="caption">Six ways to group the dashboard, shown with placeholder data. Each team ranked them.</p>
         <div class="winner">
           <h3 class="winner-title" aria-hidden="true">By document, with the risks inside</h3>
-          <div class="shot" data-reveal><img loading="lazy" decoding="async" src="fyndna-dilemma3-final.png" alt="Final Risk Analysis design with filters on top, risks grouped under each document, and a pending or cured status"></div>
+          <div class="shot" data-reveal><img loading="lazy" decoding="async" src="cr-dilemma3-final.png" alt="Final Risk Analysis design with filters on top, risks grouped under each document, and a pending or cured status"></div>
           <div data-reveal style="--i:1">
             <h3 class="winner-h">By document, with the risks inside</h3>
             <p class="lead" style="margin-top:12px">The dashboard tells reviewers what they&rsquo;re walking into before they open a single risk.</p>
@@ -327,15 +338,15 @@
       </div>
     </section>
 
-    <!-- ══ 14 CLOSING ══ -->
-    <section class="chapter" data-chapter="14" data-name="Looking back">
-      <div class="marker"><span class="marker-num">14</span><span class="marker-name">Looking back</span></div>
+    <!-- ══ 13 CLOSING ══ -->
+    <section class="chapter" data-chapter="13" data-name="Looking back">
+      <div class="marker"><span class="marker-num">13</span><span class="marker-name">Looking back</span></div>
       <div class="body">
-        <h2 data-reveal>What I&rsquo;d tell the next designer.</h2>
+        <h2 data-reveal>What happened next.</h2>
         <div class="thoughts">
-          <div class="thought" data-reveal style="--i:1"><p>Build the wrong version first. Once the flawed flow is on screen, it argues against itself.</p></div>
-          <div class="thought" data-reveal style="--i:2"><p>Eight steps didn&rsquo;t become four because the screens got cleaner. They did because the problem got reframed.</p></div>
-          <div class="thought" data-reveal style="--i:3"><p>Getting three teams with conflicting asks behind one direction was the real work. It just doesn&rsquo;t screenshot well.</p></div>
+          <div class="thought" data-reveal style="--i:1"><p>When a stakeholder is sure about a flawed direction, I now build it before arguing against it. Walking through it together settled the debate faster than any deck would have.</p></div>
+          <div class="thought" data-reveal style="--i:2"><p>I had no say over the final call, so I focused on making the trade-offs easy to see. Once each team could see what they were giving up, agreeing on one direction got easier.</p></div>
+          <div class="thought" data-reveal style="--i:3"><p>A few months after launch, the bank shut down the old entry point. Nobody asked for the old flow back.</p></div>
         </div>
       </div>
     </section>

@@ -38,6 +38,9 @@ const io = new IntersectionObserver(entries => entries.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
 }), { rootMargin: '0px 0px -12% 0px' });
 document.querySelectorAll('[data-reveal], .dots').forEach(el => io.observe(el));
+// The hero is on screen at load: reveal all of it, down to the credits at its foot.
+requestAnimationFrame(() => requestAnimationFrame(() =>
+  document.querySelectorAll('.hero [data-reveal]').forEach(el => { el.classList.add('in'); io.unobserve(el); })));
 
 // Nav shows the chapter you're in, and how far through the page you are.
 const num = document.getElementById('now-num'), name = document.getElementById('now-name'), bar = document.getElementById('progress');
@@ -51,3 +54,24 @@ const onScroll = () => {
   num.textContent = cur.dataset.chapter; name.textContent = cur.dataset.name;
 };
 addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+// Pinned string: a sagging thread between the two [data-end] pins, with the
+// [data-tag] hung where the thread bottoms out. Measured live, so it follows
+// the tilted documents at any size.
+document.querySelectorAll('[data-thread]').forEach(board => {
+  const path = board.querySelector('svg path');
+  const [a, b] = board.querySelectorAll('[data-end]');
+  const tag = board.querySelector('[data-tag]');
+  if (!path || !a || !b) return;
+  const draw = () => {
+    const r = board.getBoundingClientRect();
+    const at = el => { const d = el.getBoundingClientRect(); return { x: d.left + d.width / 2 - r.left, y: d.top + d.height / 2 - r.top }; };
+    const p = at(a), q = at(b);
+    const c = { x: (p.x + q.x) / 2, y: (p.y + q.y) / 2 + Math.hypot(q.x - p.x, q.y - p.y) * 0.18 };   // gravity on the thread
+    path.setAttribute('d', `M ${p.x},${p.y} Q ${c.x},${c.y} ${q.x},${q.y}`);
+    if (tag) { tag.style.left = `${(p.x + 2 * c.x + q.x) / 4}px`; tag.style.top = `${(p.y + 2 * c.y + q.y) / 4}px`; }
+  };
+  draw();
+  new ResizeObserver(draw).observe(board);
+  if (document.fonts) document.fonts.ready.then(draw);
+});
