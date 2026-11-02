@@ -1092,12 +1092,52 @@
     .life-card {
       position: absolute;
       z-index: 3;   /* sits over the photos */
-      width: 450px;
+      width: 380px;
       border-radius: 12px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 12px 28px rgba(0,0,0,0.28), 0 32px 60px rgba(0,0,0,0.22);
     }
     .life-card img { display: block; width: 100%; height: auto; border-radius: inherit; }
     .life-card > .pin { top: -6px; }
+
+    /* notes on the hobby photos: same build as the "I love life" card
+       (sunburst rays on a flat colour, --note), each tucked behind its
+       photo's right edge; the left padding keeps the text clear of it */
+    .note-card {
+      position: absolute;
+      z-index: 1;   /* behind the stage photo */
+      width: 360px;
+      padding: 34px 32px 34px 104px;
+      border-radius: 12px;
+      background: var(--note, #6B3FA0);   /* purple */
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.12), 0 12px 28px rgba(0,0,0,0.28), 0 32px 60px rgba(0,0,0,0.22);
+    }
+    .note-card::before, .note-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    .note-card::before {   /* big burst, bottom right */
+      background: repeating-conic-gradient(from 0deg at 82% 100%, rgba(255,255,255,0.09) 0 7deg, transparent 7deg 20deg);
+      -webkit-mask: radial-gradient(circle at 82% 100%, transparent 70px, #000 71px 190px, transparent 191px);
+              mask: radial-gradient(circle at 82% 100%, transparent 70px, #000 71px 190px, transparent 191px);
+    }
+    .note-card::after {    /* small burst, top left */
+      background: repeating-conic-gradient(from 0deg at 0% 0%, rgba(255,255,255,0.09) 0 8deg, transparent 8deg 22deg);
+      -webkit-mask: radial-gradient(circle at 0% 0%, transparent 18px, #000 19px 56px, transparent 57px);
+              mask: radial-gradient(circle at 0% 0%, transparent 18px, #000 19px 56px, transparent 57px);
+    }
+    .note-card p {
+      position: relative; z-index: 1;
+      margin: 0;
+      font-family: var(--sans);
+      font-weight: 700;
+      font-size: 21px;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+    }
+    .note-card > .pin { top: 8px; }
 
     /* phone mockup: dark bezel, rounded screen */
     .phone-mock {
@@ -1189,10 +1229,23 @@
       }
       /* the stage dance photo shares the phone's row, on the left, about as
          tall as the phone (~230px); kept out of the photo grid below */
+      #canvas > .polaroid-pic[data-pin="ppiano"] {
+        order: 3; zoom: 0.55;
+        margin: 0 auto 0 15px;
+        transform: rotate(3deg) !important;
+      }
       #canvas > .polaroid-pic[data-pin="pstage"] {
         order: 2; zoom: 0.55;
         margin-left: 15px;
         transform: rotate(-4deg) !important;
+      }
+      /* the hobby notes and the piano photo follow them, small, nothing
+         to hide behind */
+      #canvas > .note-card {
+        order: 3; zoom: 0.62;
+        margin: -20px 24px 0 auto;
+        padding-left: 36px;
+        transform: rotate(-3deg) !important;
       }
 
       /* then an easy scroll down */
@@ -1232,7 +1285,7 @@
       #canvas > .life-card {
         --z: 0.42;
         --ph: calc(362.5px * var(--m, 0.65) * 0.78);
-        order: 7; zoom: var(--z);
+        order: 7; zoom: var(--z); width: 450px;   /* phones keep the full-size card */
         margin: calc((var(--ph) + 132px) / var(--z) * -1) 0 calc((var(--ph) + 4px) / var(--z));
       }
     }
@@ -1348,6 +1401,20 @@
       <div class="pin"></div>
       <img loading="lazy" decoding="async" src="fun-stage-dance.jpg" alt="Dancing on stage with my crew in sunglasses and cargos">
     </figure>
+    <div class="note-card" style="top:930px; left:2330px; transform:rotate(-2deg);">
+      <div class="pin"></div>
+      <p>Two years into training, now an intermediate level dancer.</p>
+    </div>
+
+    <!-- ══ PIANO — photo below the dance one, with its note ══ -->
+    <figure class="polaroid-pic" data-pin="ppiano" style="top:1150px; left:2250px; transform:rotate(-2deg);">
+      <div class="pin"></div>
+      <img loading="lazy" decoding="async" src="fun-piano.jpg" alt="Playing the piano at home">
+    </figure>
+    <div class="note-card" style="top:1400px; left:2450px; transform:rotate(2deg); --note:#0F4C4F;">
+      <div class="pin"></div>
+      <p>Grade 6 Pianist trained with ABRSM.</p>
+    </div>
 
     <!-- ══ ARTICLE 02 — Maggi Meets GPay ══ -->
     <a class="art-card art-fig-card art-maggi-card" href="https://www.zeuxinnovation.com/articles/maggi-meets-gpay/" target="_blank" rel="noopener" aria-label="Read the article: Maggi Meets GPay" data-pin="maggi" style="top:330px; left:1560px; --rot:2deg;">
@@ -1368,7 +1435,7 @@
 
 
     <!-- ══ LIFE OUTSIDE WORK — photos, with their green title card ══ -->
-    <div class="life-card" data-pin="life" style="top:950px; left:300px; transform:rotate(-3deg);">
+    <div class="life-card" data-pin="life" style="top:960px; left:335px; transform:rotate(-3deg);">
       <div class="pin"></div>
       <img src="fun-love-life.png" alt="I love life &amp; being out and about">
     </div>
@@ -1390,7 +1457,7 @@
     </figure>
 
     <!-- ══ SURE ONBOARDING — screen recording in a phone ══ -->
-    <div class="phone-mock" data-pin="sure" style="top:1170px; left:1760px; transform:rotate(3deg);">
+    <div class="phone-mock" data-pin="sure" style="top:1555px; left:1760px; transform:rotate(3deg);">
       <div class="pin"></div>
       <video src="sure-onboarding.mp4" poster="sure-onboarding-poster.jpg" loop muted playsinline preload="none" data-autoplay aria-label="Screen recording of the Sure onboarding flow"></video>
     </div>
