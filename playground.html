@@ -1227,26 +1227,34 @@
         margin-left: auto;
         transform: rotate(6deg);
       }
-      /* the stage dance photo shares the phone's row, on the left, about as
-         tall as the phone (~230px); kept out of the photo grid below */
+      /* after the certificate: the dance and piano photos, each with its
+         note tucked behind its lower right edge, as on the desktop board.
+         Photo and note share a row; the note's negative left margin slides
+         it under the photo (zoom scales margins, so the px are divided by
+         it) and its left padding keeps the text clear of the overlap. */
+      #canvas > .polaroid-pic[data-pin="pstage"],
       #canvas > .polaroid-pic[data-pin="ppiano"] {
-        order: 3; zoom: 0.55;
-        margin: 0 auto 0 15px;
-        transform: rotate(3deg) !important;
-      }
-      #canvas > .polaroid-pic[data-pin="pstage"] {
-        order: 2; zoom: 0.55;
-        margin-left: 15px;
-        transform: rotate(-4deg) !important;
-      }
-      /* the hobby notes and the piano photo follow them, small, nothing
-         to hide behind */
-      #canvas > .note-card {
-        order: 3; zoom: 0.62;
-        margin: -20px 24px 0 auto;
-        padding-left: 36px;
+        order: 9; zoom: 0.6;
         transform: rotate(-3deg) !important;
       }
+      #canvas > .polaroid-pic[data-pin="ppiano"] { transform: rotate(2deg) !important; }
+      #canvas > .note-card {
+        order: 9; zoom: 0.6;
+        margin-left: calc(-72px / 0.6);
+        transform: translateY(45%) rotate(-2deg) !important;
+      }
+      /* the dance pair is mirrored, note on the left: the note comes
+         first, slides under the photo's left edge from the other side, and
+         its padding swaps sides to match */
+      #canvas > .polaroid-pic[data-pin="pstage"] + .note-card {
+        order: 9;
+        margin-left: 0; margin-right: calc(-72px / 0.6);
+        padding: 34px 104px 34px 32px;
+        transform: translateY(45%) rotate(2deg) !important;
+      }
+      #canvas > .polaroid-pic[data-pin="pstage"] { order: 10; }
+      #canvas > .polaroid-pic[data-pin="ppiano"],
+      #canvas > .polaroid-pic[data-pin="ppiano"] + .note-card { order: 11; }
 
       /* then an easy scroll down */
       /* a line break after the phone, so nothing shares its row */
